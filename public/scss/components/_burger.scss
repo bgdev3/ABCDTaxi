@@ -1,0 +1,77 @@
+@use '../utils/variables' as var ;
+@use '../utils/mixins';
+
+.header__burger{
+    width: 5.5%;
+    height: 5.5%;
+    position: relative;
+    z-index: 999;
+    transition: transform var.$duration;
+
+    @include mixins.tablet-only{
+      transform: translateX(0%);
+      width: 4.5%;
+    }
+    @include mixins.desktop-only{
+        display: none;
+    }
+
+    &-position{
+        position: absolute;
+        top: 15.4%;
+        right: 0%;
+        @include mixins.tablet-only{
+            position: initial;
+        }
+    }
+    
+    span{
+        position: absolute;
+        display: block;
+        top: 50%;
+        left: 50%;
+        background-color: var.$color-light;
+        width: 100%;
+        height: .05em;
+        transform: translateX(-50%) translateY(-50%);
+        transition: var.$duration;
+        &::before, &::after{
+            content: "";
+            position: absolute;
+            top:0;
+            left: 0;
+            transform: translateY(-6px);
+            display: block;
+            width: 100%;
+            height: .05em;
+            background-color: var.$color-light;
+            transform-origin: 50% 50%;
+            transition: background var.$duration, transform var.$duration;
+            @include mixins.tablet-only{
+                transform: translateY(-8px);
+            }
+        }
+ 
+        &::after{
+            transform: translateY(6px);
+            @include mixins.tablet-only{
+                transform: translateY(8px);
+            }
+        }
+    }
+    
+    &.burger{
+        span{
+        background-color: transparent;
+        }
+        span::before, span::after{
+            background-color: var.$color-red;
+        }
+        span::before{
+            transform: rotate(-45deg) translateY(0);
+        }
+        span::after{
+            transform: rotate(45deg) translateY(0);
+        }
+    }
+} 

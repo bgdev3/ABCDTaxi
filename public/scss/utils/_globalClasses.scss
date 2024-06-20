@@ -1,0 +1,50 @@
+// Classes Globales
+@use 'variables' as color;
+
+
+.wrapper{
+    max-width: 1280px;
+    margin: 0 auto;
+}   
+
+.flex_row{
+    display: flex;
+    flex-flow: row wrap;
+}
+
+.flex_col{
+    display: flex;
+    flex-flow: column wrap;
+}
+
+.header, .header__logo :first-child{
+    z-index: 800;
+}
+
+// Classes JS
+.backToTop{
+    position:fixed;
+    right:3%;
+    display:none;                               
+    bottom:2%;
+    font-size :1.5em;
+    color :color.$color-light;
+    opacity: .2;
+}
+
+.header-shadow{
+    box-shadow:0px 5px 10px -8px color.$color-light ;
+    padding: initial;
+}
+
+.header_main-change{
+    overflow: initial;   
+}
+
+.is-hide{
+    display: none;
+} 
+
+.unScroll{
+    overflow-y: hidden;
+}

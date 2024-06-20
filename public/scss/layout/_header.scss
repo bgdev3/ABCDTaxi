@@ -1,0 +1,73 @@
+// HEADER
+@use '../utils/variables' as color;
+@use '../utils/mixins';
+
+.header{
+    width: 100%;
+    padding: 1% 5% ;
+    background: color.$color-gradient;
+    position:sticky;
+    top: 0;
+    overflow: hidden;
+    transition: .5s ease;
+
+    @include mixins.desktop-only{
+        background: none;
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: center;
+        position: static;
+        overflow: initial;
+        padding: 0;
+    }
+
+   .flex_row{
+        align-items: center;
+        gap: .4em;
+
+        @include mixins.tablet-only{
+            gap: .6em;
+        }
+
+        i{
+            vertical-align: -.15em;
+            font-size: 5vw;
+            color: color.$color-light;
+
+            @include mixins.tablet-only{
+                font-size: 4.6vw;
+            }
+            @include mixins.desktop-only{
+                font-size: 1.3em;
+            }
+        }
+
+        span{
+            font-size: 4.8vw;
+            font-style: italic;
+            @include mixins.tablet-only{
+                font-size: 3.8vw;
+            }
+
+            @include mixins.desktop-only{
+                font-size: 1.3em;
+            }
+        }
+    } 
+    
+   
+}
+
+.flex_header_user {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: column;
+   
+    flex: 1 1 auto;
+   @include mixins.desktop-only{
+    flex-direction: row;
+   }
+   
+   
+}

@@ -1,0 +1,84 @@
+@use '../utils/variables' as color ;
+@use '../utils/mixins';
+
+.diapo{
+    border: none;
+    overflow: hidden;
+    position: relative;
+    .flex_row{
+        flex-wrap: nowrap;
+    }
+
+    > a{
+        position: absolute;
+        top: 50%;
+        transform: translateY(-100%);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 1em;
+        height: 1em;
+        font-size: 1.5em;
+        border-radius: 50%;
+        background-color: color.$color-primary;
+        padding-bottom: .5%;
+        opacity: .5;
+        transition: .6s;
+        @include mixins.tablet-only{
+            width: 1.5em;
+            height: 1.5em; 
+            padding-bottom: .1%;
+        }
+        @include mixins.desktop-only{
+            width: 2em;
+            height: 2em;
+        }
+    }
+    &__next{
+        right: 2%;
+    }
+    &__prev{
+        left: 2%;
+    }
+}
+
+.diapo__slide{
+    flex: 1 0 100%;
+    width: 100%;
+    opacity: 0;
+    &__img{
+        height: 100%;
+    }
+}
+
+.slide__dot{
+    text-align: center;
+    margin: 1% 0;
+    &__item{
+        cursor: pointer;
+        padding: .1em;
+        width: .40em;
+        height: .40em;
+        border-radius: 50%;
+        margin: 0 2px;
+        background-color: color.$color-light;
+        display: inline-block;
+        transition:  .6s ease;
+    }
+}
+
+.slide-show{
+    opacity: 1;
+    transition: .5s ease-out;
+}  
+
+.diapo__prev:hover, .diapo__next:hover{
+    opacity: .8;
+}
+
+.active{
+    background-color: color.$color-red;
+    width: 1.5em;
+    border-radius: 50px 50px;
+}
+

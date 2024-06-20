@@ -1,0 +1,52 @@
+@use '../utils/variables' as color;
+@use '../utils/mixins';
+
+
+.main__content-apropos{
+    border-top: 1px solid color.$color-light;
+    background-color: initial;
+    padding-top: 2%;
+    padding-left: 2%;
+}
+
+.apropos{
+    font-family:  'sansation', Helvetica, sans-serif;
+    width: 95%;
+    padding: 5%;
+    margin: 5% auto 5%;
+    line-height: 1.5em;
+    border-radius: 5px;
+    border: 1px solid color.$color-red;
+    background-color: color.$color-tertiary;
+    h3{
+        font-size: 1em;
+        font-style: italic;
+        @include mixins.tablet-only{
+            font-size: 1.1em;
+        }
+    }
+    @include mixins.tablet-only{
+        width: 75%;
+    }
+    @include mixins.desktop-only{
+        width: 60%;
+    }
+    em{
+        font-weight: bold;
+    }
+
+    &_flex{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        &_logo{
+            width: 35%;
+            margin:  0 auto ;
+            @include mixins.tablet-only{
+                margin: 5% auto 0;
+            }
+        }
+    }
+   
+    
+}

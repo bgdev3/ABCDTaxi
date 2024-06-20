@@ -1,0 +1,135 @@
+@use '../utils/variables' as color;
+@use '../utils/mixins';
+
+.headerStep{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 1%;
+      margin-bottom: 5%;
+      & div{
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 1px solid color.$color-red;
+            color: color.$color-light;
+            font-weight: bold;
+            font-family:  'sansation', Helvetica, sans-serif;
+            text-align: center;
+            line-height: -60%;
+            @include mixins.tablet-only{
+                  width: 20px;
+                  height: 20px;
+            }
+      }
+      .step{
+            background-color: color.$color-red;
+      }
+}
+
+.reservation{
+      margin: 5% 2% 5%;
+      text-align: center;
+
+      @include mixins.tablet-only{
+            width: 70%;
+            margin: 5% auto 5%;
+      }
+      @include mixins.desktop-only{
+            width: 50%;
+           
+      }
+      .activeDay{
+            background-color: color.$color-red;
+            border: 1px solid color.$color-red;
+            color: color.$color-light;
+            border-radius: 5px;
+            padding: .5em;
+            font-weight: bold;
+           
+      }
+
+      .date{
+            // cursor:pointer;
+             .shape{
+                  border: 1px solid color.$color-red;
+                  border-radius: 5px;
+                  padding: .5em;
+                  // font-weight: bold;
+                  margin-bottom: 1em;
+                  &:hover{
+                       box-shadow: 0 0 10px -2px color.$color-red;
+                  }
+             }
+             
+            .day {
+                 display: flex;
+                 justify-content: space-between;
+            }
+           
+            .border{
+                  border-top: none;
+                  border-top-left-radius: 0;
+                  border-top-right-radius: 0;
+            }
+
+            .borderRadius{
+                  border-bottom-left-radius: 0;
+                  border-bottom-right-radius: 0;
+            }
+
+            .disabled{
+                  cursor: default;
+                  pointer-events: none;        
+                  text-decoration: none;
+                  border: none;
+                  color: rgb(68, 68, 68);
+            }
+      } 
+
+      .gridHours{
+            display: grid;
+            grid-template-columns:  repeat(4, 20%);
+            column-gap: 5%;
+            justify-content: center;
+            div{
+                  margin: 2% 0;
+            }      
+      }
+
+      .hide{
+            display: none;
+      }
+
+      &_choice{
+            color: yellow;
+      }
+     
+      .hours{
+            background-color: color.$color-primary;
+      }
+
+      #more{
+            cursor:pointer;
+            padding: .7em 1em;
+            border-radius: 5px;
+            background-color: color.$color-red;
+      }
+     
+      .btn{
+            display: flex;
+            justify-content: space-between;
+            gap: 5%;
+            padding: 0 2%;
+            button{
+                  margin-left: 0;
+            }
+            .mr {
+                  margin-right: 5%;
+            }
+      }
+}
+
+
+

@@ -1,0 +1,190 @@
+@use '../utils/variables' as color ;
+@use '../utils/mixins';
+
+// Style boutons Accueil
+.main__content-btn
+{
+    text-align: center;
+    width:50%;
+    align-self: center;
+    margin-top: 10%;
+    border: none;
+    border-radius: 5px;
+    background-color: color.$color-red;
+    color: color.$color-light;
+    font-style: italic;
+    font-weight: bold;
+    font-size: .9em; 
+    padding: .7em 1em .5em;
+
+    &, & i{
+        transition: color.$duration ease;
+    }
+
+    @include mixins.tablet-only{
+        font-size: 1em;
+        margin-left:8%;
+        align-self: flex-start;
+        max-width: 40%;
+        &--right{
+            align-self: flex-end; margin-right: 8%;
+        }
+    }
+    @include mixins.desktop-only{
+        margin-left: initial;
+        align-self: center;       
+    }
+
+    &:hover{
+        @include mixins.hover;
+        i{
+                color:color.$color-red;
+        }
+    }
+
+    i{
+        line-height: .5em;
+        vertical-align: -.33em;
+        margin-left: 5%;
+        color: color.$color-light;
+        font-size: 1.5em;
+    }
+   
+}
+
+// Btn ajout de jours de date
+.moreDays{
+    cursor: pointer;
+    border: none;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-bottom: 1px solid color.$color-red;
+    font-style: italic;
+    color: color.$color-light;
+    width: 45%;
+    font-size: .9em; 
+    font-weight: bold;
+    border-radius: 5px;
+    padding: .5em;
+    background-color: color.$color-primary;
+    margin: 0 auto;
+    margin-bottom: 8%;
+    transition: color.$duration ease;
+    &:hover{
+          @include mixins.hover;
+    }
+}
+
+// Btn Go
+#btnGo {
+    cursor: pointer;
+    width: 30%;
+    margin: 1% auto;
+    border: none;
+    border-radius: 5px;
+    background-color: color.$color-red;
+    color: color.$color-light;
+    font-style: italic;
+    font-weight: bold;
+    padding: 2% 0;    
+    transition: color.$duration ease;
+    &:hover{
+        @include mixins.hover;
+    }
+    @include mixins.tablet-only{
+        font-size: 1em;
+    }
+}
+
+// Style bouton devis
+.btnDevis{
+    cursor: pointer;
+    display: block;
+    background-color: color.$color-red;
+    text-align: center;
+    margin-bottom: 10%;
+    font-size: .9em; 
+    font-style: italic;
+    font-weight: bold;
+    border-radius: 5px;
+    color: color.$color-light;
+
+    @include mixins.tablet-only{
+        font-size: 1em;
+        width: 50%;
+        margin-left: 6%;
+    }
+
+    @include mixins.desktop-only{
+        width: 40%;
+        margin-left: 0;
+    }
+    transition: color.$duration ease;
+    &:hover{
+        @include mixins.hover;
+    }
+}
+
+// style btn Destintaion
+.btnMap{
+    margin: 5% auto;
+    padding: .7em 1em;
+    @include mixins.tablet-only{
+        max-width: 35%;
+    }
+    @include mixins.desktop-only{
+        max-width: 30%;
+    } 
+    transition: color.$duration ease;
+    &:hover{
+        @include mixins.hover;
+    }
+}
+
+// Style bouton de rendez-vous
+.btnForm, .btnFormNew, .btnFormDelete{
+    cursor: pointer;
+    display: block;
+    padding: .7em 1em;
+    background-color: color.$color-red;
+    color: color.$color-light;
+    font-style: italic;
+    font-size: .9em;
+    font-weight: bold;
+    border-radius: 5px;
+    border: none;
+    margin: 5% auto;
+    @include mixins.tablet-only{
+        font-size: 1em;
+        width:50%
+    }
+    transition: color.$duration ease;
+    &:hover{
+        @include mixins.hover;
+    }
+
+}
+
+.btnLogOut{
+    cursor: pointer;
+    border: none;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-bottom: 1px solid color.$color-red;
+    font-size: .9em; 
+    font-style: italic;
+    color: color.$color-light;
+    font-weight: bold;
+    border-radius: 5px;
+    padding: .5em;
+    background-color: color.$color-primary;
+    transition: color.$duration ease;
+    &:hover{
+          @include mixins.hover;
+    }
+    @include mixins.tablet-only{
+        font-size: 1em;
+    }
+}

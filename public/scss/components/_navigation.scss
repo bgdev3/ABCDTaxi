@@ -1,0 +1,183 @@
+@use '../utils/variables' as var ;
+@use '../utils/mixins';
+
+.header__nav{
+    position: fixed;
+    top: 0;
+    right: -100%;
+    opacity: 0;
+    height: 100vh;
+    background-color: var.$color-primary;
+    width: 100%;
+    transition:  all var.$duration ;
+    z-index: 800;
+
+    &-flags{
+        width: 5%;
+       position: relative;
+        transition: var.$duration;
+        @include mixins.desktop-only{
+            width: 25%;
+        }
+    }
+    &-flag_en{
+        width: 5%;
+       position: relative;
+        transition: var.$duration;
+        @include mixins.desktop-only{
+            width: 20%;
+        }
+    }
+   
+
+    @include mixins.desktop-only{
+        flex: 1 0 65%;
+        background-color: transparent;
+        position: initial;
+        opacity: 1;
+        height: initial;
+        .active-link{
+            font-style: italic;
+            color: var.$color-hover;
+         }
+    }
+
+    &-item{
+            padding-bottom: 1.5%;
+            border-bottom: 1px solid var.$color-red;
+        }
+
+    &-list {
+        margin: 40% 5% 0;
+        position: relative;
+        @include mixins.desktop-only{
+            display: flex;
+            justify-content: space-evenly;
+            margin: 0;
+        }
+
+        a {
+            display: block;
+            padding: 10% 0 1%;
+            font-family:  'sansation', Helvetica, sans-serif;
+            font-size: 1.2em;
+            // text-transform: uppercase;
+            // transition: var.$duration;
+            @include mixins.tablet-only{
+               
+            }
+            @include mixins.desktop-only{
+                text-transform: initial;
+                font-size: 1em;
+            }
+        }
+
+       
+    }
+   
+    &-item{
+        position: relative;
+        span{
+            display: inline-block;
+            vertical-align: -.4em;
+            transform: rotate(0) translate(0, 0);
+            transform-origin: center;
+            transition: var.$duration;
+            @include mixins.desktop-only{
+                vertical-align: -.35em;
+            }
+
+            i{
+                vertical-align: .1em;
+            }
+        }
+
+        &:hover{
+            span{
+                transform: rotate(-90deg) translate(20%, 10%);
+            }
+
+            .header__nav__sousMenu {
+                max-height: 500px;
+                transition: 1s  ;
+                @include mixins.desktop-only{
+                    max-height: 5.5em;
+                }
+            }
+        }
+        @include mixins.desktop-only{
+            text-align: center;
+            width: 100%;
+            padding: 0;
+            border-bottom: none;
+        }
+    }
+
+    &__sousMenu{
+        text-align: center;
+        font-size: .9em;
+        max-height: 0;
+        overflow: hidden;
+        transition: var.$duration;
+        & li{
+            border-bottom: none;
+        }
+        & a{
+            padding: 5% 0;
+        }
+        @include mixins.desktop-only{
+            position: absolute;
+            width: 100%;
+            background:  var.$color-sousMenu;
+        }
+    }
+
+    a:hover{
+        color: var.$color-hover;
+    }
+    
+    > p{
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        text-align: center;
+        font: bold italic .9em Helvetica, Arial, sans-serif;
+        @include mixins.tablet-only{
+            font-size: 1em;
+        }
+        @include mixins.desktop-only{
+            display: none;
+        }
+    }
+}
+
+.hideMenu{
+    top: -100%;  
+}
+
+.showMenu{
+    opacity: 1;
+    right: 0%;
+}
+
+.flag-position{
+    opacity: 1;
+}
+
+// NAV FOOTER
+.footer__nav {
+    padding: 2% 3%;
+
+   @include mixins.tablet-only {
+    padding: 2% 0% 1%;
+
+        &  ul {
+            display: flex;
+            justify-content: space-around;
+        }
+    }
+
+    @include mixins.desktop-only{
+        background: var.$color-secondary;
+    }
+}

@@ -1,0 +1,73 @@
+// LOGO HEADER
+@use '../utils/variables' as color ;
+@use '../utils/mixins';
+
+.header__logo{
+    justify-content: space-between;
+    h1{
+        margin: 0; 
+    }
+    > a{
+        width:35%;
+        margin-top: 1%;
+        font-family:   'sansation', Helvetica, sans-serif;
+        @include mixins.desktop-only{
+            width:45%;
+            order: 0;
+        }
+    }
+    &-phone{
+        @include mixins.desktop-only{
+            order: 1;
+        }
+    }
+    &-phone a:first-child i{
+        @include mixins.desktop-only{
+            color: color.$color-red;
+        }
+    }
+    &-phone a:last-child{
+        display: none;
+        @include mixins.desktop-only{
+            display: inline-block;
+        }
+    }
+    @include mixins.tablet-only{
+        padding: initial;
+        flex-flow: row nowrap;
+    }
+    @include mixins.desktop-only{
+        justify-content: flex-start;
+    }
+}
+
+// LOGO CONTENT
+.main__content-logo{
+        margin: 10% 0;
+        width: 40%;
+        border-radius: 50%;
+      
+        @include mixins.tablet-only{
+            margin: 0;
+            width: 20%;
+            &:not(img[src*="events"]) {order: 1;}
+            }
+        @include mixins.desktop-only{
+            width: 20%;
+        }
+    }
+
+// LOGO FOOTER
+.footer_logo {
+    justify-content: center;
+    align-items: center;
+    gap: 5%;
+
+    & > *{
+        width: 3em;
+    }
+
+    & :nth-child(2){
+        width: 6em;
+    }
+}

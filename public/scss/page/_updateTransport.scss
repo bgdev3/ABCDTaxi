@@ -1,0 +1,63 @@
+@use '../utils/variables' as color;
+@use '../utils/mixins';
+
+.updateShape{
+    display: flex;
+    justify-content: space-around;
+    flex-direction: column;
+    align-items: center;
+width: 100%;
+    @include mixins.desktop-only{
+        flex-direction: row;
+    }
+}
+
+.main__content-titleUpdate{
+    text-align: center;
+    font-style: italic;
+    font-family:  'sansation', Helvetica, sans-serif;
+    font-size: 1.1em;
+    @include mixins.tablet-only{
+        font-size: 1.5em;
+    }
+}
+
+.updateTransport{
+    width: 100%;
+    @include mixins.tablet-only{
+        width: 80%;
+    }
+    @include mixins.desktop-only{
+        width: 40%;
+    }
+  
+}
+input[readonly]{
+    border: none;
+    color: color.$color-red;
+}
+
+.info{
+    line-height: 1.5em;
+    font-size: .9em;
+    text-align: center;
+    border: 1px solid color.$color-red;
+    background-color: color.$color-primary;
+    margin: 3em 0;
+    padding: 1em;
+    @include mixins.tablet-only{
+        font-size: 1em;
+    }
+  
+}
+.btnFormUpdate{
+    display: block;
+    padding: .7em 1em;
+    background-color: color.$color-red;
+    color: color.$color-light;
+    font-weight: bold;
+    border-radius: 5px;
+    border: none;
+    margin: 5% auto;
+    width: 50%;
+}

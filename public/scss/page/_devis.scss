@@ -1,0 +1,150 @@
+@use '../utils/variables' as color;
+@use '../utils/mixins';
+
+
+.reservation_devis{
+    width:95%;
+    margin: 5%  auto 5%;
+    text-align: center;
+    @include mixins.tablet-only{
+        text-align: start;
+    }
+    @include mixins.desktop-only{
+          width: 100%;
+        }   
+
+    & .flex_row{
+        flex-direction: column;
+        gap: 2em;
+        margin: 1% 0 5%;
+        @include mixins.tablet-only{
+            width: 80%;
+            margin: 0 auto;
+            margin-top: 1%;
+        }
+        @include mixins.desktop-only{
+            flex-flow: row nowrap;
+            gap: 2em;
+        }   
+    }
+
+    .itineraire{
+        
+        flex: 1 1 100%;
+        & div:first-child{
+            margin-bottom: 1em;
+        }
+        @include mixins.tablet-only{
+            width: 85%;
+            margin: 0 auto;
+        }
+        @include mixins.desktop-only{
+           flex: 1 1 50%;
+        }
+
+       
+    }
+    
+    #estimate{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        text-align: center;
+        flex: 1 1 50%;
+        padding: 1em;
+        border: 1px solid color.$color-red;
+        @include mixins.tablet-only{
+            width: 85%;
+            margin: 0 auto;
+        }
+        p{
+            margin-top: 0;
+        }
+    }
+    
+    #start{
+        margin: 1em 0 .4em;
+    }
+
+    #end{
+        margin-bottom: 1em;
+    }
+
+    #start, #end{
+        display: block;
+        padding: .4em 1em;
+        width: 100%;
+    }
+
+    #check{
+        margin-left: 2em;
+    }
+
+    #wait{
+        width: 50%;
+        margin-bottom: 3%;
+        background-color: color.$color-primary;
+        color: color.$color-light;
+        border-right:none;
+        border-top: none;
+        border-left: none;
+        @include mixins.tablet-only{
+            margin-left: 2em;
+        }
+    }
+    
+    .noneWait{
+        display: none;
+    }
+
+    #start[placeholder], #end[placeholder]{
+        background-color: color.$color-primary;
+        color: color.$color-light;
+        border-right:none;
+        border-top: none;
+        border-left: none;
+        padding: .7em 1em;
+        font-style: italic;
+        font-size: .9em;
+        &::placeholder{
+            color: color.$color-light;
+        }
+    }
+
+    #map{
+        height: 250px;
+        max-height: 100%;
+        max-width: 100%;
+        margin: 0 auto;
+        @include mixins.tablet-only{
+        height: 350px;
+        }
+    }  
+  
+    .none{
+        display: none;
+    }
+   
+      
+//    Style de l'erreur affiché si une requête DirectionsService n'est pas trouvé
+    .error{
+        background-color: color.$color-red;
+        border-radius: 5px;
+        padding: .5em 0;
+    }
+}
+
+.smallDevis{
+    display:block;
+    width: 95%;
+    margin: 0 auto;
+    @include mixins.tablet-only{
+        width: 65%;
+    }
+    @include mixins.desktop-only{
+        width: 80%;
+    }
+}
+
+
+ 

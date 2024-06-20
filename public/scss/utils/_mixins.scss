@@ -1,0 +1,23 @@
+// Mixins
+@use '../utils/variables' as color ; 
+
+@mixin tablet-only{
+    @media only screen and (min-width: 576px){
+        @content;
+    }
+}
+
+@mixin desktop-only{
+    @media only screen and (min-width: 1024px){
+        @content;
+    }
+}
+
+@mixin hover{
+    color: color.$color-light;
+    font-weight: bold;
+    background-color: color.$color-primary;
+    border-radius: initial;
+    box-shadow:0px 0px 0 2px color.$color-red inset;
+    transition: color.$duration ease;
+}

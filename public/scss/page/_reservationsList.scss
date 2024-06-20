@@ -1,0 +1,133 @@
+@use '../utils/variables' as color;
+@use '../utils/mixins';
+
+.main__content_table{
+    
+    margin-top: 5%;
+    min-height: 55vh;
+    background-color: color.$color-secondary;
+    border-radius: 5px;
+    font-size: .9rem;
+}
+.table{
+
+    width: 95%;
+    @include mixins.tablet-only{
+        width: 80%;
+    }
+
+    margin: 0 auto;
+    border: 1px solid color.$color-red;
+    text-align: center;
+    color: color.$color-light;
+    tbody tr{
+        background-color: color.$color-primary;
+    }
+    tbody tr:nth-child(odd){
+        background-color: color.$color-secondary;
+    }
+    
+    td.flexTd .change-link{
+        color: #788a78;
+    }
+
+    td.flexTd .delete-link{
+        color: color.$color-red;
+    }
+    
+    td.flexTd .change-link, td.flexTd .delete-link{
+        vertical-align: -.8em;
+        font-size: 1.3em;
+    }
+}
+
+th{
+    color: color.$color-red;
+    background-color: color.$color-primary;
+}
+
+tbody td:last-child{
+    background-color: color.$color-secondary;
+}
+
+td.flexTd{
+
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    padding: .5em;
+    @include mixins.tablet-only{
+        justify-content: space-evenly;
+    }
+    @include mixins.desktop-only{
+        gap: 10%;
+    }    
+}
+
+th, tr, td{
+    padding: 1em;
+    font-weight: bold;
+}
+
+
+@media screen and (max-width: 1024px) {
+   
+    .table-responsive .table, .table-responsive thead,
+    .table-responsive tbody,
+    .table-responsive th,
+    .table-responsive tr,
+    .table-responsive td:not(.flexTd) {
+    display: block;
+}
+
+    .main__content_table .table{
+        border: none;
+    }
+
+    .table-responsive tr{
+        padding: 0;
+        margin-bottom: 1rem;
+        border: 1px solid color.$color-red;
+    }
+
+    .table-responsive thead{
+        display: none;
+        
+    }
+
+    .table-responsive td:not( td.flexTd){
+
+        padding-left: 130px;
+        position: relative;
+        margin-top: -1;
+        border: 2px solid color.$color-secondary;
+        background: color.$color-secondary;
+        &:nth-child(odd){
+            background-color: color.$color-primary;
+        }
+        &:not( td.flexTd)::before{
+            border-right: 4px solid color.$color-secondary;
+            padding: 10px;
+            content: attr(data-label);
+            background-color: color.$color-primary;
+            color: color.$color-light;
+            font-weight: bold;
+            font-size:1em;
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 130px;
+            
+        }
+    }
+
+    .table-responsive td.flexTd::before, .table-responsive tbody td:last-child{
+        border: 2px solid color.$color-secondary;
+        background-color: color.$color-primary;
+    }        
+}
+

@@ -1,0 +1,19 @@
+@use '../utils/mixins';
+
+.main_bloc{
+    padding-top: 2%;
+    p{
+        margin: 0 5% 0% 5%;
+        line-height: 1.5em;
+    }
+    .devisArticle{
+        margin-bottom: 0;
+    }
+
+    @include mixins.tablet-only{
+        padding: 2% 0 0;
+    }
+    @include mixins.desktop-only{
+        padding: 0 0 2% 0;
+    }
+ }

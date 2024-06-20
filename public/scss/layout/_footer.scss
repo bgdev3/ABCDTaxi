@@ -1,0 +1,102 @@
+@use '../utils/variables' as color ;
+@use '../utils/mixins';
+
+
+.footer {
+    font-size: .9rem;
+    line-height: 1.4em;
+    padding-top: 2%;
+  
+
+    & .flex_row:first-child {
+        flex-direction: row;
+        padding-bottom: 2%;
+        @include mixins.tablet-only {
+            padding-bottom: 2%;
+        }
+    }
+   
+    > .flex_col {
+
+        padding: 0% 3%;
+        a{margin-bottom: 2%;}
+    }
+
+    >.flex_col, .footer__nav{
+
+        // background-color: rgba(0, 0, 0, .2);
+        @include mixins.tablet-only{
+            background-color: rgba(0, 0, 0, .4);
+        }
+    }
+
+    .footer__nav{
+       
+        ul{ margin-top: 10%;}
+        li{margin-bottom: 1%;}
+        @include mixins.tablet-only{
+
+            ul{margin-top: initial;}
+            li{margin-bottom: initial;}
+        }
+    }
+
+    > p {
+        font-size: .65em;
+        text-align: center;
+        text-transform: uppercase;
+        color: color.$color-red;
+        & > a {
+            color: color.$color-red;
+        }
+    }
+
+    &--space-between .flex_row{
+        gap: 2%;
+        position: relative;
+    }
+
+    @include mixins.tablet-only {
+        font-size: 1rem;
+
+        > .flex_col {
+            padding: 0 5%;
+        }
+
+        &--reverse {
+            flex-direction: row ;
+            order: 1;
+            justify-content: space-between;
+            text-align: center;
+       }
+
+        &--space-between {
+            align-self: center;
+           
+            & .flex_row {
+                justify-content: center;
+                gap: 5%;
+            }
+        }
+    }
+   
+    @include mixins.desktop-only {
+        padding-top: 0;
+        &__icon--center{
+        justify-content: flex-start;
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
