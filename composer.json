@@ -1,0 +1,20 @@
+{
+    "name": "guimix/abcdtaxi",
+    "authors": [
+        {
+            "name": "GuiMix",
+            "email": "boukehaili.g@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4":{
+            "App\\Controllers\\": "Controllers/",
+            "App\\Core\\": "Core/",
+            "App\\Entities\\": "Entities/",
+            "App\\Models\\": "Models"}
+    },
+    "require": {
+        "phpmailer/phpmailer": "^6.9",
+        "calcinai/php-imagick": "^0.1.2"
+    }
+}
