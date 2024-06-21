@@ -11,10 +11,10 @@ class DbConnect
     protected $request;
 
     // Constante
-    const SERVEUR = /*'localhost'*/'127.0.0.1:3306';
-    const USER = /*'root'*/'u572485290_abcdtaxi';
-    const PASSWORD = /*''*/'6vzA6U!^T';
-    const BASE = /*'abcdtaxi'*/'u572485290_abcdtaxi';
+    const SERVEUR = ************;
+    const USER = ************
+    const PASSWORD = ************
+    const BASE = ***********€
 
     // Constructeur qui initialise la connexion lors de l'instanciation de la classe
     public function __construct() 
