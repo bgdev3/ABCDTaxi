@@ -156,13 +156,11 @@ import { fetchManager } from "./fetch.js";
 function createImg(urls, slide, w, h){
    
     urls.forEach(el => {
-        let img  = document.createElement('img');
-        img.setAttribute('src', el);
-        img.setAttribute('width', w);
-        img.setAttribute('height', h);
-        img.setAttribute('alt', 'Image de taxi');
+        let img = new Image(w, h);
+        img.src = el;
+        img.alt = 'Image de taxi';
         img.setAttribute('class', 'diapo__slide slide-show');
-        slide.append(img);
+        slide.appendChild(img);
     });
 }
 
