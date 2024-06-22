@@ -1,16 +1,29 @@
 @use '../utils/variables' as color ;
 @use '../utils/mixins';
 
+
 .diapo{
     border: none;
     overflow: hidden;
     position: relative;
     width: 100%;
     padding-top: 36.72%;
+
+    .slide__dot{
+        position: relative;
+        width: 100%;
+        padding-top: 1em;
+    }
+
     .flex_row{
         flex-wrap: nowrap;
     }
 
+    #container-dot{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
     & .slides{
         position: absolute;
         top: 0;
@@ -18,6 +31,15 @@
         width: 100%;
     }
 
+    & .dots{
+        position: absolute;
+        top: 40%;
+        width: 100%;
+        @include mixins.desktop-only{
+            top: 0%;
+        }
+    }
+    
     > a{
         position: absolute;
         top: 50%;
@@ -66,6 +88,7 @@
     &__item{
         cursor: pointer;
         padding: .1em;
+        margin-bottom: .1em;
         width: .40em;
         height: .40em;
         border-radius: 50%;
