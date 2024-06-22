@@ -144,7 +144,7 @@ class Mailer
         // Assigne les données récupérées et les stockes dans un array
         $subject = $data[0];
         $body = $data[1];
-            
+            $email = "boukehaili.g@gmail.com";
         $content = [];
         array_push($content, $email, $subject, $body);
         // Appel à la méthode d'envoi 
