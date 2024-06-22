@@ -39,7 +39,7 @@ class Mailer
         
             //Recipients
             $mail->setFrom('boukehaili.g@gmail.com', 'ABCD Taxi');                      //Adresse d'envoi
-            $mail->addAddress($content[0], 'Joe User');                    //Destinatire
+            $mail->addAddress($content[0]);                    //Destinatire
         
             // //Attachments
             if($file)                                                                    //Si le paramètre facultatif est présent        
