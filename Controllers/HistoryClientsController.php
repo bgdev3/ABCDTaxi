@@ -17,6 +17,7 @@ class HistoryClientsController extends Controller
 
     /**
      * Affiche l'historique clients
+     * 
      * @param string [$token] Clé de sécurité
      */
     function index($token): void

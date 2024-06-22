@@ -9,10 +9,6 @@ use App\Entities\Transport;
 use App\Core\Language;
 use DateTime;
 
-/**
- * Classe qui gère l'envoi des différents infomrations
- * issu des formulaires par mails.
- */
 
 class Mailer 
 {

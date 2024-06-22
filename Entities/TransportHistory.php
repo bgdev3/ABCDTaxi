@@ -1,7 +1,10 @@
 <?php
+namespace App\Entities;
 
 class TransportHistory
 {
+
+     // Prorpiétés relative à la table en bdd
     private $idTransport_histo;
     private $dateReservation;
     private $dateTransport;

@@ -1,8 +1,10 @@
 <?php
 namespace App\Entities;
 
+
 class SlideshowAdmin {
     
+     // Prorpiétés relative à la table en bdd
     private $idPicture;
     private $size_slide;
     private $picture_path;

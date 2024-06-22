@@ -1,8 +1,11 @@
 <?php
 namespace App\Entities;
 
+
 class transport
 {
+
+     // Prorpiétés relative à la table en bdd
     private $idTransport;
     private $dateReservation;
     private $dateTransport;

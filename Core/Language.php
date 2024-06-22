@@ -4,7 +4,7 @@ namespace App\Core;
 class Language
 {
 
-    // Attribut
+    // Propiétés
     private $lang;
     private $translations = [];
 

@@ -9,6 +9,12 @@ session_start();
 
 class HistoryTransportController extends Controller
 {
+
+    /**
+     * Affiche la liste des réservations
+     * 
+     * @param int [$token] Clé de sécurité
+     */
     public function index($token): void
     {
         // Si l'admin est connecté et que les tokens GET et SESSION correspondent

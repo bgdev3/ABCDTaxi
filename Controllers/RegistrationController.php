@@ -14,9 +14,6 @@ use App\Models\TransportModel;
 
 session_start();
 
-/**
- * Classe qui traite les informations recu du formulaire et hydrate les entotées.
- */
 class RegistrationController extends Controller 
 {
 

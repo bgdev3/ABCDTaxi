@@ -102,7 +102,6 @@ class Form
     public function startFieldset(string $text, string $class): self
     {
         $this->formElements .= "<fieldset class='$class'>";
-        // $this->formElements .= isset($attributes) ? $this->addAttributes($attributes) . ">" : ">";
         $this->formElements .= $text;
         return $this;
     }

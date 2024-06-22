@@ -16,6 +16,7 @@ class AuthAdminController extends Controller
     /**
      * Affiche le formulaire d'authentification administrateur
      * et effectue les vérification de connexion
+     * 
      */
     public function index(): void
     {
