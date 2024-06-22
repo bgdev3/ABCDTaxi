@@ -11,7 +11,7 @@
     }
 
     @include mixins.tablet-only{
-        padding: 2% 0 0;
+        padding: 1% 0 0;
     }
     @include mixins.desktop-only{
         padding: 0 0 2% 0;
