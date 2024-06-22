@@ -1333,9 +1333,17 @@ section.row > * {
   border: none;
   overflow: hidden;
   position: relative;
+  width: 100%;
+  padding-top: 36.72%;
 }
 .diapo .flex_row {
   flex-wrap: nowrap;
+}
+.diapo .slides {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
 }
 .diapo > a {
   position: absolute;
