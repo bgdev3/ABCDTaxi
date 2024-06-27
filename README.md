@@ -1,3 +1,3 @@
 # ABCDTaxi/MVC
 
-App provides Book reservation online and a transport quote according your parameters.
+App from scratch/MVC which provides Book reservation online and a transport quote according your parameters.
