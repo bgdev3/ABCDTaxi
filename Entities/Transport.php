@@ -1,12 +1,10 @@
 <?php
 namespace App\Entities;
 
-
 class transport
 {
-
-     // Prorpiétés relative à la table en bdd
     private $idTransport;
+    private $nbPassengers;
     private $dateReservation;
     private $dateTransport;
     private $departure_time;
@@ -37,6 +35,26 @@ class transport
         return $this;
     }
 
+     /**
+     * Get the value of nbPassengers
+     */ 
+    public function getNbPassengers()
+    {
+        return $this->nbPassengers;
+    }
+
+    /**
+     * Set the value of nbPassengers
+     *
+     * @return  self
+     */ 
+    public function setNbPassengers($nbPassengers)
+    {
+        $this->nbPassengers = $nbPassengers;
+
+        return $this;
+    }
+    
     /**
      * Get the value of dateReservation
      */ 

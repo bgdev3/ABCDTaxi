@@ -1,11 +1,9 @@
 <?php
 namespace App\Entities;
 
-
 class price
 {
 
-     // Propiétés relative à la table en bdd
     private $idPrice;
     private $oneWayDay;
     private $returnJourneyDay;

@@ -1,11 +1,8 @@
 <?php
 namespace App\Entities;
 
-
 class ClientHistory
 {
-
-     // Propiétés relative à la table en bdd
     private $idClient_histo;
     private $name;
     private $surname;

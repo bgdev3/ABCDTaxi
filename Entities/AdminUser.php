@@ -1,11 +1,9 @@
 <?php
 namespace App\Entities;
 
-
 class AdminUser 
 {
     
-    // Propiétés relative à la table en bdd
     private $idAdmin;
     private $username;
     private $email;

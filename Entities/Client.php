@@ -1,11 +1,8 @@
 <?php
 namespace App\Entities;
 
-
 class Client
 {
-
-     // Propiétés relative à la table en bdd
     private $idClient;
     private $nb_client;
     private $name;
