@@ -4,7 +4,6 @@ namespace App\Core;
 
 /**
  * Permet de générer un identifiant unique pour chaque nouvel enregistrement non connu
- * 
  * @return string [$id] Retourne une chaine aléatoire
  */
 class generateId 

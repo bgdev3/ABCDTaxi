@@ -9,6 +9,10 @@ use App\Entities\Transport;
 use App\Core\Language;
 use DateTime;
 
+/**
+ * Classe qui gère l'envoi des différents infomrations
+ * issu des formulaires par mails.
+ */
 
 class Mailer 
 {
@@ -39,7 +43,7 @@ class Mailer
         
             //Recipients
             $mail->setFrom('boukehaili.g@gmail.com', 'ABCD Taxi');                      //Adresse d'envoi
-            $mail->addAddress($content[0]);                    //Destinatire
+            $mail->addAddress($content[0]);                                             //Destinatire
         
             // //Attachments
             if($file)                                                                    //Si le paramètre facultatif est présent        
@@ -92,8 +96,9 @@ class Mailer
                 $data = $this->contentMailUser($action);
             }
                    
-            // On assigne le contenu du mail
+            // Email utilisateur
             $subject = $data[0];
+            // Contenu du mail
             $body = $data[1];
             $content = [];
             // Récupère dans un tableau les données
@@ -144,7 +149,8 @@ class Mailer
         // Assigne les données récupérées et les stockes dans un array
         $subject = $data[0];
         $body = $data[1];
-            $email = "boukehaili.g@gmail.com";
+        // Email client
+        $email = "boukehaili.g@gmail.com";
         $content = [];
         array_push($content, $email, $subject, $body);
         // Appel à la méthode d'envoi 
@@ -199,10 +205,12 @@ class Mailer
                             <span style="font-size:1.4em;"> '. $transport->getDeparture_place() . '<br></span>
                             <p style="font-size:1.4em;"><strong>' . $language->get('mail_destination') .'</strong></p>
                             <span style="font-size:1.4em;">' . $transport->getDestination().'<br><br></span>
+                             <p style="font-size:1.4em;"><strong>' . $language->get('mail_nbPassengers') .'</strong></p>
+                            <span style="font-size:1.4em;">' . $transport->getNbPassengers().'<br><br></span>
                         </section>
                         <div style="margin: .5em 0;">
                             <p style="font-size:1rem; text-align:center">' . $language->get('mail_endConfirm1') .'<br>' . $language->get('mail_endConfirm2') .'  
-                                <a href="https://www.abcdtaxi.fr/dev/public/index.php" style="text-decoration:none; color:#850202; padding:.5em;">' . $language->get('mail_endConfirm3') .'</a>
+                                <a href="dev.abcdtaxi.fr" style="text-decoration:none; color:#850202; padding:.5em;">' . $language->get('mail_endConfirm3') .'</a>
                             </p>
                         </div> 
                         <p style="font-weight:bold; font-style:italic; font-size:1.5em; text-align:center">'. $language->get('mail_endConfirm4') .'</p>';
@@ -217,7 +225,7 @@ class Mailer
                         <p style="font-size: 1rem; text-align:center; margin:5em 0; color:#850202;">' . $language->get('mail_contentUpdate1') .' </p>
                         <div style="margin: .5em 0;">
                             <p style="font-size:1rem; text-align:center;">' . $language->get('mail_contentUpdate2') .' <br>' . $language->get('mail_contentUpdate3') .'   
-                                <a href="https://www.abcdtaxi.fr/dev/public/index.php" style="text-decoration:none; color:#850202; padding:.5em;">' . $language->get('mail_endConfirm3') .'</a>
+                                <a href="dev.abcdtaxi.fr" style="text-decoration:none; color:#850202; padding:.5em;">' . $language->get('mail_endConfirm3') .'</a>
                             </p>
                         </div> 
                          <p style="font-weight:bold; font-style:italic; font-size:1em; text-align:center">'. $language->get('mail_endConfirm4') .'</p>'; 
@@ -231,7 +239,7 @@ class Mailer
                         <p style="font-size: 1rem; text-align:center; margin:5em 0; color:#850202;">' . $language->get('mail_contentDelete1') .' </p>
                         <div style="margin: .5em 0;">
                             <p style="font-size:1rem;  text-align:center;">' . $language->get('mail_contentDelete2') .'  
-                                <a href="https://www.abcdtaxi.fr/dev/public/index.php" style="text-decoration:none; color:#850202;font-size:1.4em; padding:.5em;">' . $language->get('mail_contentDelete3') .' </a>
+                                <a href="dev.abcdtaxi.fr" style="text-decoration:none; color:#850202;font-size:1.4em; padding:.5em;">' . $language->get('mail_contentDelete3') .' </a>
                             </p>
                         </div>
                         <p style="font-weight:bold; font-style:italic; font-size:1.5em; text-align:center">' . $language->get('mail_endConfirm4') .' </p>'; 
@@ -272,6 +280,7 @@ class Mailer
                         <h1 style="text-align:center; color:#850202; font-size:1.5em;">Nouvelle réservation : </h1>
                         <p style="font-size:1.4em; text-align:center; "><strong>Transport aller-retour : </strong>' . $transport->getRoundTrip() . '</p>
                         <p style="font-size:1.4em; text-align:center;"><strong>Temps d\'attente estimée : </strong>' . $transport->getEstimated_wait() . ' minutes</p>
+                        <p style="font-size:1.4em; text-align:center;"><strong>Nb de passagers : </strong>' . $transport->getNbPassengers() . '</p>
                         
                         <section style="padding:5px; text-align:center; margin:2em 0; border:1px solid #131010;">
                             <p style="font-size:1.4em; "><strong>Nom : </strong>' . $user->name  . '</p>
@@ -379,7 +388,7 @@ class Mailer
     array_push($content, $email, $subject, $body);
 
     // Appel à la méthode d'envoi de mail
-      $message = $this->sendMail($content, $file);
+      $message = $this->sendMail($content);
     return $message;
     }
 }
