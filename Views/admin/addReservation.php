@@ -2,10 +2,9 @@
 <?php
 $title = 'Admin - Ajout réservation';
 
-!isset($_SESSION['username_admin']) ??  header('location: index.php');
-// if (!isset($_SESSION['username_admin'])) {
-//     header('location: index.php');
-// }
+if (!isset($_SESSION['username_admin'])) {
+    header('location: index.php');
+}
 ?>
 
 <section>
@@ -17,7 +16,7 @@ $title = 'Admin - Ajout réservation';
                 <div class="bg-danger col-12 col-md-8 col-lg-10 mx-auto text-center"> <?php echo $error; ?></div>
             <?php } 
                 // Si le formulaire est déclaré 
-                echo $addForm; 
+              echo $addForm; 
             ?>
         
         <!-- Appel du script Re-Captcha -->

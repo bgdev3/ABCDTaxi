@@ -3,10 +3,9 @@
 $title = 'Admin - Réservations';
 $page = "Admin-Réservations en cours";
 
-!isset($_SESSION['username_admin']) ?? header('location:index.php');
-// if(!isset($_SESSION['username_admin'])){
-//     header('location:index.php');
-// }
+if(!isset($_SESSION['username_admin'])){
+    header('location:index.php');
+}
 ?>
 
 <section>
@@ -19,13 +18,14 @@ $page = "Admin-Réservations en cours";
     <div class="admin-reservation col-12 col-sm-10 col-md-8 col-lg-12 mx-auto">
     
         <div class="table-responsive">
-            <table class="table table-sm table-borderless border border-0  table-dark text-center align-middle ">
+            <table class="table table-sm table-borderless border border-0  table-dark text-center align-middle mb-5">
                 <thead class="align-middle">
                     <tr>
                         <!-- <th scope="col">#</th> -->
                         <th scope="col" class="text-danger ">Date</th>
                         <th scope="col" class="text-danger">Nom</th>
                         <th scope="col" class="text-danger ">Prénom</th>
+                        <th scope="col" class="text-danger ">Nb. passagers</th>
                         <th scope="col" class="text-danger">Téléphone</th>
                         <th scope="col" class="text-danger">Départ</th>
                         <th scope="col" class="text-danger">Destination</th>
@@ -44,6 +44,7 @@ $page = "Admin-Réservations en cours";
                                 <td class="data"><?php echo $date->format('d/m/Y') ?></td>
                                 <td class="data"><?php echo $reservation->name; ?></td>
                                 <td class="data"><?php echo $reservation->surname; ?></td>
+                                <td class="data"><?php echo $reservation->nbPassengers; ?></td>
                                 <td class="data"><?php echo $reservation->tel; ?></td>
                                 <td class="data"><?php echo $reservation->departurePlace; ?></td>
                                 <td class="data"><?php echo $reservation->destination; ?></td>

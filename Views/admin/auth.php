@@ -4,10 +4,10 @@
 $title = 'Admin - Authentification';
 $page = "Admin-connexion"; 
 // Si l'utilisateur est connecté, on renvoi vers le panel administrateur
-isset($_SESSION['username_admin']) ?? header('location:index.php?controller=panelAdmin&action=index');
-// if (isset($_SESSION['username_admin'])) {
-//     header('location:index.php?controller=panelAdmin&action=index');
-// } 
+unset($_SESSION['username']);
+if (isset($_SESSION['username_admin'])) {
+    header('location:index.php?controller=panelAdmin&action=index');
+} 
 ?>
 
 <section class=" container text-center  vh-100 d-flex align-items-center justify-content-center">

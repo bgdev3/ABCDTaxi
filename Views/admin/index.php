@@ -4,10 +4,9 @@ $title = 'Admin - Acceuil';
 // Démarre la session
 session_start();
 // Si l'admin n'ets pas connecté, redirige vers la page d'accueil
-!isset($_SESSION['username_admin']) ?? header('location:index.php');;
-// if(!isset($_SESSION['username_admin'])){
-//     header('location:index.php');
-// } 
+if(!isset($_SESSION['username_admin'])){
+    header('location:index.php');
+} 
 ?>
 
 <section class="text-center pb-5">

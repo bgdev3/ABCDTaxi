@@ -1,6 +1,10 @@
                                         <!-- Vue de mise à jour des tarifications -->
 <?php
 $title = $title = 'Admin - Tarification';
+
+if(!isset($_SESSION['username_admin'])){
+    header('location:index.php');
+}
 ?>
 
 <section>

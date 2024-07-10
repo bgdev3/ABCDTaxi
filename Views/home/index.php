@@ -1,5 +1,6 @@
                                             <!-- Affiche la vue de la page d'accueil  -->
 <?php 
+
 // Fichier langue
 include 'init_lang.php';
 // Ouvre la session
@@ -32,14 +33,16 @@ if(isset($_SESSION['username'])) {
 }
 isset($_SESSION['username_admin']) ?? header('location:index.php?controller=panelAdmin&action=index');
 ?>    
-             <!-- Contenur diapo  -->
+            
 <section class="diapo">
     <!-- Contenuer de diapo -->
-    <div id="main_diapo" class="flex_row"></div>
+    <div id="main_diapo" class="flex_row slides"></div>
 
     <a href="#" class="diapo__prev" title="Précédent">&lsaquo;</a>
     <a href="#" class="diapo__next" title="Suivant">&rsaquo;</a>
-    <div class="slide__dot"></div>
+    <div class="slide__dot">
+    <div id="container-dot" class="dots"></div>
+    </div>
 </section>
 
     <!-- BLOC PRINCIPAL -->

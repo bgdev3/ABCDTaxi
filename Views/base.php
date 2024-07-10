@@ -11,7 +11,7 @@
    <meta name="description" content="ABCD Taxi pour appel et pré-réservation. Toutes distances. Départ 30kms autour de Tain-Tournon. Tout déplacement conventionné, professionnel ou privé.">
   
    <!-- Fonts chargé dans scss/base/typo -->
-   <link rel="stylesheet" type="text/css" href="scss/style..css">
+   <link rel="stylesheet" type="text/css" href="scss/style.min.css">
    
     <!-- script module.js -->
     <script type="module" src="js/main.js"></script>
@@ -24,9 +24,9 @@
 </head>
                     
 <body>
+
    <div  class="wrapper ">
       <header id="header" class="header borderBottom">
-       
                                           <!-- BARRE DE NAVIGATION -->
          <!-- Si aucun utilisateur n'est connecté, on affiche le menu conventionnel -->
          <?php if (!isset($_SESSION['username']) && !isset($_SESSION['admin'])) {  
@@ -57,5 +57,9 @@
       ?>
 
    </div>
+   <div class="loader-container">
+      <span class="loader"></span>
+   </div>
+   
 </body>
 </html>

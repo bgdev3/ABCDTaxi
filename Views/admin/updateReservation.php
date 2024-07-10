@@ -2,10 +2,9 @@
 <?php
 $title = 'ABCD Taxi - Admin-Mise à jour';
 
-!isset($_SESSION['username_admin']) ?? header('location:index.php');
-// if(!isset($_SESSION['username_admin'])){
-//     header('location:index.php');
-// }
+if(!isset($_SESSION['username_admin'])){
+    header('location:index.php');
+}
 ?>
 
 <section>

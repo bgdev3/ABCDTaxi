@@ -33,6 +33,7 @@ $title = $language->get('titlePageReservation');
                 <thead>
                     <tr>
                         <th ><?php echo $language->get('date'); ?></th>
+                        <th ><?php echo $language->get('passengers'); ?></th>
                         <th ><?php echo $language->get('hour'); ?></th>
                         <th ><?php echo $language->get('departurePlace'); ?></th>
                         <th ><?php echo $language->get('destination'); ?></th>
@@ -49,6 +50,7 @@ $title = $language->get('titlePageReservation');
                         $date = new DateTime($value->date_transport);
                         echo "<tr>";
                         echo "<td  class='data'>" . $date->format('d-m-Y') . "</td>";
+                        echo "<td  class='data'>" . $value->nbPassengers . "</td>";
                         echo "<td  class='data'>" . $value->departureTime . "</td>";
                         echo "<td  class='data'>" . $value->departurePlace . "</td>";
                         echo "<td  class='data'>" . $value->destination . "</td>";

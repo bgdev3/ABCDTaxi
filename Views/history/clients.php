@@ -12,7 +12,7 @@ $title = $title = 'Admin - Historique clients';
     <div class="admin-reservation col-12 col-sm-10 col-md-8 col-lg-10 mx-auto">
         <p class='text-center text-warning'>Attention ! En cas de suppression d'un client, toutes les données relatives au client ainsi que ses transports seront définitivement supprimées !</p>
         <div class="table-responsive">
-            <table class="table table-sm table-borderless border border-0  table-dark text-center align-middle ">
+            <table class="table table-sm table-borderless border border-0  table-dark text-center align-middle mb-5">
                 <thead class="align-middle" id="thead">
                     <tr>
                         <th scope="col" class="text-danger">Nom</th>
