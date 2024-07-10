@@ -9,12 +9,6 @@ session_start();
 
 class HistoryTransportController extends Controller
 {
-
-    /**
-     * Affiche la liste des réservations
-     * 
-     * @param int [$token] Clé de sécurité
-     */
     public function index($token): void
     {
         // Si l'admin est connecté et que les tokens GET et SESSION correspondent
@@ -71,12 +65,11 @@ class HistoryTransportController extends Controller
         // Récupère les données de séléction
         $content = trim(file_get_contents("php://input"));
         $data = json_decode($content, true);
-  
+
         $modelTransport = new TransportHistoryModel();
         $modelClient = new ClientHistoryModel();
         global $history;
 
-       
         // Teste la valeur du sélect
         switch($data[0]) {
 
@@ -103,7 +96,7 @@ class HistoryTransportController extends Controller
             // Transports effectués
             case 'done':
                 $listClient = $modelClient->findAll();
-                $history = $this->displayData($listClient, "joinByCancelation", false);
+                $history = $this->displayData($listClient, "joinByDone", false);
                 $_SESSION['date'] = $history;
             break;
             // Sinon récupère les enregistrements par Nom sans boucle necessaire
@@ -117,8 +110,8 @@ class HistoryTransportController extends Controller
                 }
             break;
         }
-
-        echo json_encode($history);
+        
+        echo json_encode(array('history' => $history, 'token' => $_SESSION['token']));
     }
 
 
@@ -145,4 +138,5 @@ class HistoryTransportController extends Controller
         
         return $history;
     }
+
 }

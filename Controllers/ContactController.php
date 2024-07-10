@@ -27,6 +27,7 @@ class ContactController extends Controller
         $language = new Language($lang);
 
         $typeFile = array('jpg'=>'image/jpg', 'jpeg'=>'image/jpeg', 'pdf'=>'application/pdf');
+
         // Si l'envoi en post se déroule bien avec la méthode statique de Form
         if (Form::validatePost($_POST, ['name', 'surname', 'mail', 'tel', 'object', 'message'])) {
 
@@ -87,7 +88,7 @@ class ContactController extends Controller
                 }
                
             } else {
-                $error = $language->get('unknonwnUser');
+                $error = !empty($error) ? $error : $language->get('unknownUser');
             }
         // Sinon si certains champs ne sont pas remplis
         // On affiche une erreur

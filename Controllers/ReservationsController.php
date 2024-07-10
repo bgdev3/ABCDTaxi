@@ -79,12 +79,17 @@ class ReservationsController extends Controller
         $lang = isset($_SESSION['lang']) ? $_SESSION['lang'] : 'fr';
         $language = new Language($lang);
         // Si les champs du formulaire de mise à jour sont valide
-        if (Form::validatePost($_POST, ['date', 'time'])) {
+        if (Form::validatePost($_POST, ['date', 'time', 'nbPerson'])) {
 
             // On teste ici le token afin d'éviter une faille CSRF
             // ici on teste le token à l'arrivee sur la page en GET et lors de la soumission du formulaire
             if (isset($_SESSION['token']) && $_GET['token'] == $_SESSION['token'] && isset($_POST['token']) && $_POST['token'] == $_SESSION['token']) {
 
+                // Si le nombre de passagers est supèrieur à 4
+                if (intval($_POST['nbPerson']) > 4) {
+                    // Affiche un message correspodant
+                    $error = $language->get('errorPassengers');
+                }
                 // Récupère le booléen à savoir s'il s'agit d'un jour férié ou un dimanche
                 $validDay = $this->checkUpdateDays($_POST['date']);
 
@@ -101,6 +106,7 @@ class ReservationsController extends Controller
                     $transport->setDateReservation($now);
                     $transport->setDateTransport(htmlspecialchars($_POST['date'], ENT_QUOTES));
                     $transport->setDeparture_time($time);
+                    $transport->setNbPassengers(htmlspecialchars($_POST['nbPerson']), ENT_QUOTES);
         
                     $sendMail = new Mailer;
                     // Créer une variable de test pour l'action utilisateur
@@ -157,12 +163,14 @@ class ReservationsController extends Controller
         $formUpdate->addInput('date', 'date', ['id' => 'date', 'class'=> 'formInput', 'value' => $transport->date_transport, 'required' => '']);
         $formUpdate->addLabel('time',  $language->get('hourUpdate') . ': ');
         $formUpdate->addInput('time', 'time', ['id' => 'heure', 'class'=> 'formInput', 'value' => $transport->departureTime, 'min'=>'08:00', 'max'=>'20:00', 'required' => '']);
+        $formUpdate->addLabel('nbPerson',  $language->get('numberPerson') .' : *');
+        $formUpdate->addInput('number', 'nbPerson', ['id' => 'nbPerson', 'class'=> 'formInput','min' => '1', 'max' => '4', 'value' => $transport->nbPassengers, 'required' => '']);
         $formUpdate->addLabel('depart',  $language->get('departurePlaceUpdate') . ': ');
         $formUpdate->addInput('text', 'destination', ['id' => 'depart', 'class'=> 'formInput', 'value' => $transport->departurePlace, 'readonly' => 'readonly']);
         $formUpdate->addLabel('destination',  $language->get('destinationUpdate') . ':');
         $formUpdate->addInput('text', 'destination', ['id' => 'destination', 'class'=> 'formInput', 'value' =>$transport->destination, 'readonly' => 'readonly']);
         $formUpdate->addLabel('roundTrip',  $language->get('roundTripUpdate') . ':');
-        $formUpdate->addInput('text', 'roundTrip', ['id' => 'aller_retour', 'class'=> 'formInput', 'value' =>$transport->roundTrip, 'readonly' => 'readonly']);
+        $formUpdate->addInput('text', 'roundTrip', ['id' => 'aller_retour', 'class'=> 'formInput', 'value' =>$transport->roundTrip, 'readonly' => 'readonly']);   
         $formUpdate->addLabel('price',  $language->get('priceUpdate') . ':');
         $formUpdate->addInput('text', 'price', ['id' => 'aller_retour', 'class'=> 'formInput', 'value' =>$transport->price . '&euro;', 'readonly' => 'readonly']);
         $formUpdate->addInput('hidden', 'token',['id'=>'hidden',' value' => isset($_SESSION['token']) ? trim($_SESSION['token']): null]);
@@ -284,7 +292,7 @@ class ReservationsController extends Controller
      * 
      * @param string [$day] Date à formater 
      */
-    private function checkUpdateDays($day): bool
+    private function checkUpdateDays($day)
     {
         // Scinde la date en argument puis la formate en timestamp avec mktime
         $date = explode('-', $day);

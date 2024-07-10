@@ -155,11 +155,10 @@ class UserController extends Controller
 
     /**
      * Permet la déconnexion de l'utilisateur en vidant les sessions utilisateur
-     * Selon les paramètres, vide le ssession et redirige vers la page adequate
-     * 
      * @param int [token] Variable stockant le token de sécurité
      * @param array [post] contient la valeur de la confirmation
      * 
+     * Selon les paramètres, vide le ssession et redirige vers la page adequate
      */
     public function logout($token, $post = null): void
     {   

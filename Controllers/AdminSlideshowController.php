@@ -34,7 +34,7 @@ class AdminSlideshowController extends Controller
                 $file = Form::formateFile($_FILES, ['picture']);
 
                 // Array associatif de données permettant d'afficher les bonnes photos RWD
-                $dataTest = array('normal'=> array('w' => 1280,'h' => 470, 'normal/'),
+                $dataTest = array('normal'=> array('w' => 1350,'h' => 495, 'normal/'),
                                   'medium' => array('w' => 800,'h' => 300, 'medium/'),
                                   'small' => array('w' => 500,'h' => 183, 'small/'));
 
@@ -186,7 +186,7 @@ class AdminSlideshowController extends Controller
            if ($data  >= 1024) {
 
                 $_SESSION['size'] = 'normal';
-                $size = array ('w' => 1280,'h' => 470);
+                $size = array ('w' => 1350,'h' => 495);
 
            } elseif ($data > 576 && $data  <= 1024) {
 

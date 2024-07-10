@@ -9,7 +9,6 @@ class HomeController extends Controller
 {
     /**
      * Renvoi vers la page d'accueil
-     * 
      * @param string [$lang] Langue sélectionné par default
      */
     public function index($lang = 'fr'): void

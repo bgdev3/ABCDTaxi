@@ -11,6 +11,7 @@ use App\Entities\Client;
 use App\Entities\Transport;
 use App\Models\ClientModel;
 use App\Models\TransportModel;
+use App\Models\TransportHistoryModel;
 
 session_start();
 
@@ -18,9 +19,9 @@ class AdminReservationsController extends Controller
 {
 
     /**
-     * Afiiche la liste complète des résrevations en cours
+     * Afiiche la liste complète des réservations en cours
      * 
-     * Teste la concorance des token, récupère tout les enregistrements
+     * Teste la concordance des token, récupère tout les enregistrements
      * Puis Boucle sur chaque occurence afin de récupèrer l'idClient et d'effectuer une jointure
      * qui est assignée dans un array
      * 
@@ -62,7 +63,7 @@ class AdminReservationsController extends Controller
      * 
      * @param string [$token] Jeton de sécurité en GET
      */
-    public function addReservationsAdmin($token): void 
+    public function addReservationsAdmin($token, $id = null): void 
     {
 
         global $error;
@@ -70,7 +71,7 @@ class AdminReservationsController extends Controller
         $language = new Language($lang);
 
         // Si les données d'entrées sont valides
-        if (Form::validatePost($_POST, ['name', 'surname', 'email', 'tel', 'date_transport', 'time', 'startPlace', 'destination', 'roundTrip'])) {
+        if (Form::validatePost($_POST, ['name', 'surname', 'email', 'tel', 'nbPerson', 'date_transport', 'time', 'startPlace', 'destination', 'roundTrip'])) {
                  // Si le numero de tel n'est pas un nombre, ou n'a pas la bonne longeur ni le bon format
             if (!preg_match("#^(\+33|0)[67][0-9]{8}$#", $_POST['tel'])) {
                 $error =$language->get('errorPhone');
@@ -126,6 +127,7 @@ class AdminReservationsController extends Controller
                         // et l'hydrate avec les donnbées de réservations stockées en sessions
                         $transport = new Transport();
                         $transport->setDateTransport(htmlspecialchars(trim($_POST['date_transport']), ENT_QUOTES));
+                        $transport->setNbPassengers(htmlspecialchars(trim($_POST['nbPerson']), ENT_QUOTES));
                         $transport->setDeparture_time($time);
                         $transport->setDeparture_place(htmlspecialchars(trim($_POST['startPlace']), ENT_QUOTES));
                         $transport->setDestination(htmlspecialchars(trim($_POST['destination']), ENT_QUOTES));
@@ -148,6 +150,7 @@ class AdminReservationsController extends Controller
                         $transportModel = new TransportModel();
                         // Si le message est vide et donc que l'envoi de mail s'est bien déroulé
                         if (empty($message)) {
+                            $error = $message;
                             // On alimente la table transport
                             $transportModel->create($transport);
                             // Redirige vers la liste des réservations en cours
@@ -174,8 +177,41 @@ class AdminReservationsController extends Controller
             $error = !empty($_POST) ? $language->get('errorForm') : "";
         }
 
-        $form = new Form();
+        // Initailise les variables afin de stocker des valeur par default pour la valeur des input du formulaire
+        $name =''; $surname =''; $email = ''; $tel =''; $passengers = 1; $dateTransport =''; $departureTime =''; $departurePlace = ''; $destination = ''; $oneWay =''; $roundTrip ='';
+       
+        // Si l'id est déclaré et donc si cest une nouvelle réservation rempli automatiquement par les données de l'historique de transport
+        // et si les token get et session correspondent
+        if (isset($id) && isset($_GET['token']) && $_GET['token'] == $_SESSION['token']) {
+    
+            // instance du modèle 
+            $modelTransport = new TransportHistoryModel();
+            // Jointure par l'idTransport_histo
+            $reservation = $modelTransport->joinByOne($id);
 
+            foreach($reservation as $val) {
+    
+                $name = $val->name;
+                $surname = $val->surname;
+                $email = $val->email;
+                $tel = $val->tel;
+                $passengers = $val->nbPassengers;
+                $dateTransport = $val->date_transport;
+                $departureTime = $val->departureTime;
+                $departurePlace = $val->departurePlace;
+                $destination = $val->destination;
+
+                if ($val->roundTrip == 'Oui') {
+                    $oneWay =  '';
+                    $roundTrip =  'checked';
+                } else {
+                    $oneWay =  'checked';
+                    $roundTrip =  '';
+                }
+            }
+        }
+
+        $form = new Form();
         // FieldSet client
         $form->startForm('#', 'POST', ['id'=> 'myForm', 'class' => ' col-12 col-md-8 col-lg-10 mx-auto  mt-2 pb-3 ', 'novalidate' =>'']);
         $form->startDiv('d-flex flex-lg-row flex-column gap-5');
@@ -183,19 +219,23 @@ class AdminReservationsController extends Controller
         $form->legend('Client', 'text-center mb-3  border border-light fs-5 fst-italic text-danger rounded col-4 col-md-4 col-lg-4');
         $form->startDiv('form-group mb-3');
         $form->addLabel('name', 'Nom: * ');
-        $form->addInput('text', 'name', ['id' => 'nom', 'class'=> 'form-control  bg-transparent text-secondary border border-secondary','required' => '']);
+        $form->addInput('text', 'name', ['id' => 'nom', 'class'=> 'form-control  bg-transparent text-secondary border border-secondary','value' =>  $name, 'required' => '']);
         $form->endDiv();
         $form->startDiv('form-group mb-3');
         $form->addLabel('surname', 'Prénom: * ');
-        $form->addInput('text', 'surname', ['id' => 'prenom', 'class'=> 'form-control bg-transparent text-light border border-secondary', 'required' => '']);
+        $form->addInput('text', 'surname', ['id' => 'prenom', 'class'=> 'form-control bg-transparent text-light border border-secondary', 'value' =>  $surname, 'required' => '']);
         $form->endDiv();
         $form->startDiv('form-group mb-3');
         $form->addLabel('email', 'Email: *');
-        $form->addInput('email', 'email', ['id' => 'mail', 'class'=> 'form-control bg-transparent text-light border border-secondary', 'required' => '']);
+        $form->addInput('email', 'email', ['id' => 'mail', 'class'=> 'form-control bg-transparent text-light border border-secondary', 'value' =>  $email, 'required' => '']);
         $form->endDiv();
         $form->startDiv('form-group mb-3');
         $form->addLabel('tel', 'Tel: * ');
-        $form->addInput('tel', 'tel', ['id' => 'phone', 'class'=> 'form-control  bg-transparent text-light border border-secondary', 'minlength' => '10', 'maxlength' => '10', 'required' => '']);
+        $form->addInput('tel', 'tel', ['id' => 'phone', 'class'=> 'form-control  bg-transparent text-light border border-secondary', 'minlength' => '10', 'maxlength' => '10', 'value' =>  $tel, 'required' => '']);
+        $form->endDiv();
+        $form->startDiv('form-group mb-3');
+        $form->addLabel('nbPerson', 'Nb passagers: *');
+        $form->addInput('number', 'nbPerson', ['id' => 'nbPerson', 'class'=> 'form-control  bg-transparent text-light border border-secondary','min' => '1', 'value' => $passengers, 'required' => '']);
         $form->endDiv();
         $form->endFieldset();
         // FieldSetTransport
@@ -203,26 +243,26 @@ class AdminReservationsController extends Controller
         $form->legend('Réservation', 'text-center mb-3 border border-light  fs-5 fst-italic text-danger rounded col-4 col-md-4 col-lg-4');
         $form->startDiv('form-group mb-3');
         $form->addLabel('date_transport', 'Date de transport: ');
-        $form->addInput('date', 'date_transport', ['id' => 'date_transport', 'class'=> 'form-control bg-transparent text-light border border-secondary', 'required' => '']);
+        $form->addInput('date', 'date_transport', ['id' => 'date_transport', 'class'=> 'form-control bg-transparent text-light border border-secondary', 'value' =>  $dateTransport, 'required' => '']);
         $form->endDiv();
         $form->startDiv('form-group mb-3');
         $form->addLabel('time', 'Heure de départ: ');
-        $form->addInput('time', 'time', ['id' => 'heure', 'class'=> 'form-control bg-transparent text-light border border-secondary', 'required' => '']);
+        $form->addInput('time', 'time', ['id' => 'heure', 'class'=> 'form-control bg-transparent text-light border border-secondary', 'value' =>  $departureTime, 'required' => '']);
         $form->endDiv();
         $form->startDiv('form-group mb-3');
         $form->addLabel('depart', 'Lieu de départ: ');
-        $form->addInput('text', 'startPlace', ['id' => 'depart', 'class'=> 'form-control bg-transparent text-light border border-secondary', 'required' => '']);
+        $form->addInput('text', 'startPlace', ['id' => 'depart', 'class'=> 'form-control bg-transparent text-light border border-secondary', 'value' =>  $departurePlace, 'required' => '']);
         $form->endDiv();
         $form->startDiv('form-group mb-3');
         $form->addLabel('destination', 'Lieu de destination:');
-        $form->addInput('text', 'destination', ['id' => 'destination', 'class'=> 'form-control bg-transparent text-light border border-secondary', 'required' => '']);
+        $form->addInput('text', 'destination', ['id' => 'destination', 'class'=> 'form-control bg-transparent text-light border border-secondary', 'value' =>  $destination, 'required' => '']);
         $form->endDiv();
         $form->startDiv('form-check form-check-inline mb-3');
-        $form->addInput('radio', 'roundTrip',['class' =>'form-check-input', 'value' => 'Oui']);
+        $form->addInput('radio', 'roundTrip',['class' =>'form-check-input', 'value' => 'Oui', $roundTrip => '']);
         $form->addLabel('roundTrip', 'Aller-retour', ['class' => 'form-check-label']);
         $form->endDiv();
         $form->startDiv('form-check form-check-inline mb-3');
-        $form->addInput('radio', 'roundTrip',['class' =>'form-check-input', 'value' => 'Non']);
+        $form->addInput('radio', 'roundTrip',['class' =>'form-check-input', 'value' => 'Non', $oneWay=> '']);
         $form->addLabel('roundTrip', 'Aller-simple', ['class' => 'form-check-label']);           
         $form->addInput('hidden', 'token',['id'=>'hidden',' value' => isset($_SESSION['token']) ? trim($_SESSION['token']): null]);
         $form->endFieldSet();
@@ -232,7 +272,7 @@ class AdminReservationsController extends Controller
         $form->endDiv();
         $form->addInput('hidden', 'recaptcha_response', ['id' => 'recaptchaResponse']);
         $form->endForm();
-
+    
         // Si les tokens corresponndent, envoi des données relatives utilisateur
         if (isset($_SESSION['username_admin']) && isset($_GET['token']) && $_GET['token'] ==  $_SESSION['token']){
             $this->render('admin/addReservation', ['addForm' => $form->getFormElements(), 'error' => $error]);
@@ -258,7 +298,7 @@ class AdminReservationsController extends Controller
         $language = new Language($lang);
 
         // Si les valeur en POST sont bien déclarées
-        if (Form::validatePost($_POST, ['date_transport', 'time', 'departurePlace', 'destination', 'roundTrip'])) {
+        if (Form::validatePost($_POST, ['date_transport', 'time', 'departurePlace', 'destination', 'nbPerson', 'roundTrip'])) {
             // Si les tokens de sécurité correspondent
             if (isset($_POST['token']) && $_POST['token'] == $_SESSION['token']) {
 
@@ -268,9 +308,11 @@ class AdminReservationsController extends Controller
                 $reservation = new Transport();
                 // Hydrate l'entité
                 $reservation->setDateTransport(htmlspecialchars(trim($_POST['date_transport']), ENT_QUOTES));
+               
                 $reservation->setDeparture_time(trim($time));
                 $reservation->setDeparture_place(htmlspecialchars(trim($_POST['departurePlace']), ENT_QUOTES));
                 $reservation->setDestination(htmlspecialchars(trim($_POST['destination']), ENT_QUOTES));
+                $reservation->setNbPassengers(htmlspecialchars(trim($_POST['nbPerson']), ENT_QUOTES));
                 $reservation->setRoundTrip(htmlspecialchars(trim($_POST['roundTrip']), ENT_QUOTES));
                 $reservation->setPrice(0);
 
@@ -316,7 +358,16 @@ class AdminReservationsController extends Controller
             $modelTransport = new TransportModel();
             $transport = $modelTransport->find($id);
     
+            // var_dump($transport);
             $form = new Form();
+
+            if($transport->roundTrip == 'Oui') {
+                $allerSimpe =  '';
+                $allerRetour =  'checked';
+            } else {
+                $allerSimpe =  'checked';
+                $allerRetour =  '';
+            }
    
             $form->startForm('#', 'POST', ['id'=> 'myForm', 'class' => ' col-12 col-md-6 col-lg-6 mx-auto  pt-3 pb-3 mt-5', 'novalidate' =>'']);
             $form->startDiv('form-group mb-3');
@@ -335,12 +386,16 @@ class AdminReservationsController extends Controller
             $form->addLabel('destination', 'Lieu de destination:');
             $form->addInput('text', 'destination', ['id' => 'destination', 'class'=> 'form-control bg-transparent text-light border border-secondary', 'value' => $transport->destination, 'required' => '']);
             $form->endDiv();
+            $form->startDiv('form-group mb-3');
+            $form->addLabel('nbPerson', 'Nb passagers: *');
+            $form->addInput('number', 'nbPerson', ['id' => 'nbPerson', 'class'=> 'form-control  bg-transparent text-light border border-secondary','min' => '1', 'value' => $transport->nbPassengers, 'required' => '']);
+            $form->endDiv();
             $form->startDiv('form-check form-check-inline mb-3');
-            $form->addInput('radio', 'roundTrip',['class' =>'form-check-input', 'value' => $transport->roundTrip, 'checked' => '']);
+            $form->addInput('radio', 'roundTrip',['class' =>'form-check-input', 'value' => 'Oui', $allerRetour => '']);
             $form->addLabel('roundTrip', 'Aller-retour', ['class' => 'form-check-label']);
             $form->endDiv();
             $form->startDiv('form-check form-check-inline mb-3');
-            $form->addInput('radio', 'roundTrip',['class' =>'form-check-input', 'value' => 'Non']);
+            $form->addInput('radio', 'roundTrip',['class' =>'form-check-input', 'value' => 'Non', $allerSimpe=> '']);
             $form->addLabel('roundTrip', 'Aller-simple', ['class' => 'form-check-label']);
             $form->endDiv();
             $form->addInput('hidden', 'token',['id'=>'hidden',' value' => isset($_SESSION['token']) ? trim($_SESSION['token']): null]);
@@ -415,6 +470,7 @@ class AdminReservationsController extends Controller
 
         $this->render('admin/deleteReservation', ['form' => $form->getFormElements()]);
     }
+
 
     /**
      * Récupère l'heure de rendez-vous modifié par l'utilisateur 

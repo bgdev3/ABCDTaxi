@@ -13,7 +13,6 @@ class AdminPriceController extends Controller
 
     /**
      * Récupère et affiche les données relatives 
-     * 
      * @param string [$token] clé de sécurité
      */
     public function index($token): void 

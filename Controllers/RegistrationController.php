@@ -14,6 +14,9 @@ use App\Models\TransportModel;
 
 session_start();
 
+/**
+ * Classe qui traite les informations recu du formulaire et hydrate les entotées.
+ */
 class RegistrationController extends Controller 
 {
 
@@ -41,7 +44,7 @@ class RegistrationController extends Controller
         $lang = isset($_SESSION['lang']) ? $_SESSION['lang'] : 'fr';
         $language = new Language($lang);
         // Si les validatePost renvoi TRUE, c'est à dire si les champs ne sont pas vide
-        if (Form::validatePost ($_POST, ['name', 'surname', 'email', 'tel'])) {
+        if (Form::validatePost ($_POST, ['name', 'surname', 'email', 'tel', 'nbPerson'])) {
 
             // Si le numero de tel n'est pas un nombre, ou n'a pas la bonne longeur ni le bon format
             if (!preg_match("#^(\+33|0)[67][0-9]{8}$#", $_POST['tel'])) {
@@ -49,7 +52,10 @@ class RegistrationController extends Controller
                 // OU si l'email n'est pas valide
             } elseif (!(filter_var($_POST['email'], FILTER_VALIDATE_EMAIL))) {
                 $error = $language->get('errorEmail');
-            } 
+                // OU si le nombre de passagers est supérieur à 4
+            } elseif (intval($_POST['nbPerson']) > 4) {
+                $error = $language->get('errorPassengers');
+            }
 
             // S'il n'y a pas d'erreur et si les tokens correspondent afin d'eviter une faille CSRF
             // lors de la soumission du formulaire
@@ -79,7 +85,7 @@ class RegistrationController extends Controller
                             $passUser_hash = password_hash($passUser, PASSWORD_DEFAULT);
                             // Instanciation l'entité user
                             $user = new Client();
-                            // On hydrate l'entité user en appliquant htmlspecilacahrs
+                            // On hydrate l'entité user en appliquant htmlspecilchars
                             // afin d'éviter la faille XSS
                             $user->setNb_client($passUser_hash);
                             $user->setName(htmlspecialchars(trim($_POST['name']), ENT_QUOTES));
@@ -110,6 +116,7 @@ class RegistrationController extends Controller
                         // Instance de l'entité Transport
                         // et l'hydrate avec les donnbées de réservations stockées en sessions
                         $transport = new Transport();
+                        $transport->setNbPassengers(htmlspecialchars(trim($_POST['nbPerson'])), ENT_QUOTES);
                         $transport->setDateTransport(trim($date));
                         $transport->setDeparture_time(trim($_SESSION['time']));
                         $transport->setDeparture_place(trim($_SESSION['departurePlace']));
@@ -155,7 +162,7 @@ class RegistrationController extends Controller
                 }
                 // Si le token ne correspond pas, affiche l'erreur
             } else {
-                $error = !empty($error) ? $error : $language->get('unknownUser');;
+                $error = !empty($error) ? $error : $language->get('unknownUser');
             }
         } else {
             // S'il y a une erreur lors de l'envoi en post, on l'affiche
@@ -175,6 +182,8 @@ class RegistrationController extends Controller
         $form->addLabel('tel',  $language->get('phone') .': * ');
         $form->addInput('tel', 'tel', ['id' => 'phone', 'class'=> 'formInput', 'placeholder' =>  $language->get('phone'),
          'minlength' => '10', 'maxlength' => '10', 'required' => '']);
+        $form->addLabel('nbPerson',  $language->get('numberPerson') .' : *');
+        $form->addInput('number', 'nbPerson', ['id' => 'nbPerson', 'class'=> 'formInput','min' => '1', 'max' => '4', 'value' => '1', 'required' => '']);
         $form->addInput('hidden', 'token',['id'=>'hidden',' value' => isset($_SESSION['token']) ? trim($_SESSION['token']) : null]);
         $form->addInput('checkbox', 'agree',['id' => 'agree', 'required' => '']);
         $form->addLabel('agree',  $language->get('agree'));
