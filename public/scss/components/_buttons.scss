@@ -119,6 +119,7 @@
     @include mixins.desktop-only{
         width: 40%;
         margin-left: 0;
+        margin: 5% auto;
     }
     transition: color.$duration ease;
     &:hover{

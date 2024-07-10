@@ -5,7 +5,21 @@ window.addEventListener('DOMContentLoaded', async ()=>{
     const manageMenu = await import("./modules/menuManager.js");
     const scrollTop = await import("./modules/scrollTop.js");
   
+    // Rend invisible le loader lorsque la page est chargé
+    document.querySelector('.loader-container').classList.add('loader-hide');
+    document.querySelector('.loader').classList.add('loader-hide');
     // Execute les modules
+
+     let btnAdmin = document.querySelector('input[type=submit].btn');
+    // Si le bouton de validation est présent,
+    // affiche le loader lors de l'lenvoi des données de formulaire
+     if(btnAdmin) {
+        btnAdmin.addEventListener('click', () => {
+            document.querySelector('.loader-container').classList.remove('loader-hide');
+            document.querySelector('.loader').classList.remove('loader-hide');
+        })
+       
+     }
     slideShow.slideShow(), manageMenu.menuManager(), scrollTop.scrollToTop();
 })
 
@@ -45,6 +59,7 @@ if(customer) {
 
 // Pages des fomrulaires
 if(getForm) {
+   
     async function form() {
         const date = await import("./modules/verif.js");
         date.verif();

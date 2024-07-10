@@ -14,6 +14,7 @@ import { fetchManager } from "./fetch.js";
     let validationCheck = document.querySelector('label[for=agree]');
 
     function validateForm(e) {
+     
         // Récupère tous les champs obligatoires
         let chps = document.querySelectorAll('[required]');
         // Booléen permettant de valider l'envoi
@@ -68,8 +69,13 @@ import { fetchManager } from "./fetch.js";
             // affiche le message d'erreur, au dessus des champs de formulaire, 
             document.querySelector('label[for=name]').before(span);
         } else {
+           
+            // document.querySelector('.loader-container').classList.add('loader-hide');
+            // document.querySelector('.loader').classList.remove('loader-hide');
             reset();
             document.getElementById('myForm').submit(); 
+           
+            
         }
     }
 
@@ -108,7 +114,12 @@ import { fetchManager } from "./fetch.js";
     // validateForm est appelé sur le bouton de validation correspondant au formulaire
     // sur lequel on se trouve.
     btnSend.forEach(btn=>{
-        btn == null ?  btn == 'undefined' : btn.addEventListener('click', validateForm);
+        btn == null ?  btn == 'undefined' : btn.addEventListener('click', ()=>{
+            document.querySelector('.loader-container').classList.remove('loader-hide');
+            document.querySelector('.loader').classList.remove('loader-hide');
+            validateForm;
+        }
+        );
     });
 
     // Récupère les formulaire et leur applique le re-captcha

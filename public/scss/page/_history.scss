@@ -1,0 +1,9 @@
+@use '../utils/variables' as color;
+// @use '../utils/mixins';
+
+.addReservation{
+    display: block;
+    text-decoration: none;
+    color: color.$color-red;
+    font-size: 1.2em;
+}

@@ -24,7 +24,7 @@ import { fetchManager } from "./fetch.js";
 
             // Crée les éléments img en passant le chemin des images
             createImg(urls, slide, reponse.size['w'], reponse.size['h']);
-
+           
             // Convertit la nodeListe en array afin d'obtenir la longeur de l'array
             // puis de le passer à createDots afin de créer autant de dots que d'img
             slider = Array.from(document.querySelectorAll('img.diapo__slide'));
@@ -34,10 +34,10 @@ import { fetchManager } from "./fetch.js";
             setClass(dots, slider);
             slideDots();
         });
-       
+
         // récupère la taille des images
         slideWidth = slide.getBoundingClientRect().width;
-        console.log(slideWidth);
+
         // lance les fonctions
         startTimer(),touchFinger(slide);
         // évènements
@@ -156,6 +156,7 @@ import { fetchManager } from "./fetch.js";
 function createImg(urls, slide, w, h){
    
     urls.forEach(el => {
+
         let img = new Image(w, h);
         img.src = el;
         img.alt = 'Image de taxi';
@@ -175,7 +176,8 @@ function createDots(occ) {
         let dots = document.createElement('span');
         // Ajoute la classe active uniquement au premier élément span crée
         i == 0 ? dots.setAttribute('class', 'slide__dot__item active') : dots.setAttribute('class', 'slide__dot__item');
-        document.querySelector('div.slide__dot').appendChild(dots);
+        let dot = document.getElementById('container-dot');
+        dot.appendChild(dots);     
     }
 }
 

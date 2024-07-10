@@ -62,9 +62,9 @@ export function getHistory() {
            
             // Si la promesse est résolu        
                 // Boucle sur les données retournées
-            for(let data of reponse) {
+            for(let data of reponse['history']) {
                
-                labels = ['Nom', 'Prénom', 'Réservé le', 'Effectué le', 'Heure de départ', 'Lieu départ', 'Destination', 'Aller-retour', 'Devis', 'Date annulation'];
+                labels = ['Nom', 'Prénom', 'Réservé le', 'Effectué le', 'Heure départ', 'Lieu départ', 'Destination', 'Aller-retour', 'Devis', 'Date annulation'];
                 // Si cancellationDate est null, envoi des données récupérées à formater
                 data.cancellationDate == null ? 
                 date =formateDate([new Date(data.date_reservation), new Date(data.date_transport), '-']) :
@@ -80,28 +80,31 @@ export function getHistory() {
                 } else {
                     // Boucle sur le deuxième tableau de données
                     for (let el of data) {
-                    
+                        
                         // Réintègre l'array afin de s'assurer que splice ne modifie pas les index du tableau
                         date = el.cancellationDate == null ? formateDate([new Date(el.date_reservation), new Date(el.date_transport), '-']) : 
                                                     formateDate( [new Date(el.date_reservation), 'Annulé', new Date(el.cancellationDate)]);
                     
                         // Si tous les transport ou 'date', 'cancel' ou 'done', ajuste les labels et les données récupérées à afficher
                         if ( option == 'all') {
-                            
-                            contain = [el.name, el.surname, date[0], date[1], el.departureTime, el.departurePlace, el.destination, el.roundTrip, el.price, date[2]];
+                            // Permet de rajouter un td pour l'ajout du lien
+                            labels = ['Nom', 'Prénom', 'Réservé le', 'Effectué le', 'Heure départ', 'Lieu départ', 'Destination', 'Aller-retour', 'Devis', 'Date annulation', ''];
+                            contain = [el.name, el.surname, date[0], date[1], el.departureTime, el.departurePlace, el.destination, el.roundTrip, el.price, date[2], 
+                                        "<a class='addReservation'title='Ajout réservation' href='index.php?controller=adminReservations&action=addReservationsAdmin&token=" + reponse['token'] + "&id=" + el.idTransport_histo + "' >+</a>"];
                             contains.push(contain);
 
                         } else if(option == 'date'){
-
+                            
                             contain = [el.name, el.surname, date[0], date[1], el.departureTime, el.departurePlace, el.destination, el.roundTrip, el.price, date[2]];
                             contains.push(contain);
+
                         } else if (option == 'cancel') {
-                            
+                           
                             contain = [el.name, el.surname, date[0], date[1], el.departureTime, el.departurePlace, el.destination, el.roundTrip, el.price, date[2]];
                             contains.push(contain);
                             
                         } else if (option == 'done') {
-                            
+                           
                             contain = [el.name, el.surname, date[0], date[1], el.departureTime, el.departurePlace, el.destination, el.roundTrip, el.price, date[2]];
                             contains.push(contain);
                         }
