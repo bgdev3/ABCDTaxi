@@ -16,9 +16,10 @@ class TransportModel extends DbConnect {
      */
     public function create(Transport $transport): void 
     {
-        $this->request = $this->connexion->prepare("INSERT INTO transport VALUES (NULL, NOW(), :dateTransport,
+        $this->request = $this->connexion->prepare("INSERT INTO transport VALUES (NULL, :nbPerson,  NOW(), :dateTransport,
                                                      :departure_time, :departure_place, :destination,
                                                      :roundTrip, :estimated_wait, :price, :idUser)");
+        $this->request -> bindValue(":nbPerson", $transport->getNbPassengers());                                            
         $this->request -> bindValue(":dateTransport", $transport->getDateTransport());
         $this->request -> bindValue(":departure_time",  $transport->getDeparture_time());
         $this->request -> bindValue(":departure_place",  $transport->getDeparture_place());
@@ -71,10 +72,12 @@ class TransportModel extends DbConnect {
      */
     public function update(int $idTransport, Transport $transport): void
     {
-        $this->request = $this->connexion->prepare("UPDATE transport SET date_reservation = :date_reservation,
-                                                     date_transport = :date_transport,
-                                                     departureTime = :departure_time WHERE idTransport = :idTransport");
+        $this->request = $this->connexion->prepare("UPDATE transport SET nbPassengers = :nbPassengers,
+                                                        date_reservation = :date_reservation,
+                                                        date_transport = :date_transport,
+                                                        departureTime = :departure_time WHERE idTransport = :idTransport");
         $this->request -> bindValue(":idTransport", $idTransport);
+        $this->request -> bindValue(":nbPassengers", $transport->getNbPassengers());
         $this->request -> bindValue(":date_reservation", $transport->getDateReservation());
         $this->request -> bindValue(":date_transport",  $transport->getDateTransport());
         $this->request -> bindValue(":departure_time",  $transport->getDeparture_time());
@@ -93,11 +96,12 @@ class TransportModel extends DbConnect {
      */
     public function updateAdmin(int $idTransport, Transport $transport): void
     {
-        $this->request = $this->connexion->prepare("UPDATE transport SET 
+        $this->request = $this->connexion->prepare("UPDATE transport SET nbPassengers = :nbPassengers, 
                                                     date_transport = :date_transport,
                                                     departureTime = :departure_time, departurePlace = :departure_place,
                                                     destination = :destination, roundTrip = :roundTrip, price = :price WHERE idTransport = :idTransport");
         $this->request -> bindValue(":idTransport", $idTransport);
+        $this->request -> bindValue(":nbPassengers", $transport->getNbPassengers());
         $this->request -> bindValue(":date_transport",  $transport->getDateTransport());
         $this->request -> bindValue(":departure_time",  $transport->getDeparture_time());
         $this->request -> bindValue(":departure_place",  $transport->getDeparture_place());
@@ -135,7 +139,7 @@ class TransportModel extends DbConnect {
     { 
         $this->request =$this->connexion->prepare("SELECT * FROM client RIGHT OUTER JOIN transport 
                                                     ON client.idClient = transport.idClient 
-                                                    WHERE client.idClient = :id ORDER BY transport.date_transport ASC");
+                                                    WHERE client.idClient = :id ORDER BY transport.idTransport DESC");
         $this->request->bindParam(':id',$id);
         $this->request->execute();
         $list = $this->request->fetchAll();

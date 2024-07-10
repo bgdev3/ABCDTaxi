@@ -2,10 +2,7 @@
 
 namespace App\Models;
 
-use PDO;
-use Execption;
 use App\Core\DbConnect;
-
 
 class TransportHistoryModel extends DbConnect
 {
@@ -18,7 +15,7 @@ class TransportHistoryModel extends DbConnect
     */
     public function findDate(string $date): array
     {
-        $this->request = $this->connexion->prepare("SELECT * FROM transport_history WHERE date_transport = :date_transport");
+        $this->request = $this->connexion->prepare("SELECT * FROM transport_history WHERE date_transport = :date_transport ORDER BY date_transport DESC");
         $this->request->bindParam(':date_transport', $date);
         $this->request->execute();
         $list = $this->request->fetchAll();
@@ -36,14 +33,29 @@ class TransportHistoryModel extends DbConnect
     {
         $this->request =$this->connexion->prepare("SELECT * FROM client_history RIGHT OUTER JOIN transport_history 
                                                     ON client_history.idClient_histo = transport_history.idClient_histo 
-                                                    WHERE client_history.idClient_histo = :id ORDER BY transport_history.date_transport ASC");
+                                                    WHERE client_history.idClient_histo = :id ORDER BY transport_history.idTransport_histo DESC");
         $this->request->bindParam(':id',$id);
         $this->request->execute();
         $list = $this->request->fetchAll();
         return $list;
     }
 
-
+/**
+     * Lecture de tous les enregistrements par jointure sur les table client_history et transport_hsitory
+     * 
+     * @param int [$int] Id de l'enregistrement à retourné
+     * @return array [$list] Touc les enregistrements récupérer 
+     */
+    public function joinByOne(int $id): array
+    {
+        $this->request =$this->connexion->prepare("SELECT * FROM client_history RIGHT OUTER JOIN transport_history 
+                                                    ON client_history.idClient_histo = transport_history.idClient_histo 
+                                                    WHERE transport_history.idTransport_histo = :id ORDER BY transport_history.idTransport_histo DESC LIMIT 1");
+        $this->request->bindParam(':id',$id);
+        $this->request->execute();
+        $list = $this->request->fetchAll();
+        return $list;
+    }
     /**
      * Lecture de tous les enregistrements par jointure sur les table client_history et transport_hsitory
      * 
@@ -55,7 +67,26 @@ class TransportHistoryModel extends DbConnect
     {
         $this->request =$this->connexion->prepare("SELECT * FROM client_history RIGHT OUTER JOIN transport_history 
                                                     ON client_history.idClient_histo = transport_history.idClient_histo 
-                                                    WHERE client_history.idClient_histo = :id AND cancelation = :cancelation ORDER BY transport_history.date_transport ASC");
+                                                    WHERE client_history.idClient_histo = :id AND cancelation = :cancelation ORDER BY transport_history.cancellationDate DESC");
+        $this->request->bindParam(':id',$id);
+        $this->request->bindValue(':cancelation', $cancel);
+        $this->request->execute();
+        $list = $this->request->fetchAll();
+        return $list;
+    }
+
+     /**
+     * Lecture de tous les enregistrements par jointure sur les table client_history et transport_hsitory
+     * 
+     * @param int [$int] Id de l'enregistrement à retourné
+     * @param bool [$bool] Booléen permettant de récupérere les transports annulés ou effectués
+     * @return array [$list] Retour la liste des enregistrements
+     */
+    public function joinByDone(int $id, bool $cancel): array
+    {
+        $this->request =$this->connexion->prepare("SELECT * FROM client_history RIGHT OUTER JOIN transport_history 
+                                                    ON client_history.idClient_histo = transport_history.idClient_histo 
+                                                    WHERE client_history.idClient_histo = :id AND cancelation = :cancelation ORDER BY transport_history.date_transport DESC");
         $this->request->bindParam(':id',$id);
         $this->request->bindValue(':cancelation', $cancel);
         $this->request->execute();
@@ -76,7 +107,7 @@ class TransportHistoryModel extends DbConnect
     {
         $this->request =$this->connexion->prepare("SELECT * FROM client_history RIGHT OUTER JOIN transport_history 
                                                     ON client_history.idClient_histo = transport_history.idClient_histo 
-                                                    WHERE client_history.idClient_histo = :id AND date_transport = :dateTransport ORDER BY transport_history.date_transport ASC");
+                                                    WHERE client_history.idClient_histo = :id AND date_reservation = :dateTransport ORDER BY transport_history.idTransport_histo DESC");
         $this->request->bindParam(':id',$id);
         $this->request->bindValue(':dateTransport', $dateTransport);
         $this->request->execute();

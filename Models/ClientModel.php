@@ -34,7 +34,7 @@ class ClientModel extends DbConnect
      */
     public function findAll(): array
     {
-        $this->request = $this->connexion->prepare("SELECT * FROM client");
+        $this->request = $this->connexion->prepare("SELECT * FROM client ORDER BY idClient DESC");
         $this->request->execute();
         $user = $this->request->fetchAll();
         return $user;
@@ -47,7 +47,7 @@ class ClientModel extends DbConnect
      * @param string [email] Email de l'enregistrement à récupérer
      * @return object [user] Retourne l'enregistrement correspondant
      */
-    public function find(string $email): object 
+    public function find(string $email): object | false
     {
         $this->request = $this->connexion->prepare("SELECT * FROM client WHERE email = :email");
         $this->request ->bindParam(':email', $email);

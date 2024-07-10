@@ -18,7 +18,7 @@ class ClientHistoryModel extends DbConnect
      */
     public function findAll(): array
     {
-        $this->request = $this->connexion->prepare("SELECT * FROM client_history");
+        $this->request = $this->connexion->prepare("SELECT * FROM client_history ORDER BY idClient_histo DESC");
         $this->request->execute();
         $user = $this->request->fetchAll();
         return $user;
