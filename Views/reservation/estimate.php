@@ -58,7 +58,7 @@ if (!isset($_SESSION['token'])) {
                             a.src=`https://maps.${c}apis.com/maps/api/js?`+e;d[q]=f;a.onerror=()=>h=n(Error(p+" could not load."));
                             a.nonce=m.querySelector("script[nonce]")?.nonce||"";m.head.append(a)}));
                             d[l]?console.warn(p+" only loads once. Ignoring:",g):d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n))})({
-                            key: "AIzaSyBha66sj8fHFN7hyxebyMn1avD03oRhCww",
+                            key: "YOUR_KEY_HERE",
                         });
                     </script>
                     
