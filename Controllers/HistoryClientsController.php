@@ -144,7 +144,7 @@ class HistoryClientsController extends Controller
             $form->startDiv('form-group text-center mt-3');
             $form->addInput('hidden', 'token',['id'=>'hidden',' value' => isset($_SESSION['token']) ? trim($_SESSION['token']) : null]);
             $form->addInput('hidden', 'recaptcha_response', ['id' => 'recaptchaResponse']);       
-            $form->addInput('submit', 'update',['class'=>'btnAdd btn btn-dark text-danger', 'value' => 'Mettre à jour']);
+            $form->addInput('submit', 'update',['class'=>'btnAdmin btn btn-dark text-danger', 'value' => 'Mettre à jour']);
             $form->endDiv();
             $form->endForm();
 
@@ -208,8 +208,8 @@ class HistoryClientsController extends Controller
         $form = new Form();
         $form->startForm('#', 'POST', ['id'=> 'myForm', 'class' => ' col-12 col-md-4 col-lg-4 mx-auto mt-5', ]);
         $form->startDiv('d-flex flex-lg-row flex-column justify-content-center gap-2 gap-lg-5');
-        $form->addInput('submit', 'Oui', ['class' => 'btn btn-dark text-danger', 'value' => 'Oui']);
-        $form->addInput('submit', 'Non', ['class' => 'btn btn-dark text-danger', 'value' => 'Non']);
+        $form->addInput('submit', 'Oui', ['class' => 'btnConfirm btn btn-dark text-danger', 'value' => 'Oui']);
+        $form->addInput('submit', 'Non', ['class' => 'btnConfirm btn btn-dark text-danger', 'value' => 'Non']);
         $form->endDiv();
         $form->endForm();
 

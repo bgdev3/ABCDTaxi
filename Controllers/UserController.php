@@ -58,7 +58,7 @@ class UserController extends Controller
                 }
             } else {
                 // Sinon on affiche l'erreur
-                $error = $language->get('unknonwUser');
+                $error = $language->get('unknownUser');
             }
 
         // Si true est déclarés et que les tokens correspondent OU 

@@ -151,9 +151,14 @@ class ReservationsController extends Controller
 
         // Instance de TransportModel
         $model = new TransportModel;
-        // On récupère le retour de l'enregistrement correspodant
-        // grâce à sa méthode find
-        $transport = $model->find($id);
+       
+        // Si l'Id est bien déclaré
+        if(isset($id))
+            // Récupère le retour de l'enregistrement correspodant grâce à sa méthode find
+            $transport = $model->find($id);
+        else
+        // SInon on redirige vers laliste des réservations
+            header('location:index.php?controller=reservations&action=index');
 
         // On instancie Form afin de crée le formulaire de mise à jour
         $formUpdate = new Form();
@@ -248,8 +253,8 @@ class ReservationsController extends Controller
         //   Instance de Form afin de créer le formulaire
         $form = new Form();
         $form->startForm('', 'POST', ['id'=>'', 'class'=>'confirmDelete']);
-        $form->addInput('submit','true',['class'=>'btnFormDelete', 'value' =>  $language->get('confirmYes')]);
-        $form->addInput('submit','false',['class'=>'btnFormDelete', 'value' =>  $language->get('confirmNo')]);
+        $form->addInput('submit','true',['class'=>' btnConfirm btnFormDelete', 'value' =>  $language->get('confirmYes')]);
+        $form->addInput('submit','false',['class'=>'btnConfirm btnFormDelete', 'value' =>  $language->get('confirmNo')]);
         $form->endForm();
         // Redirige vers la vue correspodante
         $this->render('user/deleteTransport',['form'=>$form->getFormElements(),'error' => $error]);

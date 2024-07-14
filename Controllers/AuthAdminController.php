@@ -63,7 +63,7 @@ class AuthAdminController extends Controller
         // Instance du formulaire
         $form = new Form();
 
-        $form->startForm('#', 'POST', ['id'=>'myForm', 'class' => 'bg-dark border border border-dark mb-3 p-2 rounded', 'novalidate' =>'']);
+        $form->startForm('#', 'POST', ['id'=>'myForm', 'class' => ' mb-3 p-2 rounded', 'novalidate' =>'']);
         $form->startFieldset('LOGIN', '');
         $form->startDiv('form-floating');
         $form->addInput('email', 'email', ['id' => 'email', 'class'=> 'form-control mb-3 mt-3 bg-dark border border-secondary text-light ', 'placeholder' => 'Email', 'required' => '']);
@@ -162,7 +162,7 @@ class AuthAdminController extends Controller
         if (isset($_GET['token']) && $_GET['token'] == $_SESSION['token']) {
             $form = new Form();
 
-            $form->startForm('#', 'POST', ['id'=>'myForm', 'class' => 'bg-dark border border border-dark mb-3 p-2 rounded', 'novalidate' =>'']);
+            $form->startForm('#', 'POST', ['id'=>'myForm', 'class' => ' mb-3 p-2 rounded', 'novalidate' =>'']);
             $form->startFieldset('Nouvel identifiant ', '');
             $form->startDiv('form-floating');
             $form->addInput('text', 'username', ['id' => 'username', 'class'=> 'form-control mb-3 mt-3 bg-dark border border-secondary text-light', 'placeholder' => 'username', 'required' => '']);

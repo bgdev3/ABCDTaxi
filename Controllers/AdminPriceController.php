@@ -81,40 +81,40 @@ class AdminPriceController extends Controller
             // Affiche le formulaire et avec les données récupérées des enregistrements
             $form = new Form();
 
-            $form->startForm('#', 'POST', ['id' => 'myFormFile', 'class' => ' col-12 col-md-8 col-lg-10 mx-auto pb-3 ', 'novalidate' =>'']);
+            $form->startForm('#', 'POST', ['id' => 'myForm', 'class' => ' col-12 col-md-8 col-lg-10 mx-auto pb-3 ']);
             $form->startDiv('d-flex flex-lg-row flex-column gap-md-5 w-75 mx-auto');
             $form->startFieldSet('', 'form-group  p-2 w-100');
             $form->legend('Jour', 'mb-2fs-5 fst-italic text-danger col-4 col-md-4 col-lg-4');
             $form->startDiv('form-group mb-3');
             $form->addLabel('oneWayDay', 'Simple:');
-            $form->addInput('number', 'oneWayDay', ['id' => 'oneWayDay', 'class' => 'form-control  bg-transparent text-secondary border border-secondary', 'value' => $priceModel->oneWayDay, 'required' => '']);
+            $form->addInput('number', 'oneWayDay', ['id' => 'oneWayDay', 'class' => 'form-control  bg-transparent text-secondary border border-secondary', 'value' => $priceModel->oneWayDay, 'step' => 0.01, 'min' => 0, 'required' => '']);
             $form->endDiv();
             $form->startDiv('form-group mb-3');
             $form->addLabel('returnDay', 'Aller-retour');
-            $form->addInput('number', 'returnDay', ['id' => 'returnDay', 'class' => 'form-control  bg-transparent text-secondary border border-secondary ', 'value' => $priceModel->returnJourneyDay, 'required' => '']);
+            $form->addInput('number', 'returnDay', ['id' => 'returnDay', 'class' => 'form-control  bg-transparent text-secondary border border-secondary ', 'value' => $priceModel->returnJourneyDay, 'step' => 0.01, 'min' => 0, 'required' => '']);
             $form->endDiv();
             $form->endFieldset();
             $form->startFieldSet('', 'form-group  p-2 w-100');
             $form->legend('Nuit', 'mb-2 fs-5 fst-italic text-danger col-4 col-md-4 col-lg-4');
             $form->startDiv('form-group mb-3');
             $form->addLabel('oneWayNight', 'Simple :');
-            $form->addInput('number', 'oneWayNight', ['id' => 'oneWayNight', 'class' => 'form-control  bg-transparent text-secondary border border-secondary ','value' => $priceModel->oneWayNight, 'required' => '']);
+            $form->addInput('number', 'oneWayNight', ['id' => 'oneWayNight', 'class' => 'form-control  bg-transparent text-secondary border border-secondary ','value' => $priceModel->oneWayNight, 'step' => 0.01, 'min' => 0, 'required' => '']);
             $form->endDiv();
             $form->startDiv('form-group mb-3');
             $form->addLabel('returnNight', 'Aller-retour');
-            $form->addInput('number', 'returnNight', ['id' => 'returnNight', 'class' => 'form-control  bg-transparent text-secondary border border-secondary ', 'value' => $priceModel->returnJourneyNight, 'required' => '']);
+            $form->addInput('number', 'returnNight', ['id' => 'returnNight', 'class' => 'form-control  bg-transparent text-secondary border border-secondary ', 'value' => $priceModel->returnJourneyNight, 'step' => 0.01, 'min' => 0, 'required' => '']);
             $form->endDiv();
             $form->endFieldSet();
             $form->endDiv();
             $form->startFieldSet('', 'form-group  p-2 w-75 mx-auto'); 
             $form->startDiv('form-group mb-3 col-12 col-md-4 mx-auto p-2');
             $form->legend('Attente', 'mb-2  fs-5 fst-italic text-danger col-4 col-md-4 col-lg-4');
-            $form->addInput('number', 'waitingRate', ['id' => 'waitingRate', 'class' => ' form-control  bg-transparent text-secondary border border-secondary ', 'value' => $priceModel->waitingRate, 'required' => '']);
+            $form->addInput('number', 'waitingRate', ['id' => 'waitingRate', 'class' => ' form-control  bg-transparent text-secondary border border-secondary ', 'value' => $priceModel->waitingRate, 'step' => 0.01, 'min' => 0, 'required' => '']);
             $form->endDiv();
             $form->endFieldSet(); 
             $form->startDiv('form-group  text-center w-75 mx-auto');
             $form->addInput('hidden', 'token',['id'=>'hidden',' value' => isset($_SESSION['token']) ? trim($_SESSION['token']) : null]);
-            $form->addInput('submit', 'btnPrice',['id' => 'btnPrice', 'class'=>'btn btn-dark text-danger col-10 col-md-3', 'value' => 'Modifier les tarifs']);
+            $form->addInput('submit', 'btnPrice',['id' => 'btnPrice', 'class'=>'btnAdmin btn btn-dark text-danger col-10 col-md-3', 'value' => 'Modifier les tarifs']);
             $form->endDiv();
             $form->endForm();
             // Envoi vers la vue 

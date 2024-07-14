@@ -219,19 +219,19 @@ class AdminReservationsController extends Controller
         $form->legend('Client', 'text-center mb-3  border border-light fs-5 fst-italic text-danger rounded col-4 col-md-4 col-lg-4');
         $form->startDiv('form-group mb-3');
         $form->addLabel('name', 'Nom: * ');
-        $form->addInput('text', 'name', ['id' => 'nom', 'class'=> 'form-control  bg-transparent text-secondary border border-secondary','value' =>  $name, 'required' => '']);
+        $form->addInput('text', 'name', ['id' => 'name', 'class'=> 'form-control  bg-transparent text-secondary border border-secondary','value' =>  $name, 'required' => '']);
         $form->endDiv();
         $form->startDiv('form-group mb-3');
         $form->addLabel('surname', 'Prénom: * ');
-        $form->addInput('text', 'surname', ['id' => 'prenom', 'class'=> 'form-control bg-transparent text-light border border-secondary', 'value' =>  $surname, 'required' => '']);
+        $form->addInput('text', 'surname', ['id' => 'surname', 'class'=> 'form-control bg-transparent text-light border border-secondary', 'value' =>  $surname, 'required' => '']);
         $form->endDiv();
         $form->startDiv('form-group mb-3');
         $form->addLabel('email', 'Email: *');
-        $form->addInput('email', 'email', ['id' => 'mail', 'class'=> 'form-control bg-transparent text-light border border-secondary', 'value' =>  $email, 'required' => '']);
+        $form->addInput('email', 'email', ['id' => 'email', 'class'=> 'form-control bg-transparent text-light border border-secondary', 'value' =>  $email, 'required' => '']);
         $form->endDiv();
         $form->startDiv('form-group mb-3');
         $form->addLabel('tel', 'Tel: * ');
-        $form->addInput('tel', 'tel', ['id' => 'phone', 'class'=> 'form-control  bg-transparent text-light border border-secondary', 'minlength' => '10', 'maxlength' => '10', 'value' =>  $tel, 'required' => '']);
+        $form->addInput('tel', 'tel', ['id' => 'tel', 'class'=> 'form-control  bg-transparent text-light border border-secondary', 'minlength' => '10', 'maxlength' => '10', 'value' =>  $tel, 'required' => '']);
         $form->endDiv();
         $form->startDiv('form-group mb-3');
         $form->addLabel('nbPerson', 'Nb passagers: *');
@@ -247,11 +247,11 @@ class AdminReservationsController extends Controller
         $form->endDiv();
         $form->startDiv('form-group mb-3');
         $form->addLabel('time', 'Heure de départ: ');
-        $form->addInput('time', 'time', ['id' => 'heure', 'class'=> 'form-control bg-transparent text-light border border-secondary', 'value' =>  $departureTime, 'required' => '']);
+        $form->addInput('time', 'time', ['id' => 'time', 'class'=> 'form-control bg-transparent text-light border border-secondary', 'value' =>  $departureTime, 'required' => '']);
         $form->endDiv();
         $form->startDiv('form-group mb-3');
-        $form->addLabel('depart', 'Lieu de départ: ');
-        $form->addInput('text', 'startPlace', ['id' => 'depart', 'class'=> 'form-control bg-transparent text-light border border-secondary', 'value' =>  $departurePlace, 'required' => '']);
+        $form->addLabel('startPlace', 'Lieu de départ: ');
+        $form->addInput('text', 'startPlace', ['id' => 'startPlace', 'class'=> 'form-control bg-transparent text-light border border-secondary', 'value' =>  $departurePlace, 'required' => '']);
         $form->endDiv();
         $form->startDiv('form-group mb-3');
         $form->addLabel('destination', 'Lieu de destination:');
@@ -268,7 +268,7 @@ class AdminReservationsController extends Controller
         $form->endFieldSet();
         $form->endDiv();
         $form->startDiv('form-group text-center mt-3');
-        $form->addInput('submit', 'update',['class'=>'btnAdd btn btn-dark text-danger',' value' => 'Ajouter']);
+        $form->addInput('submit', 'update',['class'=>'btnAdmin btn btn-dark text-danger',' value' => 'Ajouter']);
         $form->endDiv();
         $form->addInput('hidden', 'recaptcha_response', ['id' => 'recaptchaResponse']);
         $form->endForm();
@@ -401,7 +401,7 @@ class AdminReservationsController extends Controller
             $form->addInput('hidden', 'token',['id'=>'hidden',' value' => isset($_SESSION['token']) ? trim($_SESSION['token']): null]);
             $form->addInput('hidden', 'recaptcha_response', ['id' => 'recaptchaResponse']);       
             $form->startDiv('form-group text-center mt-3');
-            $form->addInput('submit', 'update',['class'=>'btnAdd btn btn-dark text-danger', 'value' => 'Mettre à jour']);
+            $form->addInput('submit', 'update',['class'=>'btnAdmin btn btn-dark text-danger', 'value' => 'Mettre à jour']);
             $form->endDiv();
             $form->endForm();
            
@@ -461,10 +461,10 @@ class AdminReservationsController extends Controller
         }
 
         $form = new Form();
-        $form->startForm('#', 'POST', ['id'=> 'myForm', 'class' => ' col-12 col-md-4 col-lg-4 mx-auto mt-5', ]);
+        $form->startForm('#', 'POST', ['id'=> 'myForm', 'class' => ' col-12 col-md-4 col-lg-4 mx-auto mt-5' ]);
         $form->startDiv('d-flex flex-lg-row flex-column justify-content-center gap-2 gap-lg-5');
-        $form->addInput('submit', 'Oui', ['class' => 'btn btn-dark text-danger', 'value' => 'Oui']);
-        $form->addInput('submit', 'Non', ['class' => 'btn btn-dark text-danger', 'value' => 'Non']);
+        $form->addInput('submit', 'Oui', ['class' => 'btnConfirm btn btn-dark text-danger', 'value' => 'Oui']);
+        $form->addInput('submit', 'Non', ['class' => 'btnConfirm btn btn-dark text-danger', 'value' => 'Non']);
         $form->endDiv();
         $form->endForm();
 

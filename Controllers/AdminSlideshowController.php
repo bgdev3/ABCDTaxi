@@ -87,11 +87,11 @@ class AdminSlideshowController extends Controller
 
             $form = new Form();
             // Création du formulaire
-            $form->startForm('', 'POST', ['id' => 'myFormFile', 'class' => 'bg-transparent border border-secondary text-center mx-auto mb-3 p-2 ','enctype' => 'multipart/form-data']);
+            $form->startForm('', 'POST', ['id' => 'myForm', 'class' => 'bg-transparent border border-secondary text-center mx-auto mb-3 p-2 ','enctype' => 'multipart/form-data']);
             $form->addLabel('picture', 'Ajouter une photo');
             $form->addInput('file', 'picture', ['id' => 'picture', 'class' => 'form-control mt-3 mb-3']);
             $form->addInput('hidden', 'token',['id'=>'hidden',' value' => isset($_SESSION['token']) ? trim($_SESSION['token']) : null]);
-            $form->addInput('submit', 'btnFile',['id' => 'btnFile', 'class'=>'btn btn-dark text-danger', 'value' => 'Envoyer']);
+            $form->addInput('submit', 'btnFile',['id' => 'btnFile', 'class'=>'btnAdmin btn btn-dark text-danger', 'value' => 'Envoyer']);
             $form->endForm();
     
             // Si l'admin n'est pas connecté on ridirige vers l'accueil
