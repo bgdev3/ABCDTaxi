@@ -42,6 +42,7 @@ class Mailer
             $mail->Port       = 465;                                                    //port SMTP
         
             //Recipients
+            // email Kevin
             $mail->setFrom('boukehaili.g@gmail.com', 'ABCD Taxi');                      //Adresse d'envoi
             $mail->addAddress($content[0]);                                             //Destinatire
         
@@ -189,61 +190,90 @@ class Mailer
                     $infoPass = '   <p style="font-size:1em; text-align:center">'. $language->get('numberCustomer1') .'</p>
                                     <div style="font-size:1.5em; padding:.5em; background-color:#850202; text-align:center; width:50%; margin:0 auto;">'
                                         .  $passUser . ' 
-                                    </div><br><span>'. $language->get('numberCustomer2') .'</span>';
+                                    
+                                    </div>
+                                    <div style="text-align:center">'. $language->get('numberCustomer2') .'</div>';
                 }
                 $subject = $language->get('subjectConfirm');
                 $body = '
-                        <h1 style="text-align:center; font-size:1.5em;">' . $language->get('titleMail') . '</h1>
-                         ' . $infoPass . '
-                        <section style="margin:2em 0; border:1px solid #131010; text-align:center">
-                           
-                            <p style="font-size:1.4em;"><strong>' . $language->get('mail_dateTransport') .' </strong></p>
-                            <span style="font-size:1.4em;">' . $dateTransport->format('d-m-Y') . '<br></span>
-                            <p style="font-size:1.4em;"><strong>' . $language->get('mail_departureTime') .'</strong></p> 
-                            <span style="font-size:1.4em;">' .  $transport->getDeparture_time() . '<br></span>
-                            <p style="font-size:1.4em;"><strong>' . $language->get('mail_departurePlace') .'</strong></p>
-                            <span style="font-size:1.4em;"> '. $transport->getDeparture_place() . '<br></span>
-                            <p style="font-size:1.4em;"><strong>' . $language->get('mail_destination') .'</strong></p>
-                            <span style="font-size:1.4em;">' . $transport->getDestination().'<br><br></span>
-                             <p style="font-size:1.4em;"><strong>' . $language->get('mail_nbPassengers') .'</strong></p>
-                            <span style="font-size:1.4em;">' . $transport->getNbPassengers().'<br><br></span>
-                        </section>
-                        <div style="margin: .5em 0;">
-                            <p style="font-size:1rem; text-align:center">' . $language->get('mail_endConfirm1') .'<br>' . $language->get('mail_endConfirm2') .'  
-                                <a href="dev.abcdtaxi.fr" style="text-decoration:none; color:#850202; padding:.5em;">' . $language->get('mail_endConfirm3') .'</a>
-                            </p>
-                        </div> 
-                        <p style="font-weight:bold; font-style:italic; font-size:1.5em; text-align:center">'. $language->get('mail_endConfirm4') .'</p>';
-                       
+                        <!DOCTYPE html>
+                        <html>
+                        <body style="background-color:#1a1919; color:#e9e9e9; padding-top:1em; padding-bottom:1em;">
+                            <header>
+                                <h1 style="text-align:center; font-size:1.5em;">' . $language->get('titleMail') . '</h1>
+                                ' . $infoPass . '
+                            </header>
+                            <main>
+                                <section style="margin:2em 0; background-color: #131010; text-align:center">
+                                
+                                    <p style="font-size:1.4em; font-style:italic;">' . $language->get('mail_dateTransport') .'</p>
+                                    <span style="font-size:1.4em;">' . $dateTransport->format('d-m-Y') . '<br></span>
+                                    <p style="font-size:1.4em; font-style:italic;">' . $language->get('mail_departureTime') .'</p> 
+                                    <span style="font-size:1.4em;">' .  $transport->getDeparture_time() . '<br></span>
+                                    <p style="font-size:1.4em; font-style:italic;">' . $language->get('mail_departurePlace') .'</p>
+                                    <span style="font-size:1.4em;"> '. $transport->getDeparture_place() . '<br></span>
+                                    <p style="font-size:1.4em; font-style:italic;">' . $language->get('mail_destination') .'</p>
+                                    <span style="font-size:1.4em;">' . $transport->getDestination().'<br></span>
+                                    <p style="font-size:1.4em; font-style:italic;">' . $language->get('mail_nbPassengers') .'</p>
+                                    <span style="font-size:1.4em;">' . $transport->getNbPassengers().'<br><br></span>
+                                </section>
+                            </main>
+                            <footer style="margin: .5em 0;">
+                                <p style="font-size:1rem; text-align:center">' . $language->get('mail_endConfirm1') .'<br>' . $language->get('mail_endConfirm2') .'  
+                                    <a href="dev.abcdtaxi.fr" style="text-decoration:none; color:#850202; padding:.5em;">' . $language->get('mail_endConfirm3') .'</a>
+                                </p>
+                                <p style="font-weight:bold; font-style:italic; font-size:1em; text-align:center">'. $language->get('mail_endConfirm4') .'</p>
+                            </footer> 
+                       </body>
+                       </html>';
                     break;
 
             case 'update' : 
 
                 $subject = $language->get('subjectUpdate');
                 $body = '
-                        <h1 style="text-align:center; font-size:1.5em;"' . $language->get('mail_titleUpdate') .' </h1>
-                        <p style="font-size: 1rem; text-align:center; margin:5em 0; color:#850202;">' . $language->get('mail_contentUpdate1') .' </p>
-                        <div style="margin: .5em 0;">
-                            <p style="font-size:1rem; text-align:center;">' . $language->get('mail_contentUpdate2') .' <br>' . $language->get('mail_contentUpdate3') .'   
-                                <a href="dev.abcdtaxi.fr" style="text-decoration:none; color:#850202; padding:.5em;">' . $language->get('mail_endConfirm3') .'</a>
-                            </p>
-                        </div> 
-                         <p style="font-weight:bold; font-style:italic; font-size:1em; text-align:center">'. $language->get('mail_endConfirm4') .'</p>'; 
-                break;
+                        <!DOCTYPE html>
+                        <html>
+                        <body style="background-color:#1a1919; color:#e9e9e9; padding-top:5em; padding-bottom:5em">
+                            <header>
+                                <h1 style="text-align:center; font-size:1.5em;">' . $language->get('mail_titleUpdate') .' </h1>
+                            </header>
+                            <main>
+                                <p style="font-size: 1rem; text-align:center; margin:5em 0; background-color: #131010; color:#850202;">' . $language->get('mail_contentUpdate1') .' </p>
+                            </main>
+                            <footer style="margin: .5em 0;">
+                                <p style="font-size:1rem; text-align:center;">' . $language->get('mail_contentUpdate2') .' <br>' . $language->get('mail_contentUpdate3') .'   
+                                    <a href="dev.abcdtaxi.fr" style="text-decoration:none; color:#850202; padding:.5em;">' . $language->get('mail_endConfirm3') .'</a>
+                                </p>
+                                <p style="font-weight:bold; font-style:italic; font-size:1em; text-align:center">'. $language->get('mail_endConfirm4') .'</p>
+                            </footer> 
+                        </body>
+                       </html>';
+                    break;
 
             case 'delete' :
                 
                 $subject = $language->get('subjectDelete');
                 $body = '
-                        <h1 style="text-align:center; font-size:1.5em;">' . $language->get('mail_titleUpdate') .' </h1>
-                        <p style="font-size: 1rem; text-align:center; margin:5em 0; color:#850202;">' . $language->get('mail_contentDelete1') .' </p>
-                        <div style="margin: .5em 0;">
-                            <p style="font-size:1rem;  text-align:center;">' . $language->get('mail_contentDelete2') .'  
-                                <a href="dev.abcdtaxi.fr" style="text-decoration:none; color:#850202;font-size:1.4em; padding:.5em;">' . $language->get('mail_contentDelete3') .' </a>
-                            </p>
-                        </div>
-                        <p style="font-weight:bold; font-style:italic; font-size:1.5em; text-align:center">' . $language->get('mail_endConfirm4') .' </p>'; 
-                break;
+                        <!DOCTYPE html>
+                        <html>
+                        <body style="background-color:#1a1919; color:#e9e9e9; padding-top:5em; padding-bottom:5em">
+                            <header>
+                                <h1 style="text-align:center; font-size:1.5em;">' . $language->get('mail_titleUpdate') .' </h1>
+                            </header>
+                            <main>
+                                <p style="font-size: 1rem; text-align:center; background-color: #131010; margin:5em 0; color:#850202;">' . $language->get('mail_contentDelete1') .' </p>
+                            </main>
+                            <footer style="margin: .5em 0;">
+                                <p style="font-size:1rem;  text-align:center;">' . $language->get('mail_contentDelete2') .'  
+                                    <a href="dev.abcdtaxi.fr" style="text-decoration:none; color:#850202;font-size:1.4em; padding:.5em;">' . $language->get('mail_contentDelete3') .' </a>
+                                </p>
+                                <p style="font-weight:bold; font-style:italic; font-size:1em; text-align:center">' . $language->get('mail_endConfirm4') .' </p>
+                            </footer>
+                        </body>
+                       </html>';
+                        
+                    break;
         }
         
         array_push($content, $subject, $body);
@@ -277,50 +307,77 @@ class Mailer
                 
                 $subject = 'Nouvelle réservation';
                 $body = '
-                        <h1 style="text-align:center; color:#850202; font-size:1.5em;">Nouvelle réservation : </h1>
-                        <p style="font-size:1.4em; text-align:center; "><strong>Transport aller-retour : </strong>' . $transport->getRoundTrip() . '</p>
-                        <p style="font-size:1.4em; text-align:center;"><strong>Temps d\'attente estimée : </strong>' . $transport->getEstimated_wait() . ' minutes</p>
-                        <p style="font-size:1.4em; text-align:center;"><strong>Nb de passagers : </strong>' . $transport->getNbPassengers() . '</p>
-                        
-                        <section style="padding:5px; text-align:center; margin:2em 0; border:1px solid #131010;">
-                            <p style="font-size:1.4em; "><strong>Nom : </strong>' . $user->name  . '</p>
-                            <p style="font-size:1.4em; "<strong>Prénom : </strong>' . $user->surname  . '</p>
-                            <p style="font-size:1.4em; text-decoration:none; "><strong>Email :</strong> <strong>'  . $user->email . '</p>
-                            <p style="font-size:1.4em; "><strong>Tel : </strong>' . $user->tel .  ' </p>
-                            <p style="font-size:1.4em;"><strong>Date transport : </strong>' . $dateTransport->format('d-m-Y') . '</p>
-                            <p style="font-size:1.4em;"><strong>Heure de prise en charge : </strong>' .  $transport->getDeparture_time() . '</p> 
-                            <p style="font-size:1.4em;"><strong>Lieu de départ : </strong>'. $transport->getDeparture_place() . '</p>
-                            <p style="font-size:1.4em;"><strong>Destination : </strong>' . $transport->getDestination() .'</p>
-                            <p style="font-size:1.4em;"><strong>Estimation devis : </strong>' . $transport->getPrice() .' &euro;</p>
-                        </section>';
+                  <!DOCTYPE html>
+                        <html>
+                        <body style="background-color:#1a1919; color:#e9e9e9; padding-top:1em; padding-bottom:1em">
+                            <header>
+                                <h1 style="text-align:center; color:#850202; font-size:1.5em;">Nouvelle réservation : </h1>
+                            </header>
+                            <main>
+                                <p style="font-size:1.4em; text-align:center; font-style:italic;">Transport aller-retour : ' . $transport->getRoundTrip() . '</p>
+                                <p style="font-size:1.4em; text-align:center; font-style:italic;">Temps d\'attente estimée : ' . $transport->getEstimated_wait() . ' minutes</p>
+                                <p style="font-size:1.4em; text-align:center; font-style:italic;">Nb de passagers : ' . $transport->getNbPassengers() . '</p>
+                                
+                                <section style="padding:5px; background-color: #131010; text-align:center; margin:2em 0;">
+                                    <p style="font-size:1.4em; font-style:italic;">Nom : ' . $user->name  . '</p>
+                                    <p style="font-size:1.4em; font-style:italic;"Prénom : ' . $user->surname  . '</p>
+                                    <p style="font-size:1.4em; text-decoration:none; font-style:italic;">Email :'  . $user->email . '</p>
+                                    <p style="font-size:1.4em; font-style:italic;">Tel : ' . $user->tel .  ' </p>
+                                    <p style="font-size:1.4em; font-style:italic;">Date transport : ' . $dateTransport->format('d-m-Y') . '</p>
+                                    <p style="font-size:1.4em; font-style:italic;">Heure de prise en charge : ' .  $transport->getDeparture_time() . '</p> 
+                                    <p style="font-size:1.4em; font-style:italic;">Lieu de départ : '. $transport->getDeparture_place() . '</p>
+                                    <p style="font-size:1.4em; font-style:italic;">Destination : ' . $transport->getDestination() .'</p>
+                                    <p style="font-size:1.4em; font-style:italic;">Estimation devis : ' . $transport->getPrice() .' &euro;</p>
+                                </section>
+                            </main>
+                        </body>
+                       </html>';
                 break;
 
             case 'update' : 
 
                 $subject = "Modification de transport";
                 $body =  '
-                        <h1 style="text-align:center; color:#850202; font-size:1.5em;">Modification de transport </h1>
-                        <section style="padding:5px; text-align:center; margin:2em 0; border:1px solid #131010;">
-                            <p style="font-size:1.4em; "><strong>Nom : </strong>' . $user->name  .  '</p>
-                            <p style="font-size:1.4em; "><strong>Prénom : </strong>' . $user->surname  .  '</p>
-                            <p style="font-size:1.4em; text-decoration:none; "><strong>Email : </strong>'  . $user->email .   '</p>
-                            <p style="font-size:1.4em; "><strong>Tel : </strong>' . $user->tel .  ' </strong></p>
-                            <p style="font-size:1.4em;"><strong>Date transport : </strong>' . $dateTransport->format('d-m-Y') . '</p>
-                            <p style="font-size:1.4em;"><strong>Heure de prise en charge : </strong>' .  $transport->getDeparture_time() . '</p>
-                        </section>';
+                        <!DOCTYPE html>
+                        <html>
+                        <body style="background-color:#1a1919; color:#e9e9e9;  padding-top:1em; padding-bottom:1em;">
+                            <header>
+                                <h1 style="text-align:center; color:#850202; font-size:1.5em;">Modification de transport </h1>
+                            </header>
+                            <main>
+                                <section style="padding:5px; background-color: #131010; text-align:center; margin:2em 0;">
+                                    <p style="font-size:1.4em; font-style:italic;">Nom : ' . $user->name  .  '</p>
+                                    <p style="font-size:1.4em; font-style:italic;">Prénom : ' . $user->surname  .  '</p>
+                                    <p style="font-size:1.4em; text-decoration:none; font-style:italic;">Email : '  . $user->email .   '</p>
+                                    <p style="font-size:1.4em; font-style:italic;">Tel : ' . $user->tel .  '</p>
+                                    <p style="font-size:1.4em; font-style:italic;">Date transport :' . $dateTransport->format('d-m-Y') . '</p>
+                                    <p style="font-size:1.4em; font-style:italic;">Heure de prise en charge : ' .  $transport->getDeparture_time() . '</p>
+                                </section>
+                            </main>
+                        </body>
+                       </html>';
                 break;
 
             case 'delete' :
                 
                 $subject = "Suppression de transport";
                 $body = '
-                        <h1 style="text-align:center; color:#850202; font-size:1.5em;">Annulation de transport </h1>
-                        <section style="padding:5px; text-align:center; margin:2em 0; border:1px solid #131010;">
-                            <p style="font-size:1.4em; "><strong>Nom : </strong>' . $user->name  .  '</p>
-                            <p style="font-size:1.4em; "><strong>Prénom : </strong>' . $user->surname  .  '</p>
-                            <p style="font-size:1.4em; text-decoration:none; "><strong>Email : </strong>'  . $user->email .   '</p>
-                            <p style="font-size:1.4em; "><strong>Tel : </strong>' . $user->tel .  '</p>
-                        </section>';
+                        <!DOCTYPE html>
+                        <html>
+                        <body style="background-color:#1a1919; color:#e9e9e9;  padding-top:1em; padding-bottom:1em">
+                            <header>
+                                <h1 style="text-align:center; color:#850202; font-size:1.5em;">Annulation de transport </h1>
+                            </header>
+                            <main>
+                                <section style="padding:5px; background-color: #131010; text-align:center; margin:2em 0;">
+                                    <p style="font-size:1.4em; font-style:italic;">Nom : ' . $user->name  .  '</p>
+                                    <p style="font-size:1.4em; font-style:italic;">Prénom : ' . $user->surname  .  '</p>
+                                    <p style="font-size:1.4em; text-decoration:none; font-style:italic;">Email :'  . $user->email .   '</p>
+                                    <p style="font-size:1.4em; font-style:italic;">Tel : ' . $user->tel .  '</p>
+                                </section>
+                            </main>
+                        </body>
+                       </html>';
                 break;
         }
         array_push($content, $subject, $body);
@@ -346,15 +403,25 @@ class Mailer
             $subject = $_post['object'];
             $email = 'boukehaili.g@gmail.com';
             $body = '
-                    <section style="border:1px solid #850202; text-align:center">
-                        <h1 style="text-align:center; color:#850202; font-size:2em;">' . $_post['object'] . '</h1>
-                        <p style="font-size:1.4em; "> Nom : ' . $_post['name'] .  '</p>
-                        <p style="font-size:1.4em; "><strong> Prénom : ' . $_post['surname'] .  '<br></p>
-                        <p style="font-size:1.4em; text-decoration:none; "> Email: <strong>'  . $_post['mail'] .   ' </strong><br></p>
-                        <p style="font-size:1.4em; "> Téléphone : <strong>' . $_post['tel'] .  ' </strong><br></p>
-                        <p style="font-size:1.4em;">Message : </p>
-                        <span style="font-size:1.4em;"><strong>' . $_post['message']. '</strong><br></span>
-                    </section>';
+                        <!DOCTYPE html>
+                        <html>
+                        <body style="background-color:#1a1919; color:#e9e9e9; padding-top:5em; padding-bottom:5em">
+                            <header>
+                                <h1 style="text-align:center; color:#850202; font-size:1.5em;">Nouvelle demande </h1>
+                            </header>
+                            <main>
+                                <section style="background-color: #131010; text-align:center">
+                                    <h1 style="text-align:center; color:#850202; font-size:2em;">' . $_post['object'] . '</h1>
+                                    <p style="font-size:1.4em; font-style:italic;"> Nom : ' . $_post['name'] .  '</p>
+                                    <p style="font-size:1.4em; font-style:italic; "> Prénom : ' . $_post['surname'] .  '<br></p>
+                                    <p style="font-size:1.4em; text-decoration:none; font-style:italic; "> Email: '  . $_post['mail'] .   ' <br></p>
+                                    <p style="font-size:1.4em; font-style:italic; "> Téléphone : ' . $_post['tel'] .  ' <br></p>
+                                    <p style="font-size:1.4em;"><em>Message</em> : </p>
+                                    <span style="font-size:1em">' . $_post['message']. '<br></span>
+                                </section>
+                            </main>
+                        </body>
+                       </html>';
     
         $content = [];
         array_push($content, $email, $subject, $body);
@@ -377,12 +444,22 @@ class Mailer
     {
         $subject = "Renouvellement de vos identifiants";
         $email = 'boukehaili.g@gmail.com';
-        $body = "
-                <section style='border:1px solid #850202; text-align:center'>
-                    <h1 style='text-align:center; color:#850202; font-size:2em;'>Renouvellement de vos identifiants</h1>
-                    <p style='font-size:1.4em; '>Les accès à votre espace administrateur ont été renouvelés.</p>
-                    <p>Si vous n'en êtes pas à l'origine, veuillez contacter votre service client dans les plus brefs délais !</p>
-                </section>";
+        $body = '
+                    <!DOCTYPE html>
+                    <html>
+                    <body style="background-color:#1a1919; color:#e9e9e9; padding-top:5em; padding-bottom:5em">
+                        <header>
+                            <h1 style="text-align:center; color:#850202; background-color: #131010; font-size:1.5em;">Nouvel identifiant</h1>
+                        </header>
+                        <main>
+                            <section style="border:1px solid #850202; text-align:center">
+                                <h1 style="text-align:center; color:#850202; font-size:2em;">Renouvellement de vos identifiants</h1>
+                                <p style="font-size:1.4em; ">Les accès à votre espace administrateur ont été renouvelés.</p>
+                                <p>Si vous n\'en êtes pas à l\'origine, veuillez contacter votre service client dans les plus brefs délais !</p>
+                            </section>
+                        </main>
+                    </body>
+                    </html>';
 
     $content = [];
     array_push($content, $email, $subject, $body);

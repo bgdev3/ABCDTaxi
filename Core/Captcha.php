@@ -1,7 +1,6 @@
 <?php 
 namespace App\Core;
 
-
 class Captcha {
 
     /**
@@ -23,8 +22,8 @@ class Captcha {
         $recaptcha = json_decode($recaptcha);
        
         // Retourne true ou false selon le score re-captcha retourné
-        // Inférieur à .5 ne corrspond pas à un humain.
-        if ( $recaptcha->success == true && $recaptcha->score >= .5) {   
+        // Inférieur à .5 ne correspond pas à un humain.
+        if ( $recaptcha->success == true && $recaptcha->score >= .3) {   
             return true;
         } else {    
             return false;
