@@ -5,9 +5,12 @@ include 'init_lang.php';
 $title =  $language->get('titlePageContact');
 $page = $language->get('titlePageContact'); 
 
-isset($_SESSION['username_admin']) ?? header('location:index.php?controller=panelAdmin&action=index');
-// S'assure que le token est bien déclaré
-if(!isset($_SESSION['token']))
+
+if(isset($_SESSION['username_admin']))
+    header('location:index.php?controller=panelAdmin&action=index');
+elseif (isset($_SESSION['username']))
+    header('location:index.php?controller=reservations&action=index');
+elseif(!isset($_SESSION['token']))
     header('location:index.php');
 ?>
 

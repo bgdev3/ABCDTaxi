@@ -5,7 +5,10 @@ include 'init_lang.php';
 // Variables retourné à base.php pour l'affichage
 $title =  $language->get('titlePageAbout');
 $page =  $language->get('titlePageAbout'); 
-isset($_SESSION['username_admin']) ?? header('location:index.php?controller=panelAdmin&action=index');
+if(isset($_SESSION['username_admin']))
+    header('location:index.php?controller=panelAdmin&action=index');
+elseif (isset($_SESSION['username']))
+    header('location:index.php?controller=reservations&action=index');
 ?>
 
 <!-- Affiche la vue de la page contact -->
@@ -24,7 +27,7 @@ isset($_SESSION['username_admin']) ?? header('location:index.php?controller=pane
         </p>
 
         <div class="apropos_flex">
-            <img src="logo/logo-abcd.png" class="apropos_flex_logo" alt="Logo abcd Taxi" title="ABCD Taxi">
+            <img src="logo/logo-abcd.svg" class="apropos_flex_logo" alt="Logo abcd Taxi" title="ABCD Taxi">
         </div>
 
     </article>

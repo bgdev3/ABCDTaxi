@@ -6,13 +6,15 @@ $title = $language->get('titlePageReservation');
 
 // Si l'utilisateur est connecté une redirection au liste de réservation est effectué indiquant
 // une info de déconnexion en cas de slide arrière
-if (isset($_SESSION['username'])) {
+if (isset($_SESSION['username'])) 
     header('location:index.php?controller=user&action=index');
+// elseif(isset($_SESSION['username_admin']))
+//     header('location:index.php?controller=panelAdmin&action=index');
 // Sinon si l'utilisateur n'est pas connecté ET que l'heure de réservation n'est sélectionné en cas d'un slide arrière
 // un eredirection est effectué au debut du processus de réservation
-} elseif (!isset($_SESSION['time'])) {
+elseif (!isset($_SESSION['time'])) 
     header('location:index.php');
-}
+
 
 // Si un idClient est déclaré c'est que q'un utilisateur est enregistré, l'envoi du mail s'est effectué
 // et du coup on affiche les informations correspondante

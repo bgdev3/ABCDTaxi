@@ -3,16 +3,17 @@
 // Fichier de langues
 include 'init_lang.php';
 $title = $language->get('titlePageReservation');
-// $page = "reservation";
 // Tant que l'utilisateur est connecté, il est automatiquement
 // redirigé vers la proposition de déconnexion.
 // Sinon si l'heure et donc la date ne sont pas enregistrées en session
 // on redirige à l'étape précédente
-if (isset($_SESSION['username'])) {
+if (isset($_SESSION['username'])) 
     header('location:index.php?controller=user&action=index');
-} elseif (!isset($_SESSION['time'])) {
+if(isset($_SESSION['username_admin']))
+    header('location:index.php?controller=panelAdmin&action=index');
+ elseif (!isset($_SESSION['time'])) 
     header('location:index.php?controller=date&action=index&token='. $_SESSION['token']);
-}
+
 // On regénère ici le token de sécutité en cas de modification de réservation 
 // en ré effectuant le parcours de réservation complet.
 // Sinon le token précédant ne fonctionnerait pas.

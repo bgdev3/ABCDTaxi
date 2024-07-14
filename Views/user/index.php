@@ -4,7 +4,13 @@
 include 'init_lang.php';
 $title =  $language->get('titlePageMyResrevation');
 
-isset($_SESSION['username_admin']) ?? header('location:index.php?controller=panelAdmin&action=index');
+// Si l'utilisateur est connecté, on redirige vers la liste de réservation
+if (isset($_SESSION['username']))
+    header('location:index.php?controller=reservations&action=index');
+elseif (isset($_SESSION['username_admin']))
+    header('location:index.php?controller=panelAdmin&action=index');
+elseif(!isset($_SESSION['token']))
+    header('location:index.php');
 ?>
 
 <section class="main__content_confirm">

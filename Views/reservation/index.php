@@ -5,10 +5,7 @@ $title =  $language->get('titlePageReservation');
 $page = $language->get('titlePageReservation');
 // Si Username est déclaré, on redirige automatiquement vers 
 // la confimration d'abandonner l'espace client
-isset($_SESSION['username']) ??  header('location:index.php?controller=user&action=index');
-    // if(isset($_SESSION['username'])) {
-    //     header('location:index.php?controller=user&action=index');
-    // }
+// isset($_SESSION['username']) ??  header('location:index.php?controller=user&action=index');
 ?> 
 
 <section class="main__content">

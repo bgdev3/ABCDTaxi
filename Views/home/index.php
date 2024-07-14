@@ -1,6 +1,5 @@
                                             <!-- Affiche la vue de la page d'accueil  -->
 <?php 
-
 // Fichier langue
 include 'init_lang.php';
 // Ouvre la session
@@ -16,7 +15,7 @@ if (!isset($_SESSION['token'])) {
     // Si le token n'existe pas, on en assigne un
     $_SESSION['token'] = bin2hex(openssl_random_pseudo_bytes(32));
     // Enregistrement du timestamp pour identifier le moment precis de la creation du token
-    $_SESSION['token_time'] = time(); 
+    $_SESSION['token_time'] = time();
 } else {
     unset($_SESSION['token']);
     unset( $_SESSION['token_time']);
