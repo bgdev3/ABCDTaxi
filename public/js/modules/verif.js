@@ -10,8 +10,21 @@ import { fetchManager } from "./fetch.js";
 
     // Récupère les boutons de validation des différents formulaire
     let btnSend = document.querySelectorAll('input[type=submit].btnForm');
+    let btnAdmin = document.querySelectorAll('input[type=submit].btnAdmin');
+
     let agree =  document.getElementById('agree');
     let validationCheck = document.querySelector('label[for=agree]');
+
+    let dateForm = document.querySelector('input[type=date]');
+    // Si l'élément HTML est présent, paramètre la date du jour en minimale
+    if(dateForm)  {
+        let now = new Date();
+        let month = (now.getMonth() +1) < 10 ?  '0' + (now.getMonth() +1) : now.getMonth() +1;
+        dateForm.min = now.getFullYear() + '-' + month + '-' + now.getDate();
+        dateForm.max = "2060-12-12";
+    }
+    
+   
 
     function validateForm(e) {
      
@@ -66,16 +79,15 @@ import { fetchManager } from "./fetch.js";
                  span.classList.add('msgError');
             })
 
-            // affiche le message d'erreur, au dessus des champs de formulaire, 
-            document.querySelector('label[for=name]').before(span);
+            // affiche le message d'erreur, au dessus des champs de formulaire 
+            let displayError = document.querySelector('label[for=name]');
+            displayError ? displayError.before(span) : document.querySelector('#myForm').before(span);
         } else {
-           
-            // document.querySelector('.loader-container').classList.add('loader-hide');
-            // document.querySelector('.loader').classList.remove('loader-hide');
+
+            document.querySelector('.loader-container').classList.remove('loader-hide');
+            document.querySelector('.loader').classList.remove('loader-hide');
             reset();
-            document.getElementById('myForm').submit(); 
-           
-            
+            document.getElementById('myForm').submit();         
         }
     }
 
@@ -113,16 +125,24 @@ import { fetchManager } from "./fetch.js";
 
     // validateForm est appelé sur le bouton de validation correspondant au formulaire
     // sur lequel on se trouve.
-    btnSend.forEach(btn=>{
-        btn == null ?  btn == 'undefined' : btn.addEventListener('click', ()=>{
-            document.querySelector('.loader-container').classList.remove('loader-hide');
-            document.querySelector('.loader').classList.remove('loader-hide');
-            validateForm;
-        }
-        );
+    [btnSend, btnAdmin].map((el) => {
+        el.forEach(btn=>{
+            btn == null ?  btn == 'undefined' : btn.addEventListener('click', validateForm);
+        });
     });
 
-    // Récupère les formulaire et leur applique le re-captcha
-    Array.from(document.querySelectorAll('form[id=myForm]')).map(loadRecaptcha);
+    // Affiche le loader au clic des boutons de confirmation d'action
+    let btnDel = document.querySelectorAll('.btnConfirm');
+    btnDel.forEach( el => {
+        el.addEventListener('click', () => {
+            document.querySelector('.loader-container').classList.remove('loader-hide');
+            document.querySelector('.loader').classList.remove('loader-hide');
+        })
+    });
 
+    // Si le re-captcha est présent, récupère le formulaire et applique le re-captcha
+    // let captcha = document.querySelector('.grecaptcha-badge');
+    // if(captcha) 
+        Array.from(document.querySelectorAll('form[id=myForm]')).map(loadRecaptcha);
+    
 }

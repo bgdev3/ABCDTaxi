@@ -86,7 +86,7 @@
     background-color: color.$color-red;
     color: color.$color-light;
     font-style: italic;
-    font-weight: bold;
+    // font-weight: bold;
     padding: 2% 0;    
     transition: color.$duration ease;
     &:hover{
@@ -106,7 +106,7 @@
     margin-bottom: 10%;
     font-size: .9em; 
     font-style: italic;
-    font-weight: bold;
+    // font-weight: bold;
     border-radius: 5px;
     color: color.$color-light;
 
@@ -152,7 +152,7 @@
     color: color.$color-light;
     font-style: italic;
     font-size: .9em;
-    font-weight: bold;
+    // font-weight: bold;
     border-radius: 5px;
     border: none;
     margin: 5% auto;
@@ -177,7 +177,7 @@
     font-size: .9em; 
     font-style: italic;
     color: color.$color-light;
-    font-weight: bold;
+    // font-weight: bold;
     border-radius: 5px;
     padding: .5em;
     background-color: color.$color-primary;

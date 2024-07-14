@@ -40,7 +40,7 @@
         justify-content: center;
         align-items: center;
         &_logo{
-            width: 35%;
+            width: 25%;
             margin:  0 auto ;
             @include mixins.tablet-only{
                 margin: 5% auto 0;

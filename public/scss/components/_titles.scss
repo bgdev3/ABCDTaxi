@@ -15,9 +15,9 @@
 .title_confirm{
     font-style: italic;
     font-family: 'sansation', Helvetica, sans-serif;
-    font-size: 1.1em;
+    font-size: 1em;
     @include mixins.tablet-only{
-        font-size: 1.5em;
+        font-size: 1.2em;
     }
 }
 // TITLE FOOTER

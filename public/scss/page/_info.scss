@@ -77,8 +77,8 @@ label[for="agree"]{
     width: 95%;
     margin: 0 auto 15%;
     text-align: center;
-    border: 1px solid color.$color-red;
-    background-color: color.$color-primary;
+    // border: 1px solid color.$color-red;
+    // background-color: color.$color-primary;
     // padding:1em  2em;
     @include mixins.tablet-only{
         width: 75%;
