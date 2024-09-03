@@ -5,7 +5,7 @@
 function loadRecaptchaToken() {
     
     grecaptcha.ready(function () {
-        grecaptcha.execute('6LebG6MpAAAAAIDVxKKsnIql8WG-028Dvudz5l-k', { action: 'myForm' }).then(function (token) {
+        grecaptcha.execute('**********', { action: 'myForm' }).then(function (token) {
             var recaptchaResponse = document.getElementById('recaptchaResponse');
             recaptchaResponse.value = token;
         });
