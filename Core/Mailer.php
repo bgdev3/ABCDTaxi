@@ -36,14 +36,14 @@ class Mailer
             $mail->isSMTP();                                                            //Envoi en SMTP
             $mail->Host       = 'smtp.gmail.com';                                       //Adresse serveur SMTP
             $mail->SMTPAuth   = true;                                                   //Active l'authentification
-            $mail->Username   = 'boukehaili.g@gmail.com';                               //Identifiant SMTP
-            $mail->Password   = 'hekfmufaowzithcv';                                     //password de l'application
+            $mail->Username   = '**********';                               //Identifiant SMTP
+            $mail->Password   = '**********';                                     //password de l'application
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;                            //Active l'encriptage de l'envoi
             $mail->Port       = 465;                                                    //port SMTP
         
             //Recipients
             // email Kevin
-            $mail->setFrom('boukehaili.g@gmail.com', 'ABCD Taxi');                      //Adresse d'envoi
+            $mail->setFrom('**********');                      //Adresse d'envoi
             $mail->addAddress($content[0]);                                             //Destinatire
         
             // //Attachments
@@ -151,7 +151,7 @@ class Mailer
         $subject = $data[0];
         $body = $data[1];
         // Email client
-        $email = "boukehaili.g@gmail.com";
+        $email = "**********";
         $content = [];
         array_push($content, $email, $subject, $body);
         // Appel à la méthode d'envoi 
@@ -443,7 +443,7 @@ class Mailer
     public function confirmAdminRegister(): string
     {
         $subject = "Renouvellement de vos identifiants";
-        $email = 'boukehaili.g@gmail.com';
+        $email = '**********';
         $body = '
                     <!DOCTYPE html>
                     <html>
