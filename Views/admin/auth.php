@@ -23,6 +23,6 @@ if (isset($_SESSION['username_admin'])) {
             ?>
         <a href="index.php" class="btn btn-dark text-danger">Revenir</a>
         <!-- Appel du script Re-Captcha -->
-        <script src="https://www.google.com/recaptcha/api.js?render=6LebG6MpAAAAAIDVxKKsnIql8WG-028Dvudz5l-k"></script>
+        <script src="https://www.google.com/recaptcha/api.js?render=**********"></script>
     </div>
 </section>
