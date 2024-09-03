@@ -22,6 +22,6 @@ if (isset($_SESSION['token_time']) && (time() - $_SESSION['token_time'] > 1200))
     echo $form; ?>
     
     <!-- Appel du script Re-Captcha -->
-    <script src="https://www.google.com/recaptcha/api.js?render=6LebG6MpAAAAAIDVxKKsnIql8WG-028Dvudz5l-k"></script>
+    <script src="https://www.google.com/recaptcha/api.js?render=**********"></script>
     
 </section>
