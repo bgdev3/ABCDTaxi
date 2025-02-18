@@ -107,7 +107,7 @@ async function autocomplete(itineraire){
 
     // Option d'autocomplétion google
     const optionPlaces = {
-        types: ['geocode'],                                             //Localise les lieux par Géocode
+        types: ['establishment', 'geocode'],                                             //Localise les lieux par Géocode
         componentRestrictions : {country : ['fr']},                     //Limite les prédictiosn en france
         fields : ['place_id', 'geometry', 'name']                       // Augmente la précision des prédictions ( Limite la facturation)
         };
