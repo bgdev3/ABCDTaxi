@@ -40,7 +40,7 @@ isset($_SESSION['username_admin']) ?? header('location:index.php?controller=pane
     <a href="#" class="diapo__prev" title="Précédent">&lsaquo;</a>
     <a href="#" class="diapo__next" title="Suivant">&rsaquo;</a>
     <div class="slide__dot">
-    <div id="container-dot" class="dots"></div>
+        <div id="container-dot" class="dots"></div>
     </div>
 </section>
 
@@ -57,13 +57,13 @@ isset($_SESSION['username_admin']) ?? header('location:index.php?controller=pane
                     <br><br><span><?php echo $language->get('paragraph1.1'); ?>,</span><br> <?php echo $language->get('paragraph1.2'); ?>,<br> <?php echo $language->get('paragraph1.3'); ?><br><?php echo $language->get('paragraph1.4'); ?>
                     <br><br><?php echo $language->get('paragraph1.5'); ?>  
                 </p>
-                <a href="index.php?controller=date&action=index&token=<?php echo trim($_SESSION['token']);?>" class="main__content-btn btnDevis" title="<?php echo $language->get('btn1'); ?>" class="book"><?php echo $language->get('btn1'); ?><i class="fi fi-rr-arrow-small-right"></i></a>
+                <a href="/public/date/index/<?php echo trim($_SESSION['token']);?>" class="main__content-btn btnDevis" title="<?php echo $language->get('btn1'); ?>" class="book"><?php echo $language->get('btn1'); ?><i class="fi fi-rr-arrow-small-right"></i></a>
                 <p><?php echo $language->get('paragraph2'); ?><br><br><?php echo $language->get('paragraph2.1'); ?>
                     <br><br><?php echo $language->get('paragraph2.2'); ?>
                 </p>
             
             </article>
-            <a href="index.php?controller=date&action=index&token=<?php echo trim($_SESSION['token']);?>"class="main__content-btn" title="<?php echo $language->get('btn2'); ?>" class="book"><?php echo $language->get('btn2'); ?><i class="fi fi-rr-arrow-small-right"></i></a>
+            <a href="/public/date/index/<?php echo trim($_SESSION['token']);?>"class="main__content-btn" title="<?php echo $language->get('btn2'); ?>" class="book"><?php echo $language->get('btn2'); ?><i class="fi fi-rr-arrow-small-right"></i></a>
         </div>
     
     </section>
@@ -77,7 +77,7 @@ isset($_SESSION['username_admin']) ?? header('location:index.php?controller=pane
                     <br><br><?php echo $language->get('bk2_para1.2'); ?>
                 </p>
             </article>
-            <a href="index.php?controller=Contact&action=index" class="main__content-btn  main__content-btn--right" title="<?php echo $language->get('bk2_btn'); ?>"><?php echo $language->get('bk2_btn'); ?><i class="fi fi-rr-arrow-small-right"></i></a>
+            <a href="/public/contact" class="main__content-btn  main__content-btn--right" title="<?php echo $language->get('bk2_btn'); ?>"><?php echo $language->get('bk2_btn'); ?><i class="fi fi-rr-arrow-small-right"></i></a>
         </div>
     </section>
 
@@ -88,7 +88,7 @@ isset($_SESSION['username_admin']) ?? header('location:index.php?controller=pane
             <article class="main__content-border">
                 <p><?php echo $language->get('bk3_para1'); ?><br><br><?php echo $language->get('bk3_para1.1'); ?></p>
             </article>
-            <a href="index.php?controller=Contact&action=index" class="main__content-btn" title="<?php echo $language->get('bk2_btn'); ?>"><?php echo $language->get('bk2_btn'); ?><i class="fi fi-rr-arrow-small-right"></i></a>
+            <a href="/public/contact" class="main__content-btn" title="<?php echo $language->get('bk2_btn'); ?>"><?php echo $language->get('bk2_btn'); ?><i class="fi fi-rr-arrow-small-right"></i></a>
         </div>
     </section>
     
