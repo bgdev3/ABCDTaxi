@@ -1,12 +1,34 @@
 @use '../utils/variables' as color ;
 @use '../utils/mixins';
 
-
 .footer {
     font-size: .9rem;
     line-height: 1.4em;
     padding-top: 2%;
   
+    div:has(#map-footer) { 
+        order: 3;
+        width: 100%;
+        @include mixins.tablet-only{ order: 1; }
+        @include mixins.desktop-only{ order: 2; }
+    }
+
+    & #map-footer {
+        height: 200px;
+        width: 100%;
+        margin: 5% auto 0;
+        
+        @include mixins.tablet-only{
+            height: 200px;
+            width: 50%;
+            margin: 5% auto;
+        }
+
+        @include mixins.desktop-only {
+            order: 0;
+            margin: 0 auto;
+        }
+    }
 
     & .flex_row:first-child {
         flex-direction: row;
@@ -20,8 +42,10 @@
 
         padding: 0% 3%;
         a{margin-bottom: 2%;}
-    }
 
+        
+    }
+    
     >.flex_col, .footer__nav{
 
         // background-color: rgba(0, 0, 0, .2);

@@ -4,18 +4,19 @@ window.addEventListener('DOMContentLoaded', async ()=>{
     const slideShow = await import("./modules/slideShow.js");
     const manageMenu = await import("./modules/menuManager.js");
     const scrollTop = await import("./modules/scrollTop.js");
-  
+    const footerMap = await import("./modules/LocationMap.js");
     // Rend invisible le loader lorsque la page est chargé
     document.querySelector('.loader-container').classList.add('loader-hide');
     document.querySelector('.loader').classList.add('loader-hide');
     
     // Execute les modules
-    slideShow.slideShow(), manageMenu.menuManager(), scrollTop.scrollToTop();
+    slideShow.slideShow(), manageMenu.menuManager(), scrollTop.scrollToTop(), footerMap.initMapFooter();
 })
 
 
 let book = document.querySelector('div.date');
 let getMap = document.querySelector('#map');
+let getFooterMap = document.querySelector('#map-footer');
 let customer = document.querySelector('.table-responsive');
 let getForm = document.querySelector('form');
 let searchTransport = document.querySelector('#searchTransport');
@@ -37,6 +38,16 @@ if(getMap){
     }
     map();
 }
+
+// if(getFooterMap){
+   
+//     async function footerMap() {
+       
+//         const date = await import("./modules/LocationMaps.js");
+//         date.initMapFooter();
+//     }
+//     footerMap();
+// }
 
 // Pages des tableaux
 if(customer) {
