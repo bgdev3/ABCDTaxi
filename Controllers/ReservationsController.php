@@ -120,7 +120,7 @@ class ReservationsController extends Controller
                         $model = new TransportModel();
                         $model->update($id, $transport);
                         // Si tout se passe bien, on redirige vers la liste des réservations
-                    header('location:index.php?controller=reservations&action=index');
+                    header('location:/public/reservations');
                     } else {
                         // Sinon assigne le retour d'errreur d'envoi afin d'afficher l'erreur
                         $error = $message;                
@@ -158,7 +158,7 @@ class ReservationsController extends Controller
             $transport = $model->find($id);
         else
         // SInon on redirige vers laliste des réservations
-            header('location:index.php?controller=reservations&action=index');
+            header('location:/public/reservations');
 
         // On instancie Form afin de crée le formulaire de mise à jour
         $formUpdate = new Form();
@@ -223,13 +223,13 @@ class ReservationsController extends Controller
             // correspondant en argument
             $transportModel->delete($id);
             // redirige vers la liste des réservations
-            header('location:index.php?controller=reservations&action=index');
+            header('location:/public/reservations');
 
         // Sinon si c'est False qui est déclaré en POST et que les tokens de sécurité correspondent
         } elseif (isset($_POST['false']) && isset($_GET['id']) && isset($_GET['token']) && $_GET['token'] == $_SESSION['token']) {
 
             // On revient vers la liste des réservations sans suppression
-            header('location:index.php?controller=reservations&action=index');
+            header('location:/public/reservations');
 
         // Sinon si new est déclaré on supprime le transport correspondant 
         // on vide et détruit les sessions utilisateur 
@@ -244,7 +244,7 @@ class ReservationsController extends Controller
             unset($_SESSION['idClient']);
             // session_destroy();
             // Redirige vers les réservations
-            header('location:index.php?controller=date&action=index&token=' . $_SESSION['token']);
+            header('location:/public/date/index/' . $_SESSION['token']);
         // Sinon on affiche un message d'erreur
         } else {
             $error = !empty($_POST) ? $language->get('unknownUser') : "";

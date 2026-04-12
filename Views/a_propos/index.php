@@ -6,9 +6,9 @@ include 'init_lang.php';
 $title =  $language->get('titlePageAbout');
 $page =  $language->get('titlePageAbout'); 
 if(isset($_SESSION['username_admin']))
-    header('location:index.php?controller=panelAdmin&action=index');
+    header('location:/public/panelAdmin');
 elseif (isset($_SESSION['username']))
-    header('location:index.php?controller=reservations&action=index');
+    header('location:/public/reservations');
 ?>
 
 <!-- Affiche la vue de la page contact -->
@@ -27,7 +27,7 @@ elseif (isset($_SESSION['username']))
         </p>
 
         <div class="apropos_flex">
-            <img src="logo/logo-abcd.svg" class="apropos_flex_logo" alt="Logo abcd Taxi" title="ABCD Taxi">
+            <img src="/public/logo/logo-abcd.svg" class="apropos_flex_logo" alt="Logo abcd Taxi" title="ABCD Taxi">
         </div>
 
     </article>

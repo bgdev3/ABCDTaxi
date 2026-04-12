@@ -50,7 +50,7 @@ class AdminReservationsController extends Controller
             $this->render('admin/reservations', ['reservations' => $transportClient]);
         // Sinon si l'admin n'est pas connecté, on redirige vers l'accueil
         } else {
-            header('location:index.php');
+            header('location:/public/');
         }
     }
 
@@ -154,15 +154,15 @@ class AdminReservationsController extends Controller
                             // On alimente la table transport
                             $transportModel->create($transport);
                             // Redirige vers la liste des réservations en cours
-                            header('location:index.php?controller=adminReservations&action=index&token=' . trim($_SESSION['token']));
+                            header('location:/public/adminReservations/index/' . trim($_SESSION['token']));
                         // Sinon si un problème d'envoi de mail survient 
                         } else {
                             // Verifie si des transports relatif à l'utilisateur enregistré existent
-                            $list = $transportModel->join($_SESSION['idUser']);
+                            $list = $transportModel->join($idUser); /* $_SESSION['idUser'] */
                             // Si la jointure retourne un resultat nul
                             if (empty($list)) {
                                 // On supprime l'utilisateur de la table User
-                                $modelUser->delete($_SESSION['idUser']);
+                                $modelUser->delete($idUser);
                             }
                         }
                     } else {
@@ -336,7 +336,7 @@ class AdminReservationsController extends Controller
                 if(empty($message)) {
                     $modelTransport->updateAdmin($id, $reservation);
                     // on redirige vers la liste des reservations en cours
-                    header('location:index.php?controller=adminReservations&action=index&token=' . trim($_SESSION['token']));
+                    header('location:/public/adminReservations/index/' . trim($_SESSION['token']));
                 } else {
                     $error = $language->get('sendEMail');
                 }    
@@ -408,7 +408,7 @@ class AdminReservationsController extends Controller
             $this->render('admin/updateReservation', ['form' => $form->getFormElements(), 'error' => $error]);
            
         } else {
-            header('location:index.php');
+            header('location:/public/');
         }
     }
 
@@ -453,11 +453,11 @@ class AdminReservationsController extends Controller
             } 
             
             // Redirige vers l aliste des réservations en cours
-            header('location:index.php?controller=adminReservations&action=index&token=' . trim($_SESSION['token']));
+            header('location:/public/adminReservations/index/' . trim($_SESSION['token']));
 
         // Si 'Non' est déclaré en POST et si les tokens correspondent
         } else if (isset($_POST['Non']) &&  isset($_GET['token']) && isset($_GET['id']) && $_GET['token'] == $_SESSION['token']) {
-            header('location:index.php?controller=adminReservations&action=index&token=' . trim($_SESSION['token']));
+            header('location:/public/adminReservations/index/' . trim($_SESSION['token']));
         }
 
         $form = new Form();

@@ -26,13 +26,12 @@ if (!isset($_SESSION['token'])) {
 // on redirige automatiquement sur la page de confirmation d'action
 // pour quitter ou revenir à l'étape précédente.
 if(isset($_SESSION['username'])) {
-    header('location:index.php?controller=user&action=index');
+    header('location:/public/user');
 } elseif(isset($_SESSION['username_admin'])){
-    header('location:index.php?controller=authAdmin&action=index');
+    header('location:/public/authAdmin');
 }
-isset($_SESSION['username_admin']) ?? header('location:index.php?controller=panelAdmin&action=index');
-?>    
-            
+isset($_SESSION['username_admin']) ?? header('location:/public/panelAdmin');
+?>         
 <section class="diapo">
     <!-- Contenuer de diapo -->
     <div id="main_diapo" class="flex_row slides"></div>
@@ -88,6 +87,22 @@ isset($_SESSION['username_admin']) ?? header('location:index.php?controller=pane
             <article class="main__content-border">
                 <p><?php echo $language->get('bk3_para1'); ?><br><br><?php echo $language->get('bk3_para1.1'); ?></p>
             </article>
+             <figure>
+                <img id="taxiMap" width="183" height="183" src="image/test.png" alt="Carte de Taxi">
+                <figcaption>Zone de prise en charge pour transports conventionnés</figcaption>
+            </figure>
+            <a href="/public/contact" class="main__content-btn" title="<?php echo $language->get('bk2_btn'); ?>"><?php echo $language->get('bk2_btn'); ?><i class="fi fi-rr-arrow-small-right"></i></a>
+        </div>
+    </section>
+
+    <section class="main__content flex_col">
+        <img class="main__content-logo" width="183" height="183" src="image/transport.webp" alt="logo transport medical">
+        <div class="main__content--change-width flex_col">
+            <h2 class="main__content-title"><?php echo $language->get('titleTransport'); ?></h2>
+            <article class="main__content-border--change">
+                <p><?php echo $language->get('bk4_para1'); ?></p>
+            </article>
+           
             <a href="/public/contact" class="main__content-btn" title="<?php echo $language->get('bk2_btn'); ?>"><?php echo $language->get('bk2_btn'); ?><i class="fi fi-rr-arrow-small-right"></i></a>
         </div>
     </section>

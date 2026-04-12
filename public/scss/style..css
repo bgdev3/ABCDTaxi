@@ -154,15 +154,62 @@ a {
   color: #e9e9e9;
 }
 
-a:hover {
+a:hover:not(.error404 a) {
   color: #c7c27a;
   transition: 0.5s;
+}
+
+
+figcaption{
+    font-size: .75rem;
+    font-style: italic;
+    text-align: center;
+    margin-top: 1%;
 }
 
 .footer {
   font-size: 0.9rem;
   line-height: 1.4em;
   padding-top: 2%;
+}
+
+.footer .info_footer {
+        font-size: .65em;
+        text-align: center;
+        text-transform: uppercase;
+    }
+    
+.footer div:has(#map-footer) {
+  order: 3;
+  width: 100%;
+}
+@media only screen and (min-width: 576px) {
+  .footer div:has(#map-footer) {
+    order: 1;
+  }
+}
+@media only screen and (min-width: 1024px) {
+  .footer div:has(#map-footer) {
+    order: 2;
+  }
+}
+.footer #map-footer {
+  height: 200px;
+  width: 100%;
+  margin: 5% auto 0;
+}
+@media only screen and (min-width: 576px) {
+  .footer #map-footer {
+    height: 200px;
+    width: 50%;
+    margin: 5% auto;
+  }
+}
+@media only screen and (min-width: 1024px) {
+  .footer #map-footer {
+    order: 0;
+    margin: 0 auto;
+  }
 }
 .footer .flex_row:first-child {
   flex-direction: row;
@@ -986,20 +1033,18 @@ input[readonly] {
   padding-left: 2%;
 }
 .main__content-mentions h1 {
-  margin-bottom: 10%;
   text-align: center;
 }
 .main__content-mentions h2 {
   text-align: center;
+  color: #850202;
+  margin-top: 5%;
 }
-.main__content-mentions h1, .main__content-mentions a {
+.main__content-mentions a {
   color: #850202;
 }
 .main__content-mentions article {
   width: 90%;
-}
-.main__content-mentions article p {
-  margin-bottom: 10%;
 }
 
 .main__content-apropos {
@@ -1083,6 +1128,39 @@ section.row > * {
   text-decoration: none;
   color: #850202;
   font-size: 1.2em;
+}
+
+.error404 {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+  width: 100%;
+  height: 100vh;
+}
+.error404 h1 {
+  font-size: 10em;
+  color: transparent;
+  -webkit-text-stroke: 1px #850202;
+}
+.error404 span {
+  font-size: 2em;
+  color: #850202;
+}
+.error404 p {
+  font-size: 1.25em;
+}
+.error404 a {
+  font-size: 1.25em;
+  border: 1px solid #850202;
+  padding: 0.5em 3em;
+  border-radius: 10px;
+  color: #e9e9e9;
+  transition: 0.5s;
+}
+.error404 a:hover {
+  border: 1px solid transparent;
+  color: #850202;
 }
 
 .header__burger {
@@ -1557,7 +1635,7 @@ section.row > * {
     margin: 0;
     width: 20%;
   }
-  .main__content-logo:not(img[src*=events]) {
+  .main__content-logo:not(img[src*=events], img[src*=transport]) {
     order: 1;
   }
 }
@@ -1701,6 +1779,20 @@ section.row > * {
 .header__nav__sousMenu a {
   padding: 5% 0;
 }
+
+.main__content figure {
+
+    overflow: hidden;
+    position: relative; 
+}
+
+figcaption{
+    font-size: .75rem;
+    font-style: italic;
+    text-align: center;
+    margin-top: 1%;
+}
+
 @media only screen and (min-width: 1024px) {
   .header__nav__sousMenu {
     position: absolute;
@@ -1787,3 +1879,20 @@ section.row > * {
   color: #850202;
   margin-bottom: 2%;
 }/*# sourceMappingURL=style..css.map */
+
+.cm2c{
+   width: 95%;
+   margin: 0 auto;
+}
+
+@media only screen and (min-width: 576px) {
+  .cm2c {
+     width: 75%;
+  }
+}
+
+@media only screen and (min-width: 1024px) {
+  .cm2c {
+     width: 50%;
+  }
+}

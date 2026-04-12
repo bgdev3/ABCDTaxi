@@ -30,23 +30,27 @@ class Mailer
 
         //Create an instance; passing `true` enables exceptions
         $mail = new PHPMailer(true);
-
+        // $debug = true ;
         try {
-            // $mail->SMTPDebug = SMTP::DEBUG_SERVER;                                   //Enable verbose debug output
+            
+            $mail->SMTPDebug = SMTP::DEBUG_SERVER;                                   //Enable verbose debug output
             $mail->isSMTP();                                                            //Envoi en SMTP
             $mail->Host       = 'smtp.gmail.com';                                       //Adresse serveur SMTP
             $mail->SMTPAuth   = true;                                                   //Active l'authentification
-            $mail->Username   = '**********';                               //Identifiant SMTP
-            $mail->Password   = '**********';                                     //password de l'application
+            $mail->Username   = $_ENV['MAIL_USERNAME'];                               //Identifiant SMTP
+            // $mail->Password   = 'hekfmufaowzithcv';
+            $mail->Password   = $_ENV['MAIL_PASSWORD'];                                  //password de l'application
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;                            //Active l'encriptage de l'envoi
             $mail->Port       = 465;                                                    //port SMTP
         
             //Recipients
             // email Kevin
-            $mail->setFrom('**********');                      //Adresse d'envoi
+            $mail->setFrom($_ENV['MAIL_USERNAME'], 'ABCD Taxi');    //Adresse d'envoi
+            //   $mail->setFrom('abcd.taxi.26@orange.fr', 'ABCD Taxi');
+            //  $mail->setFrom('boukehaili.g@gmail.com', 'ABCD Taxi');    //Adresse d'envoi
             $mail->addAddress($content[0]);                                             //Destinatire
         
-            // //Attachments
+            // // //Attachments
             if($file)                                                                    //Si le paramètre facultatif est présent        
             $mail->addAttachment($file['file']['tmp_name'], $file['file']['name']);     //Pièce jointe : chemin du fichier temporaire, nom du fichier
         
@@ -83,7 +87,7 @@ class Mailer
      * 
      * @return string [$message] Message d'erreur
      */
-    public function sendUserMail($email, $action, Transport $transport = null,  $passUser = null): string
+    public function sendUserMail($email, $action, ?Transport $transport = null,  $passUser = null): string
     { 
         global $data;
         // Si l'email et  l'entité sont passés en argument et sont déclarés
@@ -135,7 +139,7 @@ class Mailer
     * @param string [$action] Permet de tester l'action effectuée
     * @param object [$transport] Afin de profiter des assesseurs pour transmettre les informations de transport - peut être null
     */
-    private function sendClientMail($email, $action, Transport $transport = null ): void
+    private function sendClientMail($email, $action, ?Transport $transport = null ): void
     {
         global $data;
         // Instance de userModel afin de récupèrer les infos utilisateurs correspondantes
@@ -151,7 +155,8 @@ class Mailer
         $subject = $data[0];
         $body = $data[1];
         // Email client
-        $email = "**********";
+        $email = $_ENV['MAIL_USERNAME']; /* 'boukehaili.g@gmail.com'*/
+ 
         $content = [];
         array_push($content, $email, $subject, $body);
         // Appel à la méthode d'envoi 
@@ -171,6 +176,9 @@ class Mailer
     private function contentMailUser($action, $transport = null,  $passUser = null): array
     {
 
+         // Instanciation de DateTime pour la date de réservation
+        $dateReservation = new DateTime('now');
+        
         $content = [];
         global $subject, $body;
 
@@ -218,12 +226,16 @@ class Mailer
                                     <span style="font-size:1.4em;">' . $transport->getNbPassengers().'<br><br></span>
                                 </section>
                             </main>
-                            <footer style="margin: .5em 0;">
-                                <p style="font-size:1rem; text-align:center">' . $language->get('mail_endConfirm1') .'<br>' . $language->get('mail_endConfirm2') .'  
+                            
+                            <footer style="margin:2em auto; background-color: #272727ff; text-align:center;">
+                                <p style="font-size:1em";>Réservation du ' . $dateReservation->format('d-m-Y'). ' ' .  $dateReservation->format('H:i') . '</p>
+                                <p style="font-size:.9em; text-align:center">' . $language->get('mail_endConfirm1') .'<br>' . $language->get('mail_endConfirm2') .'  
                                     <a href="dev.abcdtaxi.fr" style="text-decoration:none; color:#850202; padding:.5em;">' . $language->get('mail_endConfirm3') .'</a>
                                 </p>
                                 <p style="font-weight:bold; font-style:italic; font-size:1em; text-align:center">'. $language->get('mail_endConfirm4') .'</p>
-                            </footer> 
+                                <p style="font-size:.85em; text-align:center;">EURL ABCD Taxi - ADS numéro 1 Chantemerle-les-Blés - SIREN 919 139 600 </p>
+                            </footer>
+                            
                        </body>
                        </html>';
                     break;
@@ -293,6 +305,9 @@ class Mailer
     private function contentMailClient ($action, $user, $transport = null): array
     {
 
+          // Instanciation de DateTime pour la date de réservation
+        $dateReservation = new DateTime('now');
+        
         $content = [];
         global $subject, $body;
 
@@ -330,6 +345,12 @@ class Mailer
                                     <p style="font-size:1.4em; font-style:italic;">Estimation devis : ' . $transport->getPrice() .' &euro;</p>
                                 </section>
                             </main>
+                            
+                            <footer style="margin:2em auto; background-color: #272727ff; text-align:center;">
+                                <p style="font-size:1em";>Réservation du ' . $dateReservation->format('d-m-Y'). ' ' .  $dateReservation->format('H:i') . '</p>
+                                <p style="font-size:.85em; text-align:center;">EURL ABCD Taxi - ADS numéro 1 Chantemerle-les-Blés - SIREN 919 139 600 </p>
+                            </footer>
+                            
                         </body>
                        </html>';
                 break;
@@ -401,7 +422,7 @@ class Mailer
             $language = new Language($lang);
             
             $subject = $_post['object'];
-            $email = 'boukehaili.g@gmail.com';
+            $email =  $_ENV['MAIL_USERNAME'];
             $body = '
                         <!DOCTYPE html>
                         <html>
@@ -443,7 +464,7 @@ class Mailer
     public function confirmAdminRegister(): string
     {
         $subject = "Renouvellement de vos identifiants";
-        $email = '**********';
+        $email =  $_ENV['MAIL_USERNAME'];
         $body = '
                     <!DOCTYPE html>
                     <html>

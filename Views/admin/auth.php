@@ -6,7 +6,7 @@ $page = "Admin-connexion";
 // Si l'utilisateur est connecté, on renvoi vers le panel administrateur
 unset($_SESSION['username']);
 if (isset($_SESSION['username_admin'])) {
-    header('location:index.php?controller=panelAdmin&action=index');
+    header('location:/public/panelAdmin');
 } 
 ?>
 
@@ -21,8 +21,8 @@ if (isset($_SESSION['username_admin'])) {
         // if (isset($addSignUpForm))
             echo $addSignUpForm;
             ?>
-        <a href="index.php" class="btn btn-dark text-danger">Revenir</a>
+        <a href="/public/" class="btn btn-dark text-danger">Revenir</a>
         <!-- Appel du script Re-Captcha -->
-        <script src="https://www.google.com/recaptcha/api.js?render=**********"></script>
+        <script src="https://www.google.com/recaptcha/api.js?render=6LebG6MpAAAAAIDVxKKsnIql8WG-028Dvudz5l-k"></script>
     </div>
 </section>

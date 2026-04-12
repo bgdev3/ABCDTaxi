@@ -8,8 +8,7 @@ export function menuManager(){
     function displayMenu(){
 
         let navMobile, checkBurger, checkFlags, page, body;
-        page = document.querySelector('html');
-        body = document.querySelector('body');
+       
         checkBurger = document.querySelector('.header__burger');
         checkFlags = document.querySelector('.header__nav-flags');
         navMobile = document.querySelector('.header__nav');

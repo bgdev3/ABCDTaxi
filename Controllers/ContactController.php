@@ -22,7 +22,8 @@ class ContactController extends Controller
 
     public function index(): void
     {
-        global $sendingMail, $message, $error;
+        $error='';
+        global $sendingMail, $message;
         $lang = isset($_SESSION['lang']) ? $_SESSION['lang'] : 'fr';
         $language = new Language($lang);
 
@@ -38,9 +39,9 @@ class ContactController extends Controller
                 $captcha = new Captcha();
                 // si la clé en post de vérifiaction du captcha est déclaré
                 if (isset($_POST['recaptcha_response']))
-                $captcha = $captcha->verify($_POST['recaptcha_response']);
+                $isCaptchaValid = $captcha->verify($_POST['recaptcha_response']);
                 // Si le re-captcha renvoi true
-                if ($captcha == true) {
+                if ($isCaptchaValid == true) {
 
                  // Si le numero de tel n'est pas un nombre, ou n'a pas la bonne longeur ni le bon format
                     if (!preg_match("#^(\+33|0)[67][0-9]{8}$#", $_POST['tel'])) {

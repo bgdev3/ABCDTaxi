@@ -1,0 +1,16 @@
+@use '../utils/variables' as color ;
+@use '../utils/mixins';
+
+.main__content figure {
+    width: 100%;
+    overflow: hidden;
+    position: relative; 
+}
+
+figcaption{
+    font-size: .75rem;
+    font-style: italic;
+    text-align: center;
+    margin-top: 1%;
+    // color: color.$color-red;
+}

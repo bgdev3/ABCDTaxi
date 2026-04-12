@@ -68,7 +68,7 @@ class AdminSlideshowController extends Controller
                             $model->create($slide);
                             // Redirige vers la page afin d'éviter un envoi automatique 
                             // du formulaire en cas de rechargement de page.
-                            header('location:index.php?controller=adminSlideshow&action=index&token='. trim($_SESSION['token']));
+                            header('location:/public/adminSlideshow/index/'. trim($_SESSION['token']));
                         // Sinon on affiche une erreur
                         } else {
                             $error = $language->get('unknownUser');
@@ -105,7 +105,7 @@ class AdminSlideshowController extends Controller
                 $this->render('admin/slideshow', ['fileForm' => $form->getFormElements(), 'slides' => $slides, 'error' => $error]);
             }
         } else {
-            header('location:index.php?controller=panelAdmin&action=index');
+            header('location:/public/panelAdmin');
         }    
     }
 
@@ -235,7 +235,7 @@ class AdminSlideshowController extends Controller
         //    Supprime les diiférents format du slide stcokés en BDD
             $model->delete($id, $nameSlide);
             // Redirige sur la page des diapos
-            header('location:index.php?controller=adminSlideshow&action=index&token=' . trim($_SESSION['token']));
+            header('location:/public/adminSlideshow/index/' . trim($_SESSION['token']));
         }
     }
 }

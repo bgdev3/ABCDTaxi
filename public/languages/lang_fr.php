@@ -45,10 +45,13 @@ return [
 
      /************Block 3 *******************/
     'titleCare'                 => 'ABCD Taxi : votre partenaire santé',
-    'bk3_para1'                 => 'Conventionné auprés de toutes les caisses d\'assurance maladie, ABCD Taxi est en mesure de vous accompagner dans votre parcours de soins,
-                                    sur prescription médicale, et sans avance de frais.',
+    'bk3_para1'                 => 'Qualifié en transport assis professionnalisé, conventionné auprès de toutes les caisses d\'Assurance Maladie, ABCD Taxi est en mesure de vous accompagner dans votre parcours de soins.',
     'bk3_para1.1'               => 'Pour toute consultation, hospitalisation, séance de kinésithérapie, chimiothérapie, cobalthérapie ou orthophonie, etc. ABCD Taxi, votre partenaire santé&nbsp;!',
 
+     /************Block 4 *******************/
+    'titleTransport'           => 'ABCD Taxi : votre appui logistique',
+    'bk4_para1'                => 'Vous cherchez une solution logistique jusqu\'à 500 kg de charge utile ?<br><br> ABCD Taxi&nbsp; vous propose la prise en charge de vos envois de marchandises (tous types, y compris TMD dans les limites fixés par l\'ADR 1.1.3.6).',
+    
 
     /*************Footer *******************/
     'foo_connect'               => 'Connectez-vous',
@@ -242,15 +245,10 @@ return [
     'vitalcard'                =>'Carte vitale',
     'payments'                  =>'Moyen de paiements acceptés',
     'cpam'                      =>'Convention Taxi',
-    'call'
 
-
-
-
-
-
-
-
-
-
+ /************
+     * CM2C**
+     * **********/
+    'cm2c'                =>'Médiateur Conso',
+    'titleCm2c'           => 'Mediateur de la consommation'
 ];

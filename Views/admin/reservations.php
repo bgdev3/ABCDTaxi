@@ -5,10 +5,10 @@ $page = "Admin-Réservations en cours";
 
 // S'il n'y a pas d'activté au de la de 20min, l'utilisateur est déconnecté
 if (isset($_SESSION['token_time']) && (time() - $_SESSION['token_time'] > 1200)) {
-    session_unset(); session_destroy(); header('location:index.php');
+    session_unset(); session_destroy(); header('location:/public/');
 
 } elseif (!isset($_SESSION['username_admin'])) {
-    header('location:index.php');
+    header('location:/public/');
 }
 ?>
 
@@ -16,7 +16,7 @@ if (isset($_SESSION['token_time']) && (time() - $_SESSION['token_time'] > 1200))
         
     <div class="text-center">
         <h4 class="text-center text-center text-center mb-5 border border-light  fs-5 fst-italic text-danger rounded col-12 col-md-6 col-lg-4 mx-auto p-2">Liste des réservations</h4>
-        <a href="index.php?controller=adminReservations&action=addReservationsAdmin&token=<?php echo trim($_SESSION['token']); ?>" class="btn btn-dark text-danger mt-2 ">Ajouter une réservation</a>
+        <a href="/public/adminReservations/addReservationsAdmin/<?php echo trim($_SESSION['token']); ?>" class="btn btn-dark text-danger mt-2 ">Ajouter une réservation</a>
     </div>
 
     <div class="admin-reservation col-12 col-sm-10 col-md-8 col-lg-12 mx-auto">
@@ -53,8 +53,8 @@ if (isset($_SESSION['token_time']) && (time() - $_SESSION['token_time'] > 1200))
                                 <td class="data"><?php echo $reservation->departurePlace; ?></td>
                                 <td class="data"><?php echo $reservation->destination; ?></td>
                                 <td class="data"><?php echo $reservation->departureTime; ?></td>
-                                <td class="flexTd"><a href="index.php?controller=adminReservations&action=updateReservationAdmin&token=<?php echo trim($_SESSION['token']);?>&id=<?php echo $reservation->idTransport;?>" class="btn btn-transparent bg-dark text-success"><i class='fi fi-tr-pen-circle'></i></a>
-                                <a href="index.php?controller=adminReservations&action=deleteReservationAdmin&token=<?php echo trim($_SESSION['token']);?>&id=<?php echo $reservation->idTransport;?>" class="btn btn-transparent  bg-dark text-danger"><i class='fi fi-sr-cross-circle'></i></a></td>
+                                <td class="flexTd"><a href="/public/adminReservations/updateReservationAdmin/<?php echo $reservation->idTransport;?>/<?php echo trim($_SESSION['token']);?>" class="btn btn-transparent bg-dark text-success"><i class='fi fi-tr-pen-circle'></i></a>
+                                <a href="/public/adminReservations/deleteReservationAdmin/<?php echo $reservation->idTransport;?>/<?php echo trim($_SESSION['token']);?>" class="btn btn-transparent  bg-dark text-danger"><i class='fi fi-sr-cross-circle'></i></a></td>
                             </tr>
                         <?php  } 
                     } ?>

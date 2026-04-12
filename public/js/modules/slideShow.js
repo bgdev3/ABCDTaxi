@@ -11,7 +11,7 @@ import { fetchManager } from "./fetch.js";
     // Si le slider est présent
     if(slide){
         // Effectue un fetch afin de récupèrer les diapos stockées sur le serveur
-        fetchManager('index.php?controller=adminSlideshow&action=addSlide', screenWith)
+        fetchManager('/public/adminSlideshow/addSlide', screenWith)
         .then(reponse=>reponse.json())
         .then(reponse => {
             
@@ -158,7 +158,7 @@ function createImg(urls, slide, w, h){
     urls.forEach(el => {
 
         let img = new Image(w, h);
-        img.src = el;
+        img.src = "/public/" + el;
         img.alt = 'Image de taxi';
         img.setAttribute('class', 'diapo__slide slide-show');
         slide.appendChild(img);

@@ -1,7 +1,7 @@
 <!-- Vue de la mise à jours des informations clients -->
 <?php
 $title = 'ABCD Taxi - Admin-Mise à jour';
-!isset($_SESSION['username_admin']) ??  header('location:index.php');
+!isset($_SESSION['username_admin']) ??  header('location:/public/');
 ?>
 
 

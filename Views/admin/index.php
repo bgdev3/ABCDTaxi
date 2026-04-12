@@ -2,14 +2,14 @@
 <?php
 $title = 'Admin - Acceuil';
 // Démarre la session
-session_start();
+// session_start();
 
 // S'il n'y a pas d'activté au de la de 20min, l'utilisateur est déconnecté
 if (isset($_SESSION['token_time']) && (time() - $_SESSION['token_time'] > 1200)) {
-    session_unset(); session_destroy(); header('location:index.php');
+    session_unset(); session_destroy(); header('location:/public/');
     
 } elseif (!isset($_SESSION['username_admin'])) {
-    header('location:index.php');
+    header('location:/public/');
 }
 ?>
 
@@ -20,29 +20,29 @@ if (isset($_SESSION['token_time']) && (time() - $_SESSION['token_time'] > 1200))
             <div class="card-body">
                 <h5 class="card-title text-danger">Diaporama</h5>
                 <p class="card-text text-light pt-4 pb-4">Gérer les différentes photos du diaporama !</p>
-                <a href="index.php?controller=adminSlideshow&action=index&token=<?php echo trim($_SESSION['token'])?>" class="btn btn-dark text-danger border border-secondary">Accéder au diaporama</a>
+                <a href="/public/adminSlideshow/index/<?php echo trim($_SESSION['token'])?>" class="btn btn-dark text-danger border border-secondary">Accéder au diaporama</a>
             </div>
         </div>
         <div class="card bg-dark border border-secondary mb-4 mt-4 " style="width: 18rem;">
             <div class="card-body">
                 <h5 class="card-title text-danger">Réservations</h5>
                 <p class="card-text text-light pt-4 pb-4">Accéder et gérer la liste des réservations en cours !</p>
-                <a href="index.php?controller=adminReservations&action=index&token=<?php echo trim($_SESSION['token'])?>" class="btn btn-dark text-danger border border-secondary">Accéder aux réservations</a>
+                <a href="/public/adminReservations/index/<?php echo trim($_SESSION['token'])?>" class="btn btn-dark text-danger border border-secondary">Accéder aux réservations</a>
             </div>
         </div>
         <div class="card bg-dark border border-secondary" style="width: 18rem;">
             <div class="card-body">
                 <h5 class="card-title text-danger">Historique</h5>
                 <p class="card-text text-light">Accéder et gérer les différents historiques</p>
-                <a href="index.php?controller=historyClients&action=index&token=<?php echo trim($_SESSION['token'])?>" class="btn btn-dark text-danger border border-secondary mb-2">Historique clients</a>
-                <a href="index.php?controller=historyTransport&action=index&token=<?php echo trim($_SESSION['token'])?>" class="btn btn-dark text-danger border border-secondary">Historique des transports </a>
+                <a href="/public/historyClients/index/<?php echo trim($_SESSION['token'])?>" class="btn btn-dark text-danger border border-secondary mb-2">Historique clients</a>
+                <a href="/public/historyTransport/index/<?php echo trim($_SESSION['token'])?>" class="btn btn-dark text-danger border border-secondary">Historique des transports </a>
             </div>
         </div>
         <div class="card bg-dark border border-secondary mb-4 mt-4" style="width: 18rem;">
             <div class="card-body">
                 <h5 class="card-title text-danger">Tarification</h5>
                 <p class="card-text text-light pt-4 pb-4">Accéder et gérer la tarification de vos courses</p>
-                <a href="index.php?controller=adminPrice&action=index&token=<?php echo trim($_SESSION['token'])?>" class="btn btn-dark text-danger border border-secondary w-75">Tarifs</a>
+                <a href="/public/adminPrice/index/<?php echo trim($_SESSION['token'])?>" class="btn btn-dark text-danger border border-secondary w-75">Tarifs</a>
             </div>
         </div>
     </div>

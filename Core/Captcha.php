@@ -14,7 +14,7 @@ class Captcha {
      {
         // Paramètre la requête POST
         $recaptcha_url = 'https://www.google.com/recaptcha/api/siteverify';
-        $recaptcha_secret = '**********';
+        $recaptcha_secret = $_ENV['CAPTCHA_SECRET_KEY'];
         $recaptcha_response = $secret;
 
         // Récupère et decode le fetch POST

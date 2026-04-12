@@ -46,12 +46,12 @@ class HistoryTransportController extends Controller
         
             // Si l'admin n'est pas connecté, redirige vers l'accueil
             if (!isset($_SESSION['username_admin']))
-                header('location:index.php');
+                header('location:/public/');
             else
             $this->render('history/transport', ['list' =>  $transportHistory, 'searchForm' => $form->getFormElements()]);
             
         } else {
-            header('location:index.php');
+            header('location:/public/');
         }        
     }
 

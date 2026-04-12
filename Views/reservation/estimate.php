@@ -8,12 +8,17 @@ $title = $language->get('titlePageReservation');
 // Sinon si l'heure et donc la date ne sont pas enregistrées en session
 // on redirige à l'étape précédente
 if (isset($_SESSION['username'])) 
-    header('location:index.php?controller=user&action=index');
+    header('location:/public/user');
 if(isset($_SESSION['username_admin']))
-    header('location:index.php?controller=panelAdmin&action=index');
+    header('location:/public/panelAdmin');
  elseif (!isset($_SESSION['time'])) 
-    header('location:index.php?controller=date&action=index&token='. $_SESSION['token']);
+    header('location:/public/date/index/'. $_SESSION['token']);
 
+// Si le l'admin revient sur cette vue sans se connecter, 
+// mais ayant rendu active bootstrap, les sessions sont vidées
+if(isset($_SESSION['admin'])) {
+    unset($_SESSION['admin'], $_SESSION['username_admin']);  
+}
 // On regénère ici le token de sécutité en cas de modification de réservation 
 // en ré effectuant le parcours de réservation complet.
 // Sinon le token précédant ne fonctionnerait pas.
@@ -58,7 +63,7 @@ if (!isset($_SESSION['token'])) {
                             a.src=`https://maps.${c}apis.com/maps/api/js?`+e;d[q]=f;a.onerror=()=>h=n(Error(p+" could not load."));
                             a.nonce=m.querySelector("script[nonce]")?.nonce||"";m.head.append(a)}));
                             d[l]?console.warn(p+" only loads once. Ignoring:",g):d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n))})({
-                            key: "YOUR_KEY_HERE",
+                            key: "AIzaSyBha66sj8fHFN7hyxebyMn1avD03oRhCww",
                         });
                     </script>
                     
@@ -69,7 +74,7 @@ if (!isset($_SESSION['token'])) {
                 <?php echo $language->get('estimate');?>
             </article>
         </div>
-        <a href="index.php?controller=registration&action=index" class="btnDevis btnMap none"> <?php echo $language->get('btnEstimate');?></a>
+        <a href="/public/registration" class="btnDevis btnMap none"> <?php echo $language->get('btnEstimate');?></a>
     </div>
     <small class="smallDevis"><?php echo $language->get('conditions');?></small>
 </section>

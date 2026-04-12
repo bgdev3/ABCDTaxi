@@ -29,7 +29,7 @@ class AdminPriceController extends Controller
             $priceList = $priceModel->findAll();
 
         } else {
-            header('location:index.php?controller=panelAdmin&action=index');
+            header('location:/public/panelAdmin');
         }
         // Renvoi vers la vue
         $this->render('admin/prices', ['prices' => $priceList]);
@@ -64,7 +64,7 @@ class AdminPriceController extends Controller
                 $priceModel = new PriceModel();
                 $priceModel->update($price, $id);
                 // redirige vers les tarifications en cours
-                header('location:index.php?controller=adminPrice&action=index&token=' . trim($_SESSION['token']));
+                header('location:/public/adminPrice/index/' . trim($_SESSION['token']));
             // Si le stokens ne correpondent pas
             } else {
                 $error = $language->get('unknownUser');

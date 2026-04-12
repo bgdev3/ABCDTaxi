@@ -3,9 +3,16 @@
 include 'init_lang.php';
 $title =  $language->get('titlePageReservation');
 $page = $language->get('titlePageReservation');
-// Si Username est déclaré, on redirige automatiquement vers 
-// la confimration d'abandonner l'espace client
-// isset($_SESSION['username']) ??  header('location:index.php?controller=user&action=index');
+
+if(isset($_SESSION['username_admin']))
+    header('location:/public/panelAdmin');
+
+// Si le l'admin revient sur cette vue sans se connecter, 
+// mais ayant rendu active bootstrap, les sessions sont vidées
+if(isset($_SESSION['admin'])) {
+    unset($_SESSION['admin'], $_SESSION['username_admin']);  
+}
+
 ?> 
 
 <section class="main__content">
@@ -53,7 +60,7 @@ $page = $language->get('titlePageReservation');
                                 if($val == $heure && $date_database == $time->date_transport) 
                                     $att = "disabled";
                             }
-                            echo  "<a href='index.php?controller=estimate&action=index' class='hours shape hide " . $att ."' >" . $val . "</a>";
+                            echo  "<a href='/public/estimate' class='hours shape hide '" . $att ."' >" . $val . "</a>";
                         } 
                     ?>
 

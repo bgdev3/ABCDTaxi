@@ -4,8 +4,9 @@
  */
 function loadRecaptchaToken() {
     
+    let key = document.querySelector('meta[name="recaptcha-key"]').getAttribute('content');
     grecaptcha.ready(function () {
-        grecaptcha.execute('**********', { action: 'myForm' }).then(function (token) {
+        grecaptcha.execute(key, { action: 'myForm' }).then(function (token) {
             var recaptchaResponse = document.getElementById('recaptchaResponse');
             recaptchaResponse.value = token;
         });

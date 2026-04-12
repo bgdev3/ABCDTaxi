@@ -1,0 +1,9 @@
+user-agent: *
+
+Sitemap: https://www.abcdtaxi.fr/sitemap.xml
+Disallow: /Views/home/mentions.php
+Disallow: /Core
+Disallow: /Entities
+Disallow: /templates
+Disallow: /vendor
+

@@ -4,7 +4,8 @@ export async function initMapFooter(){
   // Initialize and add the map
 let footerMap;
   // The location of Uluru
-  const position = { lat: -25.344, lng: 131.031 };
+  const position = { lat: 44.86327582984626, lng: 4.875231096952067 };
+  
 
   // Request needed libraries.
   //@ts-ignore
@@ -15,9 +16,9 @@ let footerMap;
   footerMap = new Map(
     document.getElementById('map-footer'),
     {
-      zoom: 4,
+      zoom: 10,
       center: position,
-      mapId: 'roadmap',
+      mapId: 'DEMO_MAP_ID',
     }
   );
 
@@ -25,7 +26,7 @@ let footerMap;
   const marker = new AdvancedMarkerElement({
     map: footerMap,
     position: position,
-    title: 'Uluru'
+    title: 'ABCD Taxi, Drôme'
   });
 }
 

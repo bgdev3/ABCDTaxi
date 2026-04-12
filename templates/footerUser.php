@@ -23,15 +23,17 @@
                 <address>1, lotissement l'Abricotine<br> 26800 PORTES LES VALENCES</address>
             </div>
       
+           <div>
+           <div id="map-footer"></div>
+            <script>
+                (g=>{var h,a,k,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{await (a=m.createElement("script"));e.set("libraries",[...r]+"");for(k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);e.set("callback",c+".maps."+q);a.src=`https://maps.${c}apis.com/maps/api/js?`+e;d[q]=f;a.onerror=()=>h=n(Error(p+" could not load."));a.nonce=m.querySelector("script[nonce]")?.nonce||"";m.head.append(a)}));d[l]?console.warn(p+" only loads once. Ignoring:",g):d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n))})({
+                    key: "AIzaSyCbV1zYnDWKgxlkV2_NDBQOv32BlpxUb7A",
+                    v: "weekly",
+                
+                });
+            </script>
+           </div>
            
-                <div id="map-footer"></div>
-                <script>
-                    (g=>{var h,a,k,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{await (a=m.createElement("script"));e.set("libraries",[...r]+"");for(k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);e.set("callback",c+".maps."+q);a.src=`https://maps.${c}apis.com/maps/api/js?`+e;d[q]=f;a.onerror=()=>h=n(Error(p+" could not load."));a.nonce=m.querySelector("script[nonce]")?.nonce||"";m.head.append(a)}));d[l]?console.warn(p+" only loads once. Ignoring:",g):d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n))})({
-                        key: "AIzaSyCbV1zYnDWKgxlkV2_NDBQOv32BlpxUb7A",
-                        v: "weekly",
-                    
-                    });
-                    </script>
          
            
                   
@@ -49,11 +51,13 @@
     <nav class="footer__nav ">
         <ul class="">
             <li><a href="/public/" title="<?php echo $language->get('welcome'); ?>"><?php echo $language->get('welcome'); ?></a></li>
-            <li><a href="/public/date/index/<?php echo trim($_SESSION['token']) ?? '';?>" title="<?php echo $language->get('book'); ?>"><?php echo $language->get('book'); ?></a></li>
+            <li><a href="/public/date/index/<?php echo trim($_SESSION['token'] ?? '') ;?>" title="<?php echo $language->get('book'); ?>"><?php echo $language->get('book'); ?></a></li>
             <li><a href="/public/user" title="<?php echo $language->get('manage'); ?>"><?php echo $language->get('manage'); ?></a></li>
             <li><a href="/public/contact" title="<?php echo $language->get('contact'); ?>"><?php echo $language->get('contact'); ?></a></li>
             <li><a href="/public/about" title="<?php echo $language->get('about'); ?>"> <?php echo $language->get('about'); ?></a></li>     
+            <li><a href="/public/cm" title="<?php echo $language->get('cm2c'); ?>"><?php echo $language->get('cm2c'); ?></a></li> 
         </ul>
+        <p class="info_footer">En cas de contestation, écrire au DDPP de la Drôme Service Concurrence, Concommation et Répression des Fraudes. BP 96 - 33 avenue de Romans, 26000 VALENCE Cedex9</p>
     </nav>
     
     <p><a href="/public/home/mentions" title="<?php echo $language->get('notice'); ?>"><?php echo $language->get('notice'); ?></a> | &copy;2024 - ABCD Taxi | <?php echo $language->get('createdBy'); ?> <a href="https://bgdev.fr">bgdev</a> | <a href="/public/authAdmin"><?php echo $language->get('admin'); ?></a></p>

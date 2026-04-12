@@ -167,7 +167,7 @@ class DateController extends Controller
             $listHours = $model->findAll();
             $_SESSION['dbHours'] = $listHours;
         } else {
-            header('location:index.php');
+            header('location:/public/');
         }
     }
 }

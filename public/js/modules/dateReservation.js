@@ -32,7 +32,7 @@ export function dateReservation(){
                 }
 
                 // Appel de l'API Fetch
-                fetchManager(`index.php?controller=date&action=addDays`, nb)
+                fetchManager(`/public/date/addDays`, nb)
                 .then(reponse=>reponse.json())
                 .then((reponse)=>{
                     // Boucle sur le premier index de la reponse afin d'afficher les dates
@@ -41,7 +41,7 @@ export function dateReservation(){
                         // Boucle sur la deuxième reponse afin d'afficher les horaires
                         // A chaque itérations
                         for(let time of reponse['time']){
-                            timing += `<a href='index.php?controller=estimate&action=index' class='hours shape hide'> ${time} </a>`;
+                            timing += `<a href='/public/estimate' class='hours shape hide'> ${time} </a>`;
                         }
                         let contain = `<div class='day shape'>${el}<i class='fi fi-rs-angle-small-down'></i></div>
                                     <div class='gridHours'>${timing}</div> 
@@ -78,7 +78,7 @@ export function dateReservation(){
             el.addEventListener('click', ()=>{
                 day = el.textContent;
                 // console.log(day);
-                fetchManager('index.php?controller=estimate&action=getDayOfWeek', day);
+                fetchManager('/public/estimate/getDayOfWeek', day);
                 // fetch(`index.php?controller=estimate&action=getDayOfWeek&day=${day}`);
             // On toggle la mise en forme actice à l'élément cliqué
                 el.classList.toggle('activeDay');
@@ -125,7 +125,7 @@ export function dateReservation(){
                 let day = el.previousElementSibling.previousElementSibling.textContent;
                 // Appel de la fonction de formatage de la date
                 let date = formatDate(day);
-                fetchManager(`index.php?controller=date&action=addHours`)
+                fetchManager(`/public/date/addHours`)
                 .then(reponse=>reponse.json())
                 .then((reponse)=>{
                 //   Boucle sur la réponse : à chaque itération on crée les div horaires
@@ -140,7 +140,7 @@ export function dateReservation(){
                                 att = 'disabled';
                             }
                         }
-                        contain.innerHTML += `<a href='index.php?controller=estimate&action=index' class='hours shape ${att}'> ${time}</a>`;
+                        contain.innerHTML += `<a href='/public/estimate' class='hours shape ${att}'> ${time}</a>`;
                     }
                     selectHours();
                 })
@@ -194,9 +194,9 @@ export function dateReservation(){
                 e.preventDefault();
                 chaine = el.textContent;
                 console.log(chaine);
-                fetchManager(`index.php?controller=estimate&action=getTime`, chaine);
+                fetchManager(`/public/estimate/getTime`, chaine);
                 // Redirige à 50ms d'écart
-                setTimeout(() => {window.location="index.php?controller=estimate&action=index"}, 50);
+                setTimeout(() => {window.location="/public/estimate"}, 50);
                 // Au clic split la chaine, convertis la chaine en seconde
                 // et l'envoit via Fetch afin de la stocker en session et la manipuler plus tard
             });

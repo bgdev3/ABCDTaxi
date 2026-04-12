@@ -6,10 +6,10 @@ $title = $language->get('titlePageReservation');
 // Si le temps de connexion est supérieur à 20min sans activité, 
 // L'utilisateur est déconnecté 
 if (isset($_SESSION['token_time']) && (time() - $_SESSION['token_time'] > 1200)) {
-    session_unset(); session_destroy(); header('location:index.php');
+    session_unset(); session_destroy(); header('location:/public/');
 
 } elseif (!isset($_SESSION['username']))
-    header('location:index.php');
+    header('location:/public/');
 ?>
 <!-- 
     Si la liste des réservations est vide, on affiche une info 
@@ -26,7 +26,7 @@ if (isset($_SESSION['token_time']) && (time() - $_SESSION['token_time'] > 1200))
             <?php if (!empty($info) || !isset($_SESSION['username'])) { ?>
                 <!-- On indique que tous les transports de la liste ont été supprimés -->
                 <h2 class="main__content-title"><?php echo $info; ?></h2>
-                <a href="index.php" class="btnForm"><?php echo $language->get('backHome'); ?></a>
+                <a href="/public/" class="btnForm"><?php echo $language->get('backHome'); ?></a>
 
             <?php } ?>
         </div>
@@ -64,8 +64,8 @@ if (isset($_SESSION['token_time']) && (time() - $_SESSION['token_time'] > 1200))
                         echo "<td  class='data'>" . $value->destination . "</td>";
                         echo "<td  class='data'>" . $value->roundTrip . "</td>";
                         echo "<td  class='data'>" . $value->price . "&euro;</td>";
-                        echo "<td class='flexTd'><a class='change-link' href='index.php?controller=reservations&action=updateTransport&id=$value->idTransport&token=".trim($_SESSION['token'])."'><i class='fi fi-tr-pen-circle'></i></a>
-                                                <a class='delete-link'href='index.php?controller=reservations&action=deleteTransport&id=$value->idTransport&token=".trim($_SESSION['token'])."'><i class='fi fi-sr-cross-circle'></i></a></td>";
+                        echo "<td class='flexTd'><a class='change-link' href='/public/reservations/updateTransport/$value->idTransport/".trim($_SESSION['token'])."'><i class='fi fi-tr-pen-circle'></i></a>
+                                                <a class='delete-link'href='/public/reservations/deleteTransport/$value->idTransport/".trim($_SESSION['token'])."'><i class='fi fi-sr-cross-circle'></i></a></td>";
                         echo "</tr>";
                     } 
                     ?>

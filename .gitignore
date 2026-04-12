@@ -1,2 +1,30 @@
-"Core/DbConnect"
-"Models/cron.php"
+# Dépendances
+/vendor/
+
+# Configuration sensible
+.env
+
+# Images uploadées
+/public/image/normal/
+/public/image/medium/
+/public/image/small/
+
+# Logs
+*.log
+/logs/
+
+# Cache
+/cache/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# PHP
+*.phar

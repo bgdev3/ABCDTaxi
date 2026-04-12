@@ -52,6 +52,9 @@ return [
     'bk3_para1'                => 'If you need to go to Hospital, Physio, Radiotherapy or so on, ABCD Taxi drives for your health !',
     'bk3_para1.1'              => '',
 
+    /************Block 4 *******************/
+    'titleTransport'           => 'ABCD Taxi: your logistical support',
+    'bk4_para1'                => 'Are you looking for a logistics solution for up to 500 kg payload?<br><br> ABCD Taxi offers to handle your shipments of goods (all types, including ADR within the limits set by ADR 1.1.3.6).',
     
     /*************Footer *******************/
     'foo_connect'              => 'Stay connected',
@@ -245,11 +248,12 @@ return [
      * **********/
     'vitalcard'                =>'Vital card',
     'payments'                  =>'Accepted payment methods',
-    'cpam'                      =>'Taxi Convention'
+    'cpam'                      =>'Taxi Convention',
 
-
-
-
-
+    /************
+     * CM2C**
+     * **********/
+    'cm2c'                =>'Consumer Mediator',
+    'titleCm2c'           => 'Consumer Mediator'
 
 ];

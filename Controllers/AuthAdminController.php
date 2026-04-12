@@ -36,9 +36,9 @@ class AuthAdminController extends Controller
                 // Si la clé du cpatcha est bien récupéré en POST
                  // Teste la rapidité d'execution afin de s'assurer d'un humain
                 if (isset($_POST['recaptcha_response']))  
-                   $captcha = $captcha->verify($_POST['recaptcha_response']);
+                   $isCaptchaValid = $captcha->verify($_POST['recaptcha_response']);
                 // Si le captcha est valide
-                if ($captcha == true) {
+                if ($isCaptchaValid == true) {
                     // Instance de AdminModel
                     $admin = new AdminUserModel();
                     // Récupère l'enregistrement correspondant
@@ -107,7 +107,7 @@ class AuthAdminController extends Controller
            
             // Si le mot de passe est supérieur ou égal à 8 ET inférieur ou égal à 12
             // ET que les deux pot de passe concordent
-            if(strlen($password) >= 8 && strlen($password) <= 12 && $password == $confirmPassword) {
+            if(strlen($password) >= 12 && $password == $confirmPassword) {
                 // Si le mot de passe contient des cartères spéciaux et s'il contient au moins un chiffre et une lettre
                 if(!ctype_alnum($password) && preg_match('#([a-z][0-9])#', $password)) {
                     // Si le recpatcha est bien déclaré en POST
@@ -138,7 +138,7 @@ class AuthAdminController extends Controller
                                     // On détruit la séssion username_admin afin de rediriger vers une nouvelle connexion administrateur
                                     // avec les nouveaux identifiant 
                                     unset($_SESSION['username_admin']);
-                                    header('location:index.php?controller=authAdmin&action=index');
+                                    header('location:/public/authAdmin');
                                 } else {
                                     $error = $language->get('unknonwUser');
                                 }
@@ -188,7 +188,7 @@ class AuthAdminController extends Controller
     
             $this->render('admin/register', ['addLogForm' => $form->getFormElements(), 'error' => $error]);
         } else {
-            header('location:index.php?controller=panelAdmin&action=index');
+            header('location:/public/panelAdmin');
         }
        
     }
@@ -204,6 +204,7 @@ class AuthAdminController extends Controller
     */
     private function validateAuth($email, $password, $admin): string
     {
+        $error='';
         $lang = isset($_SESSION['lang']) ? $_SESSION['lang'] : 'fr';
         $language = new Language($lang);
         // Si la session n'existe pas
@@ -224,7 +225,7 @@ class AuthAdminController extends Controller
                                 $_SESSION['username_admin'] = $admin->username;
                                 $_SESSION['id_admin'] = $admin->idAdmin;
                     
-                                header("location:index.php?controller=panelAdmin&action=index");
+                                header("location:/public/panelAdmin");
                             } else {
                                 $error = $language->get('errorAuth1');
                             }
@@ -257,10 +258,10 @@ class AuthAdminController extends Controller
             // On détruit les sessions utilisateur et on redirige vers la page d'accueil
             session_unset();
             session_destroy();
-            header('location:index.php?controller=home&action=index');
+            header('location:/public/');
         // Sinon redirige vers la liste des réservations
         } else {
-           header('location:index.php?controller=authAdmin&action=index');
+           header('location:/public/authAdmin');
         }
     }  
 }

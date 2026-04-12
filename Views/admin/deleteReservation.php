@@ -4,10 +4,10 @@ $title = 'Admin - suppression réservation';
 
 // S'il n'y a pas d'activté au de la de 20min, l'utilisateur est déconnecté
 if (isset($_SESSION['token_time']) && (time() - $_SESSION['token_time'] > 1200)) {
-    session_unset(); session_destroy(); header('location:index.php');
+    session_unset(); session_destroy(); header('location:/public/');
     
 } elseif (!isset($_SESSION['username_admin'])) {
-    header('location:index.php');
+    header('location:/public/');
 }
 ?>
 

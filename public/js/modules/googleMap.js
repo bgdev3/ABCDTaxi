@@ -77,7 +77,7 @@ export async function initMap(){
 
                     btnDevis.classList.add('none');
                     // Récupère la langue sélectionné
-                    fetchManager('index.php?controller=estimate&action=langState')
+                    fetchManager('/public/estimate/langState')
                     .then(reponse=>reponse.json())
                     .then(reponse=>{
                         let contain = reponse == 'en' ? "Please fill out the fields to get a quote!" : "Veillez remplir les champs afin d'obtenir un devis ! ";
@@ -91,7 +91,7 @@ export async function initMap(){
                 depart: places[0],
                 destination: places[1]
             };
-            fetchManager('index.php?controller=registration&action=getPlaces', destination);
+            fetchManager('/public/registration/getPlaces', destination);
         });
     }
 }
@@ -152,9 +152,11 @@ function calcRoute(directionsService, directionsRenderer, choice, waitValue, btn
             // Une fois récupérer dans la promesse résolu,  on affiche les résultats renvoyés
             let tpsTrajet = [result.routes[0].legs[0].duration.value, result.routes[0].legs[0].distance.value, choice, waitValue];
             // Envoit via API Fetch les données paramétrer en JSON afin de les traiter en PHP
-            fetchManager('index.php?controller=estimate&action=quoteCalculation', tpsTrajet)
+            console.log(tpsTrajet);
+            fetchManager('/public/estimate/quoteCalculation', tpsTrajet)
             .then(reponse=>reponse.json())
             .then(reponse => {
+               
               console.log(reponse);
               
                 // Tableau de traduction selon la langue sélectionnée
@@ -175,12 +177,12 @@ function calcRoute(directionsService, directionsRenderer, choice, waitValue, btn
             })
             .catch(() => {
                 // Recupère la langue sélectioné et applique l'alert correspondante
-                fetchManager('index.php?controller=estimate&action=langState')
+                fetchManager('/public/estimate/langState')
                 .then(reponse=>reponse.json())
                 .then(reponse=>{
                     let alertMessage = reponse == 'en' ? "Une erreur est survenue, vous allez être rediriger à l'étape pécédente en cliquant 'ok'" : "An error has occurred, you will be redirected to the previous step by clicking 'ok'";
                     alert(alertMessage);
-                    window.location ="index.php";
+                    window.location ="/public/";
                 })
                
             });
@@ -194,7 +196,7 @@ function calcRoute(directionsService, directionsRenderer, choice, waitValue, btn
             // On affiche un message d'erreur
             document.querySelector('.btnMap').classList.add('none');
 
-            fetchManager('index.php?controller=estimate&action=langState')
+            fetchManager('/public/estimate/langState')
             .then(reponse=>reponse.json())
             .then(reponse=>{
                 let emptyQuotation = reponse == 'en' ? "Please provide a valid destination!" : "Veuillez indiquez une destination valides !";

@@ -13,7 +13,7 @@ export function fetchManager(url, data = null) {
     const options= {
         method:'POST',
         header: {
-                Accept: 'application/json',
+                // Accept: 'application/json',
                 'Content-Type': 'application/json'},
         body: JSON.stringify(data)
     }

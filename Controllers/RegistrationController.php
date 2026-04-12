@@ -20,7 +20,7 @@ session_start();
 class RegistrationController extends Controller 
 {
 
-    /**
+    /** 
      * Teste et sécurise les données entrées en POST, hydrate les entitées correspondane
      * et crée le formualire de contact par défault afin d'enregistrer la réservation
      * 
@@ -69,9 +69,9 @@ class RegistrationController extends Controller
                     // si la clé en post de vérifiaction du captcha est déclarée
                     // récupère le retour booléen de la méthode verify
                     if (isset($_POST['recaptcha_response']))
-                        $captcha = $captcha->verify($_POST['recaptcha_response']);
+                        $isCaptchaValid = $captcha->verify($_POST['recaptcha_response']);
                     // Si le re-captcha renvoi true
-                    if ( $captcha == true ) {
+                    if ( $isCaptchaValid == true ) {
                         // On instancie userModel afin de vérifier que l'utilisateur n'est pas déja dans la base
                         $modelUser = new ClientModel();
                         $testingUser = $modelUser->find(htmlspecialchars($_POST['email'], ENT_QUOTES));
@@ -116,7 +116,7 @@ class RegistrationController extends Controller
                         // Instance de l'entité Transport
                         // et l'hydrate avec les donnbées de réservations stockées en sessions
                         $transport = new Transport();
-                        $transport->setNbPassengers(htmlspecialchars(trim($_POST['nbPerson'])), ENT_QUOTES);
+                        $transport->setNbPassengers(htmlspecialchars(trim($_POST['nbPerson']), ENT_QUOTES));
                         $transport->setDateTransport(trim($date));
                         $transport->setDeparture_time(trim($_SESSION['time']));
                         $transport->setDeparture_place(trim($_SESSION['departurePlace']));
@@ -135,7 +135,7 @@ class RegistrationController extends Controller
                         $action = 'confirm';
                         // S'il l'utilisateur n'existe pas, passe en argument le numéro client
                         // Sinon on applique la méthode sans $passUser en argument
-                        $message = $testingUser == null ? $mailer->sendUserMail( $emailUser, $action, $transport, $passUser) : $mailer->sendUserMail($emailUser, $action, $transport);
+                        $message = $testingUser == null ? $mailer->sendUserMail($emailUser, $action, $transport, $passUser) : $mailer->sendUserMail($emailUser, $action, $transport);
                         // Instance de TransportModel
                         $transportModel = new TransportModel();
                         // Si le message est vide et donc que l'envoi de mail s'est bien déroulé

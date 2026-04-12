@@ -85,8 +85,9 @@ class EstimateController extends Controller
         // récupére le contenu Fetch POST contenant la durée et la distance du trajet par l'API Matrix de google,
         // la validation du transport aller-retour et le temps d'attente sur place
         $data = $this->getData();
+       
         // Durée du trajet
-        $tps = intval(  $data[0]);
+        $tps = intval($data[0]);
         // Distance du trajet converti en kms et arrondis à plus ou moins .5
         $distance = round(intval($data[1]) / 1000);
         // true ou false : transport aller-retour
@@ -95,11 +96,11 @@ class EstimateController extends Controller
         $wait = $data[3];
         // On récupère en session le tps d'attente afin d'alimenter la table plus tard
         $_SESSION['wait'] = $wait;
-
+        $_SESSION['test'] = 9;
         // Effectue une lecture de table afin de récupérer les tarifs en vigeurs
         $modelPrice = new PriceModel();
         $price = $modelPrice->findAll();
-
+        
         // Si true, on stocke les données relatif à un transport aller-retour
         // Sinon on stocke les données de transport simple
         $_SESSION['roundTrip'] = "Non";
@@ -116,14 +117,14 @@ class EstimateController extends Controller
             $price = 0;
         }
 
-
+       
         // On stocke ces données dans un tableau associatif
         $dataTrip = array('priceDay' =>$priceDay,
                         'priceNight' =>  $priceNight,
                         'distance' => $distance,
                         'price' => $price
                         );
-        
+                       
         // Si la Session retourne true, c'est à dire, si l'on est sur un jour férié OU un dimanche OU les deux
         // Alors le  forfait adequat est appliqué.
         // Sinon on teste la Session processTime afin d'appliquer le bon forfait kilométrique
@@ -162,7 +163,7 @@ class EstimateController extends Controller
         // Stocke le tarif en session afin de le manipuler plus tard 
         $_SESSION['price'] = $price;
         $price = $price . " &euro; *";
-
+        
         $lang = isset($_SESSION['lang']) ? $_SESSION['lang'] : 'fr';
          // Convertis en chaine et l'envoi au js
         $time = sprintf("%02.2d h %02d min", $h, $i ) ;
@@ -170,7 +171,7 @@ class EstimateController extends Controller
                         "time" => $time,
                         "choice" => $choice, 
                         "lang" =>  $lang);
-        
+                                
         echo json_encode($data);
     
     }
@@ -251,58 +252,6 @@ class EstimateController extends Controller
         return  json_decode($content, true);
     }
     
-
-    //  /**
-    //  * Recoit en argument le timestamp du RDV 
-    //  * la string du jour du RDV afin de les tester.
-    //  * S'ils l'un des deux sont présent, la methode renvoit true
-    //  * 
-    //  * @param int [$date] Timestamp de la date à tester
-    //  * @param string [$day] Jour de RDV cliqué
-    //  * @return array qui retourne true ou false si $date est présent 
-    //  */
-    // private function checkDays($date, $day): bool 
-    // {
-    //     // Récupère l'année en cours
-    //     $year = date('Y');
-    
-    //     // Retourne le timestamp de Pâques afin de déterminer les jours
-    //     // fériés variables associés.
-    //     $easterDate  = easter_date($year);
-    //     $easterDay   = date('j', $easterDate);
-    //     $easterMonth = date('n', $easterDate);
-    //     $easterYear   = date('Y', $easterDate);
-        
-    //     $holidays = array(
-    //     // Jours fériés fixes
-    //     mktime(0, 0, 0, 1,  1,  $year),  // 1er janvier
-    //     mktime(0, 0, 0, 5,  1,  $year),  // Fête du travail
-    //     mktime(0, 0, 0, 5,  8,  $year),  // Victoire des alliés
-    //     mktime(0, 0, 0, 7,  14, $year),  // Fête nationale
-    //     mktime(0, 0, 0, 8,  15, $year),  // Assomption
-    //     mktime(0, 0, 0, 11, 1,  $year),  // Toussaint
-    //     mktime(0, 0, 0, 11, 11, $year),  // Armistice
-    //     mktime(0, 0, 0, 12, 25, $year),  // Noel
-        
-    //     // Jous fériées variables
-    //     // Lundi de Pâques
-    //     mktime(0, 0, 0, $easterMonth, $easterDay + 1,  $easterYear), 
-    //     // Ascencion
-    //     mktime(0, 0, 0, $easterMonth, $easterDay + 39, $easterYear),
-    //     // Pentecôte
-    //     mktime(0, 0, 0, $easterMonth, $easterDay + 50, $easterYear),
-    //     );
-        
-    //     // Scinde la chaine en array et récupère le premier index correspondant
-    //     // au jour, puis le compare
-    //     $day = explode(' ', $day);
-
-    //     if (in_array($date, $holidays) || ($day[0] == "Dimanche" || $day[0] == "Sunday,")) {
-    //         return true;
-    //     } else {
-    //         return false;
-    //     }       
-    // }
 
     /**
      * Transmet en json la langue sélectionné

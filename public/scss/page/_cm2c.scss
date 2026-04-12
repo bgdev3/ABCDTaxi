@@ -1,0 +1,15 @@
+@use '../utils/mixins';
+
+.cm2c{
+   width: 95%;
+   margin: 0 auto;
+
+   @include mixins.tablet-only{
+            width: 75%;
+      }
+    @include mixins.desktop-only{
+        width: 50%;
+    }
+}
+
+ 

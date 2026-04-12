@@ -23,7 +23,7 @@ class UserController extends Controller
      */
     public function index(): void
     {
-        global $error;
+        $error = '';
         // Récupère la langiue sélectionnée par défaut
         $lang = isset($_SESSION['lang']) ? $_SESSION['lang'] : 'fr';
         $language = new Language($lang);
@@ -42,9 +42,9 @@ class UserController extends Controller
                 $captcha = new Captcha();
                 // si la clé en post de vérifiaction du captcha est déclaré
                 if (isset($_POST['recaptcha_response']))
-                $captcha = $captcha->verify($_POST['recaptcha_response']);
+                $isCaptchaValid = $captcha->verify($_POST['recaptcha_response']);
                 // Si le re-captcha renvoi true
-                if ($captcha == true) {
+                if ($isCaptchaValid == true) {
 
                     // On instancie UserModel
                     $model = new ClientModel();
@@ -110,6 +110,7 @@ class UserController extends Controller
     */
     private function validateAuth($email, $nbUser, $user): string
     {
+        $error='';
         $lang = isset($_SESSION['lang']) ? $_SESSION['lang'] : 'fr';
         $language = new Language($lang);
         // Si la session n'existe pas
@@ -130,7 +131,7 @@ class UserController extends Controller
                                 $_SESSION['username'] = $user->surname;
                                 $_SESSION['id_user'] = $user->idClient;
                     
-                                header("location:index.php?controller=reservations&action=index");
+                                header("location:/public/reservations");
                             } else {
                                 $error =  $language->get('errorAuth1');
                             }
@@ -167,10 +168,10 @@ class UserController extends Controller
             // On détruit les sessions utilisateur et on redirige vers la page d'accueil
             session_unset();
             session_destroy();
-            header('location:index.php?controller=home&action=index');
+            header('location:/public/');
         // Sinon redirige vers la liste des réservations
         } else {
-           header('location:index.php?controller=reservations&action=index');
+           header('location:/public/reservations');
         }
     }  
 }

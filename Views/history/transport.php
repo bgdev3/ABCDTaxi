@@ -67,7 +67,7 @@ $title = $title = 'Admin - Historique transports';
                                     <td class="data"><?php echo $val->roundTrip; ?></td>
                                     <td class="data"><?php echo $val->price; ?></td>
                                     <td class="data"><?php echo $date_cancelation; ?></td>
-                                    <td class="data"><a class='addReservation'title="Ajout réservation" href="index.php?controller=adminReservations&action=addReservationsAdmin&token=<?php echo trim($_SESSION['token']); ?>&id=<?php echo $val->idTransport_histo; ?>" >+</a></td>
+                                    <td class="data"><a class='addReservation'title="Ajout réservation" href="/public/adminReservations/addReservationsAdmin/<?php echo $val->idTransport_histo; ?>/<?php echo trim($_SESSION['token']); ?>" >+</a></td>
                                 </tr>
                         <?php }  
                         } 

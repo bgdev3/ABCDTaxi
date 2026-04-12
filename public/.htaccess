@@ -1,0 +1,22 @@
+RewriteEngine On
+
+RewriteCond %{QUERY_STRING} ^(.*)&?fbclid=[^&]+&?(.*)$ [NC] 
+RewriteRule ^(.*)$ /$1?%1%2 [R=301,L]
+
+RewriteRule ^([a-zA-Z]+)$ index.php?controller=$1&action=index [L]
+
+RewriteRule ^([a-zA-Z]+)$ index.php?lang=$1 [L]
+
+RewriteRule ^([a-zA-Z]+)$ index.php?controller=$1&action=index [L]
+
+RewriteRule ^([a-zA-Z]+)/([a-zA-Z]+)$ index.php?controller=$1&action=$2 [L]
+
+RewriteRule ^([a-zA-Z]+)/([a-zA-Z]+)/([0-9]+)$ index.php?controller=$1&action=$2&id=$3 [L]
+
+RewriteRule ^([a-zA-Z]+)/([a-zA-Z]+)/([a-zA-Z0-9]+)$ index.php?controller=$1&action=$2&token=$3 [L]
+
+RewriteRule ^([a-zA-Z]+)/([a-zA-Z]+)/([0-9]+)/([a-zA-Z0-9]+)$ index.php?controller=$1&action=$2&id=$3&token=$4 [L]
+
+
+
+

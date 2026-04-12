@@ -4,10 +4,10 @@ $title = 'ABCD Taxi - Admin-Mise à jour';
 
 // S'il n'y a pas d'activté au de la de 20min, l'utilisateur est déconnecté
 if (isset($_SESSION['token_time']) && (time() - $_SESSION['token_time'] > 1200)) {
-    session_unset(); session_destroy(); header('location:index.php');
+    session_unset(); session_destroy(); header('location:/public/');
     
 } elseif (!isset($_SESSION['username_admin'])) {
-    header('location:index.php');
+    header('location:/public/');
 }
 ?>
 
@@ -22,6 +22,6 @@ if (isset($_SESSION['token_time']) && (time() - $_SESSION['token_time'] > 1200))
     echo $form; ?>
     
     <!-- Appel du script Re-Captcha -->
-    <script src="https://www.google.com/recaptcha/api.js?render=**********"></script>
+    <script src="https://www.google.com/recaptcha/api.js?render=6LebG6MpAAAAAIDVxKKsnIql8WG-028Dvudz5l-k"></script>
     
 </section>

@@ -169,7 +169,7 @@
     padding: 2% 3%;
 
    @include mixins.tablet-only {
-    padding: 2% 0% 1%;
+    padding: 2% 0 0;
 
         &  ul {
             display: flex;

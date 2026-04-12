@@ -1,0 +1,34 @@
+{
+    "short_name":"ABCDTaxi",
+    "name": "ABCD Taxi",
+    "description":"Application de devis et de réservation de taxi en ligne",
+    "icons": [
+        {
+            "src":"logo/logo_app.png",
+            "type":"image/png",
+            "sizes": "343x343"
+        }
+       ],
+    "screenshots": [
+        {
+        "src": "logo/logo-web-black.png",
+        "sizes": "406x343",
+        "type": "image/png",
+        "form_factor": "wide",
+        "label": "ABCD Taxi"
+        },
+        {
+        "src": "logo/logo-web-black.png",
+        "sizes": "406x343",
+        "type": "image/png",
+        "form_factor": "narrow",
+        "label": "ABCD Taxi"
+        }
+        ],
+    "start_url": "/public/",
+    "display_override": ["window-control-overlay", "minimal-ui"],
+    "display":"fullscreen",
+    "scope": "/",
+    "background_color": "#fff",
+    "theme_color": "#131010"
+}

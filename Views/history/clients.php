@@ -30,8 +30,8 @@ $title = $title = 'Admin - Historique clients';
                                     <td class="data"><?php echo $val->surname; ?></td>
                                     <td class="data"><?php echo $val->email; ?></td>
                                     <td class="data"><?php echo $val->tel; ?></td>
-                                    <td class="flexTd"><a href="index.php?controller=historyClients&action=updateClient&token=<?php echo trim($_SESSION['token']);?>&id=<?php echo $val->idClient_histo;?>" class="btn btn-transparent bg-dark text-success"><i class='fi fi-tr-pen-circle'></i></a>
-                                    <a href="index.php?controller=historyClients&action=deleteClient&token=<?php echo trim($_SESSION['token']);?>&id=<?php echo $val->idClient_histo;?>" class="btn btn-transparent  bg-dark text-danger"><i class='fi fi-sr-cross-circle'></i></a></td>
+                                    <td class="flexTd"><a href="/public/historyClients/updateClient/<?php echo $val->idClient_histo;?>/<?php echo trim($_SESSION['token']);?>" class="btn btn-transparent bg-dark text-success"><i class='fi fi-tr-pen-circle'></i></a>
+                                    <a href="/public/historyClients/deleteClient/<?php echo $val->idClient_histo;?>/<?php echo trim($_SESSION['token']);?>" class="btn btn-transparent  bg-dark text-danger"><i class='fi fi-sr-cross-circle'></i></a></td>
                                 </tr>
                     <?php }  ?>
                    

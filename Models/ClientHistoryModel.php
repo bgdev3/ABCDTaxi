@@ -30,7 +30,7 @@ class ClientHistoryModel extends DbConnect
      * @param int [$id] id de l'enregistrement à récupérer
      * @return object [$user] Retourne l'enregistrement 
      */
-    public function find(int $id): object 
+    public function find(int $id)
     {
         $this->request = $this->connexion->prepare("SELECT * FROM client_history WHERE idClient_histo = :id");
         $this->request ->bindParam(':id', $id);

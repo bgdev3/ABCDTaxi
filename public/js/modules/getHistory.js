@@ -54,7 +54,7 @@ export function getHistory() {
             if(option == 'date') 
         val.push(searchDate.value);
         // Envoi les données au controller correspondant
-        fetchManager('index.php?controller=historyTransport&action=selectHistory', val)
+        fetchManager('/public/historyTransport/selectHistory', val)
         .then(reponse=>reponse.json())
         .then(reponse => {
            
@@ -90,7 +90,7 @@ export function getHistory() {
                             // Permet de rajouter un td pour l'ajout du lien
                             labels = ['Nom', 'Prénom', 'Réservé le', 'Effectué le', 'Heure départ', 'Lieu départ', 'Destination', 'Aller-retour', 'Devis', 'Date annulation', ''];
                             contain = [el.name, el.surname, date[0], date[1], el.departureTime, el.departurePlace, el.destination, el.roundTrip, el.price, date[2], 
-                                        "<a class='addReservation'title='Ajout réservation' href='index.php?controller=adminReservations&action=addReservationsAdmin&token=" + reponse['token'] + "&id=" + el.idTransport_histo + "' >+</a>"];
+                                        "<a class='addReservation'title='Ajout réservation' href='/public/adminReservations/addReservationsAdmin/" +  el.idTransport_histo + "/" + reponse['token']+ "' >+</a>"];
                             contains.push(contain);
 
                         } else if(option == 'date'){

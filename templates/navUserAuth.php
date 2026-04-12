@@ -11,5 +11,5 @@
                 echo $_SESSION['username']; 
         ?>
     </p>
-    <a href="index.php?controller=user&action=logout&token=<?php echo trim($_SESSION['token']);?>" class="btnLogOut"><?php echo $language->get('logOut');?></a>
+    <a href="/public/user/logout/<?php echo trim($_SESSION['token']);?>" class="btnLogOut"><?php echo $language->get('logOut');?></a>
 </div>

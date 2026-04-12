@@ -30,7 +30,7 @@ class HistoryClientsController extends Controller
             $this->render('history/clients', ['list' => $listClient]);
 
         } else {
-            header('location:index.php');
+            header('location:/public/');
         }
     }
 
@@ -43,7 +43,7 @@ class HistoryClientsController extends Controller
      */
     function updateClient($id, $token): void
     {
-        global $error;
+        $error = '';
         // Rédcupère la valeur de la langue sélectionné
         $lang = isset($_SESSION['lang']) ? $_SESSION['lang'] : 'fr';
         $language = new Language($lang);
@@ -79,9 +79,9 @@ class HistoryClientsController extends Controller
                 // si la clé en post de vérifiaction du captcha est déclarée
                 // récupère le retour booléen de la méthode verify
                 if (isset($_POST['recaptcha_response']))
-                    $captcha = $captcha->verify($_POST['recaptcha_response']);
+                   $isCaptchaValid = $captcha->verify($_POST['recaptcha_response']);
                 // Si le re-captcha renvoi true
-                if ( $captcha == true ) {
+                if ( $isCaptchaValid == true ) {
                     // Instance du modèle et mise à jour des données
                     $clientModel = new ClientHistoryModel();
                     $clientModel->update($id, $clientHistory);
@@ -94,7 +94,7 @@ class HistoryClientsController extends Controller
                         $modelClient->update($clientReservation->email, $client);
 
                     // Redirige vers la liste de l'historique
-                    header('location:index.php?controller=historyClients&action=index&token=' . trim($_SESSION['token']));
+                    header('location:/public/historyClients/index/' . trim($_SESSION['token']));
                 } else {
                     $error = $language->get('errorCaptcha');
                 }
@@ -152,7 +152,7 @@ class HistoryClientsController extends Controller
             $this->render('history/updateClient', ['updateForm' => $form->getFormElements(), 'error' => $error]); 
          // Sinon redirige vers l'historique
         } else {
-            header('location:index.php');
+            header('location:/public/');
         }  
     }
 
@@ -196,11 +196,11 @@ class HistoryClientsController extends Controller
             // Supprimme l'enregistrement correspondant à la clé passé en paramètre
             $modelClientHisto->delete($id);
             // Redirige vers la liste des clients
-            header('location:index.php?controller=historyClients&action=index&token=' . trim($_SESSION['token']));
+            header('location:/public/historyClients/index/' . trim($_SESSION['token']));
             // Si 'Non est déclaré en POST, redirige vers la laiste des clients
         } else if (isset($_POST['Non'])  && isset($_GET['token']) && isset($_GET['id']) && $_GET['token'] == $_SESSION['token']) {
 
-            header('location:index.php?controller=historyClients&action=index&token=' . trim($_SESSION['token']));
+            header('location:/public/historyClients/index/' . trim($_SESSION['token']));
         } else {
             $error = $language->get('unknownUser');
         }

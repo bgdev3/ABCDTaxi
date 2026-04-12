@@ -17,6 +17,7 @@ window.addEventListener('DOMContentLoaded', async ()=>{
 let book = document.querySelector('div.date');
 let getMap = document.querySelector('#map');
 let getFooterMap = document.querySelector('#map-footer');
+let getMapTaxi = document.querySelector('#taxiMap');
 let customer = document.querySelector('.table-responsive');
 let getForm = document.querySelector('form');
 let searchTransport = document.querySelector('#searchTransport');
@@ -30,6 +31,13 @@ if(book != 'undefined'){
     slides();
 }
 
+if(getMapTaxi){
+    async function taxiMap() {
+        const date = await import("./modules/taxiMapAnimated.js");
+        date.taxiMapAnimated();
+    }
+    taxiMap();
+}
 // Page Map et itinéraire
 if(getMap){
     async function map() {

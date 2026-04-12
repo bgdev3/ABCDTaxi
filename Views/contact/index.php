@@ -7,11 +7,11 @@ $page = $language->get('titlePageContact');
 
 
 if(isset($_SESSION['username_admin']))
-    header('location:index.php?controller=panelAdmin&action=index');
+    header('location:/public/panelAdmin');
 elseif (isset($_SESSION['username']))
-    header('location:index.php?controller=reservations&action=index');
+    header('location:/public/reservations');
 elseif(!isset($_SESSION['token']))
-    header('location:index.php');
+    header('location:/public/');
 ?>
 
 

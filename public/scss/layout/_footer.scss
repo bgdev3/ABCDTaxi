@@ -65,11 +65,14 @@
         }
     }
 
-    > p {
+    .info_footer {
         font-size: .65em;
         text-align: center;
         text-transform: uppercase;
-        color: color.$color-red;
+    }
+    
+    > p{
+         color: color.$color-red;
         & > a {
             color: color.$color-red;
         }
