@@ -10,6 +10,11 @@ class price
     private $oneWayNight;
     private $returnJourneyNight;
     private $waitingRate;
+    private $minDistanceDay;
+    private $minDistanceNight;
+    private $minDistanceDayReturn;
+    private $minDistanceNightReturn;   
+    private $minPerception; 
 
 
 
@@ -129,6 +134,108 @@ class price
     public function setWaitingRate($waitingRate)
     {
         $this->waitingRate = $waitingRate;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of minDistanceNight
+     */ 
+    public function getMinDistanceNight()
+    {
+        return $this->minDistanceNight;
+    }
+
+    /**
+     * Set the value of minDistanceNight
+     *
+     * @return  self
+     */ 
+    public function setMinDistanceNight($minDistanceNight)
+    {
+        $this->minDistanceNight = $minDistanceNight;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of minDistanceNightReturn
+     */ 
+    public function getMinDistanceNightReturn()
+    {
+        return $this->minDistanceNightReturn;
+    }
+
+    /**
+     * Set the value of minDistanceNightReturn
+     *
+     * @return  self
+     */ 
+    public function setMinDistanceNightReturn($minDistanceNightReturn)
+    {
+        $this->minDistanceNightReturn = $minDistanceNightReturn;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of minDistanceDay
+     */ 
+    public function getMinDistanceDay()
+    {
+        return $this->minDistanceDay;
+    }
+
+    /**
+     * Set the value of minDistanceDay
+     *
+     * @return  self
+     */ 
+    public function setMinDistanceDay($minDistanceDay)
+    {
+        $this->minDistanceDay = $minDistanceDay;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of minDistanceDayReturn
+     */ 
+    public function getMinDistanceDayReturn()
+    {
+        return $this->minDistanceDayReturn;
+    }
+
+    /**
+     * Set the value of minDistanceDayReturn
+     *
+     * @return  self
+     */ 
+    public function setMinDistanceDayReturn($minDistanceDayReturn)
+    {
+        $this->minDistanceDayReturn = $minDistanceDayReturn;
+
+        return $this;
+    }
+
+   
+
+    /**
+     * Get the value of minPerception
+     */ 
+    public function getMinPerception()
+    {
+        return $this->minPerception;
+    }
+
+    /**
+     * Set the value of minPerception
+     *
+     * @return  self
+     */ 
+    public function setMinPerception($minPerception)
+    {
+        $this->minPerception = $minPerception;
 
         return $this;
     }

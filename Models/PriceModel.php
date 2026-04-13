@@ -1,7 +1,6 @@
 <?php 
 namespace App\Models;
 
-use PDO;
 use Exception;
 use App\Core\DbConnect;
 use App\Entities\Price;
@@ -32,14 +31,22 @@ class PriceModel extends DbConnect
     public function update(Price $price, int $id): void
     {
         $this->request = $this->connexion->prepare("UPDATE pricing SET oneWayDay = :oneWayDay, returnJourneyDay = :returnJourneyDay,
-                                                        oneWayNight = :oneWayNight, returnJourneyNight = :returnJourneyNight, waitingRate = :waitingRate WHERE idPrice = :id");                                        
+                                                        oneWayNight = :oneWayNight, returnJourneyNight = :returnJourneyNight, waitingRate = :waitingRate,
+                                                        minDistanceDay = :minDistanceDay, minDistanceNight = :minDistanceNight,
+                                                        minDistanceDayReturn = :minDistanceDayReturn, minDistanceNightReturn = :minDistanceNightReturn, 
+                                                        minPerception = :minPerception WHERE idPrice = :id");                                        
         $this->request->bindValue(':id', $id);
         $this->request->bindValue(':oneWayDay', $price->getOneWayDay());
         $this->request->bindValue(':returnJourneyDay', $price->getReturnJourneyDay());
         $this->request->bindValue(':oneWayNight', $price->getOneWayNight());
         $this->request->bindValue(':returnJourneyNight', $price->getReturnJourneyNight());
         $this->request->bindValue(':waitingRate', $price->getWaitingRate());
-
+        $this->request->bindValue(':minDistanceDay', $price->getMinDistanceDay());
+        $this->request->bindValue(':minDistanceNight', $price->getMinDistanceNight());
+        $this->request->bindValue(':minDistanceDayReturn', $price->getMinDistanceDayReturn());
+        $this->request->bindValue(':minDistanceNightReturn', $price->getMinDistanceNightReturn());
+        $this->request->bindValue(':minPerception', $price->getMinPerception());
+       
         $this->executeTryCatch();
     }
     
@@ -52,7 +59,7 @@ class PriceModel extends DbConnect
     public function delete(int $id): void
     {
         $this->request = $this->connexion->prepare("DELETE FROM pricing WHERE idPrice = :id");
-        $this->request->bindParam(":id", $idPrice);
+        $this->request->bindParam(":id", $id);
         $this->executeTryCatch();
     }
 

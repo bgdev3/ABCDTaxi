@@ -49,7 +49,7 @@ class AdminPriceController extends Controller
         $lang = isset($_SESSION['lang']) ? $_SESSION['lang'] : 'fr';
         $language = new Language($lang);
         // Si les les données POST sont valides
-        if (Form::validatePost($_POST, ['oneWayDay', 'returnDay', 'oneWayNight', 'returnNight', 'waitingRate'])) {
+        if (Form::validatePost($_POST, ['oneWayDay', 'returnDay', 'oneWayNight', 'returnNight', 'waitingRate', 'minDistanceDay', 'minDistanceNight', 'minDistanceDayReturn', 'minDistanceNightReturn', 'minPerception'])) {
             // Si le token de sécurité correspondent
             if (isset($_POST['token']) && $_POST['token'] == $_SESSION['token']) {
                 // Instance de Price puis on l'hydrate
@@ -60,6 +60,12 @@ class AdminPriceController extends Controller
                 $price->setOneWayNight(htmlspecialchars(trim($_POST['oneWayNight']), ENT_QUOTES));
                 $price->setReturnJourneyNight(htmlspecialchars(trim($_POST['returnNight']), ENT_QUOTES));
                 $price->setWaitingRate(htmlspecialchars(trim($_POST['waitingRate']), ENT_QUOTES));
+                $price->setMinDistanceDay(htmlspecialchars(trim($_POST['minDistanceDay']), ENT_QUOTES));
+                $price->setMinDistanceNight(htmlspecialchars(trim($_POST['minDistanceNight']), ENT_QUOTES));
+                $price->setMinDistanceDayReturn(htmlspecialchars(trim($_POST['minDistanceDayReturn']), ENT_QUOTES));
+                $price->setMinDistanceNightReturn(htmlspecialchars(trim($_POST['minDistanceNightReturn']), ENT_QUOTES));
+                $price->setMinPerception(htmlspecialchars(trim($_POST['minPerception']), ENT_QUOTES));
+                
                 // Effectue la mise à jour
                 $priceModel = new PriceModel();
                 $priceModel->update($price, $id);
@@ -86,32 +92,58 @@ class AdminPriceController extends Controller
             $form->startFieldSet('', 'form-group  p-2 w-100');
             $form->legend('Jour', 'mb-2fs-5 fst-italic text-danger col-4 col-md-4 col-lg-4');
             $form->startDiv('form-group mb-3');
-            $form->addLabel('oneWayDay', 'Simple:');
+            $form->addLabel('oneWayDay', 'Tarif simple:');
             $form->addInput('number', 'oneWayDay', ['id' => 'oneWayDay', 'class' => 'form-control  bg-transparent text-secondary border border-secondary', 'value' => $priceModel->oneWayDay, 'step' => 0.01, 'min' => 0, 'required' => '']);
             $form->endDiv();
             $form->startDiv('form-group mb-3');
-            $form->addLabel('returnDay', 'Aller-retour');
+            $form->addLabel('returnDay', 'Tarif aller-retour');
             $form->addInput('number', 'returnDay', ['id' => 'returnDay', 'class' => 'form-control  bg-transparent text-secondary border border-secondary ', 'value' => $priceModel->returnJourneyDay, 'step' => 0.01, 'min' => 0, 'required' => '']);
             $form->endDiv();
+
+              $form->startDiv('form-group mb-3');
+            $form->addLabel('minDistanceDay', 'Min kilomètrique jour');
+            $form->addInput('number', 'minDistanceDay', ['id' => 'minDistanceDay', 'class' => 'form-control  bg-transparent text-secondary border border-secondary ', 'value' => $priceModel->minDistanceDay, 'step' => 0.01, 'min' => 0, 'required' => '']);
+            $form->endDiv();
+              $form->startDiv('form-group mb-3');
+            $form->addLabel('minDistanceDayReturn', 'Min kilomètrique aller-retour');
+            $form->addInput('number', 'minDistanceDayReturn', ['id' => 'minDistanceDayReturn', 'class' => 'form-control  bg-transparent text-secondary border border-secondary ', 'value' => $priceModel->minDistanceDayReturn, 'step' => 0.01, 'min' => 0, 'required' => '']);
+            $form->endDiv();
+
             $form->endFieldset();
             $form->startFieldSet('', 'form-group  p-2 w-100');
             $form->legend('Nuit', 'mb-2 fs-5 fst-italic text-danger col-4 col-md-4 col-lg-4');
             $form->startDiv('form-group mb-3');
-            $form->addLabel('oneWayNight', 'Simple :');
+            $form->addLabel('oneWayNight', 'Tarif simple :');
             $form->addInput('number', 'oneWayNight', ['id' => 'oneWayNight', 'class' => 'form-control  bg-transparent text-secondary border border-secondary ','value' => $priceModel->oneWayNight, 'step' => 0.01, 'min' => 0, 'required' => '']);
             $form->endDiv();
             $form->startDiv('form-group mb-3');
-            $form->addLabel('returnNight', 'Aller-retour');
+            $form->addLabel('returnNight', 'Tarif aller-retour');
             $form->addInput('number', 'returnNight', ['id' => 'returnNight', 'class' => 'form-control  bg-transparent text-secondary border border-secondary ', 'value' => $priceModel->returnJourneyNight, 'step' => 0.01, 'min' => 0, 'required' => '']);
             $form->endDiv();
-            $form->endFieldSet();
+
+              $form->startDiv('form-group mb-3');
+            $form->addLabel('minDistanceNight', 'Min kilomètrique nuit');
+            $form->addInput('number', 'minDistanceNight', ['id' => 'minDistanceNight', 'class' => 'form-control  bg-transparent text-secondary border border-secondary ','value' => $priceModel->minDistanceNight, 'step' => 0.01, 'min' => 0, 'required' => '']);
             $form->endDiv();
-            $form->startFieldSet('', 'form-group  p-2 w-75 mx-auto'); 
+              $form->startDiv('form-group mb-3');
+            $form->addLabel('minDistanceNightReturn', 'Min kilomètrique aller-retour');
+            $form->addInput('number', 'minDistanceNightReturn', ['id' => 'minDistanceNightReturn', 'class' => 'form-control  bg-transparent text-secondary border border-secondary ','value' => $priceModel->minDistanceNightReturn, 'step' => 0.01, 'min' => 0, 'required' => '']);
+            $form->endDiv();
+            $form->endFieldSet();
+
+            $form->endDiv();
+            $form->startFieldSet('', 'd-flex flex-lg-row flex-column gap-md-5 w-75 mx-auto'); 
             $form->startDiv('form-group mb-3 col-12 col-md-4 mx-auto p-2');
-            $form->legend('Attente', 'mb-2  fs-5 fst-italic text-danger col-4 col-md-4 col-lg-4');
+            $form->legend('Attente', 'mb-2  fs-5 fst-italic text-danger col-4 col-md-4 col-lg-4 w-100');
             $form->addInput('number', 'waitingRate', ['id' => 'waitingRate', 'class' => ' form-control  bg-transparent text-secondary border border-secondary ', 'value' => $priceModel->waitingRate, 'step' => 0.01, 'min' => 0, 'required' => '']);
             $form->endDiv();
+
+            $form->startDiv('form-group mb-3 col-12 col-md-4 mx-auto p-2');
+            $form->legend('Min de perception', 'mb-2  fs-5 fst-italic text-danger col-4 col-md-4 col-lg-4 w-100');
+            $form->addInput('number', 'minPerception', ['id' => 'minPerception', 'class' => ' form-control  bg-transparent text-secondary border border-secondary ', 'value' => $priceModel->minPerception, 'step' => 0.01, 'min' => 0, 'required' => '']);
+            $form->endDiv();
             $form->endFieldSet(); 
+
             $form->startDiv('form-group  text-center w-75 mx-auto');
             $form->addInput('hidden', 'token',['id'=>'hidden',' value' => isset($_SESSION['token']) ? trim($_SESSION['token']) : null]);
             $form->addInput('submit', 'btnPrice',['id' => 'btnPrice', 'class'=>'btnAdmin btn btn-dark text-danger col-10 col-md-3', 'value' => 'Modifier les tarifs']);

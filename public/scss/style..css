@@ -33,6 +33,10 @@
   z-index: 9999;
 }
 
+.admin-reservation th:first-child:not(th:last-child) {
+      background-color: transparent !important;
+  }
+
 .loader {
   width: 48px;
   height: 48px;
@@ -159,26 +163,11 @@ a:hover:not(.error404 a) {
   transition: 0.5s;
 }
 
-
-figcaption{
-    font-size: .75rem;
-    font-style: italic;
-    text-align: center;
-    margin-top: 1%;
-}
-
 .footer {
   font-size: 0.9rem;
   line-height: 1.4em;
   padding-top: 2%;
 }
-
-.footer .info_footer {
-        font-size: .65em;
-        text-align: center;
-        text-transform: uppercase;
-    }
-    
 .footer div:has(#map-footer) {
   order: 3;
   width: 100%;
@@ -245,10 +234,12 @@ figcaption{
     margin-bottom: initial;
   }
 }
-.footer > p {
+.footer .info_footer {
   font-size: 0.65em;
   text-align: center;
   text-transform: uppercase;
+}
+.footer > p {
   color: #850202;
 }
 .footer > p > a {
@@ -796,15 +787,17 @@ label[for=agree] {
 
 .table {
   width: 95%;
-  margin: 0 auto;
-  border: 1px solid #850202;
-  text-align: center;
-  color: #e9e9e9;
 }
 @media only screen and (min-width: 576px) {
   .table {
     width: 80%;
   }
+}
+.table {
+  margin: 0 auto;
+  border: 1px solid #850202;
+  text-align: center;
+  color: #e9e9e9;
 }
 .table tbody tr {
   background-color: #1a1919;
@@ -1122,6 +1115,9 @@ section.row > * {
   border: 2px solid #131010;
   background-color: #1a1919;
 }
+.admin-reservation th:first-child:not(th:last-child) {
+  background-color: transparent !important;
+}
 
 .addReservation {
   display: block;
@@ -1130,37 +1126,19 @@ section.row > * {
   font-size: 1.2em;
 }
 
-.error404 {
-  display: flex;
-  flex-direction: column;
-  justify-content: start;
-  align-items: center;
-  width: 100%;
-  height: 100vh;
+.cm2c {
+  width: 95%;
+  margin: 0 auto;
 }
-.error404 h1 {
-  font-size: 10em;
-  color: transparent;
-  -webkit-text-stroke: 1px #850202;
+@media only screen and (min-width: 576px) {
+  .cm2c {
+    width: 75%;
+  }
 }
-.error404 span {
-  font-size: 2em;
-  color: #850202;
-}
-.error404 p {
-  font-size: 1.25em;
-}
-.error404 a {
-  font-size: 1.25em;
-  border: 1px solid #850202;
-  padding: 0.5em 3em;
-  border-radius: 10px;
-  color: #e9e9e9;
-  transition: 0.5s;
-}
-.error404 a:hover {
-  border: 1px solid transparent;
-  color: #850202;
+@media only screen and (min-width: 1024px) {
+  .cm2c {
+    width: 50%;
+  }
 }
 
 .header__burger {
@@ -1359,7 +1337,6 @@ section.row > * {
   font-style: italic;
   border-radius: 5px;
   color: #e9e9e9;
-  transition: 0.5s ease;
 }
 @media only screen and (min-width: 576px) {
   .btnDevis {
@@ -1375,6 +1352,9 @@ section.row > * {
     margin: 5% auto;
   }
 }
+.btnDevis {
+  transition: 0.5s ease;
+}
 .btnDevis:hover {
   color: #e9e9e9;
   font-weight: bold;
@@ -1387,7 +1367,6 @@ section.row > * {
 .btnMap {
   margin: 5% auto;
   padding: 0.7em 1em;
-  transition: 0.5s ease;
 }
 @media only screen and (min-width: 576px) {
   .btnMap {
@@ -1398,6 +1377,9 @@ section.row > * {
   .btnMap {
     max-width: 30%;
   }
+}
+.btnMap {
+  transition: 0.5s ease;
 }
 .btnMap:hover {
   color: #e9e9e9;
@@ -1419,13 +1401,15 @@ section.row > * {
   border-radius: 5px;
   border: none;
   margin: 5% auto;
-  transition: 0.5s ease;
 }
 @media only screen and (min-width: 576px) {
   .btnForm, .btnFormNew, .btnFormDelete {
     font-size: 1em;
     width: 50%;
   }
+}
+.btnForm, .btnFormNew, .btnFormDelete {
+  transition: 0.5s ease;
 }
 .btnForm:hover, .btnFormNew:hover, .btnFormDelete:hover {
   color: #e9e9e9;
@@ -1635,7 +1619,7 @@ section.row > * {
     margin: 0;
     width: 20%;
   }
-  .main__content-logo:not(img[src*=events], img[src*=transport]) {
+  .main__content-logo:not(img[src*=events]) {
     order: 1;
   }
 }
@@ -1779,20 +1763,6 @@ section.row > * {
 .header__nav__sousMenu a {
   padding: 5% 0;
 }
-
-.main__content figure {
-
-    overflow: hidden;
-    position: relative; 
-}
-
-figcaption{
-    font-size: .75rem;
-    font-style: italic;
-    text-align: center;
-    margin-top: 1%;
-}
-
 @media only screen and (min-width: 1024px) {
   .header__nav__sousMenu {
     position: absolute;
@@ -1839,7 +1809,7 @@ figcaption{
 }
 @media only screen and (min-width: 576px) {
   .footer__nav {
-    padding: 2% 0% 1%;
+    padding: 2% 0 0;
   }
   .footer__nav ul {
     display: flex;
@@ -1878,21 +1848,17 @@ figcaption{
 .footer-title {
   color: #850202;
   margin-bottom: 2%;
+}
+
+.main__content figure {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+figcaption {
+  font-size: 0.75rem;
+  font-style: italic;
+  text-align: center;
+  margin-top: 1%;
 }/*# sourceMappingURL=style..css.map */
-
-.cm2c{
-   width: 95%;
-   margin: 0 auto;
-}
-
-@media only screen and (min-width: 576px) {
-  .cm2c {
-     width: 75%;
-  }
-}
-
-@media only screen and (min-width: 1024px) {
-  .cm2c {
-     width: 50%;
-  }
-}

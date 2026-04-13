@@ -11,5 +11,11 @@
         border: 2px solid #131010;
         background-color: #1a1919;
     }
+
+    th:first-child:not(th:last-child) {
+        background-color: transparent !important;
+    }
 }
+
+
 
