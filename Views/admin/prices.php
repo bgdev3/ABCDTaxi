@@ -73,6 +73,7 @@ if (isset($_SESSION['token_time']) && (time() - $_SESSION['token_time'] > 1200))
             <div class="table-responsive w-75 mx-auto">
                 <table class="table table-sm table-borderless border border-0  table-dark text-center align-middle caption-top">
                 <caption  class="text-light  text-center fs-6">Autres</caption>
+                                          
                     <thead class="align-middle">
                         <tr>
                             <th scope="col" class="text-danger">Attente</th>           
@@ -94,6 +95,17 @@ if (isset($_SESSION['token_time']) && (time() - $_SESSION['token_time'] > 1200))
                                 <td class="data"><?php echo $prices->minPerception; ?></td>
                             </tr>
                     </tbody>
+                     <thead class="align-middle mt-2">
+                        <tr>
+                            <th scope="col" class="text-danger">Prise en charge</th>           
+                        </tr>
+                    </thead>
+                    <tbody>                                 
+                            <tr>
+                                <td class="data"><?php echo $prices->pickupPrice; ?></td>
+                            </tr>
+                    </tbody>
+                    
                 </table>
             </div>
         

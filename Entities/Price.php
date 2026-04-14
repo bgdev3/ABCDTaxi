@@ -15,6 +15,7 @@ class price
     private $minDistanceDayReturn;
     private $minDistanceNightReturn;   
     private $minPerception; 
+    private $pickupPrice;
 
 
 
@@ -236,6 +237,26 @@ class price
     public function setMinPerception($minPerception)
     {
         $this->minPerception = $minPerception;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of pickupPrice
+     */ 
+    public function getPickupPrice()
+    {
+        return $this->pickupPrice;
+    }
+
+    /**
+     * Set the value of pickupPrice
+     *
+     * @return  self
+     */ 
+    public function setPickupPrice($pickupPrice)
+    {
+        $this->pickupPrice = $pickupPrice;
 
         return $this;
     }

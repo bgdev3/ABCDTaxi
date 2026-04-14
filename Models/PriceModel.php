@@ -34,7 +34,7 @@ class PriceModel extends DbConnect
                                                         oneWayNight = :oneWayNight, returnJourneyNight = :returnJourneyNight, waitingRate = :waitingRate,
                                                         minDistanceDay = :minDistanceDay, minDistanceNight = :minDistanceNight,
                                                         minDistanceDayReturn = :minDistanceDayReturn, minDistanceNightReturn = :minDistanceNightReturn, 
-                                                        minPerception = :minPerception WHERE idPrice = :id");                                        
+                                                        minPerception = :minPerception, pickupPrice = :pickupPrice WHERE idPrice = :id");                                        
         $this->request->bindValue(':id', $id);
         $this->request->bindValue(':oneWayDay', $price->getOneWayDay());
         $this->request->bindValue(':returnJourneyDay', $price->getReturnJourneyDay());
@@ -46,6 +46,7 @@ class PriceModel extends DbConnect
         $this->request->bindValue(':minDistanceDayReturn', $price->getMinDistanceDayReturn());
         $this->request->bindValue(':minDistanceNightReturn', $price->getMinDistanceNightReturn());
         $this->request->bindValue(':minPerception', $price->getMinPerception());
+        $this->request->bindValue(':pickupPrice', $price->getPickupPrice());
        
         $this->executeTryCatch();
     }

@@ -48,19 +48,20 @@ if(isset($_SESSION['admin'])) {
                         $date_database = date('Y-m-d', $date_database);
                         // Parcours le tableau d'heures
                         foreach($times as $val) {
-                            $att = "";
+                            $disabled = "";
                             // A chaque occurrences de $times, vérifie si la valeur est présente
                             // dans les enregistrements récupérées coté serveur.
                             // Si c'est le cas, un attribut css est créer et stocké afin de l'assigné au lien crée par la suite
+                           
                             foreach($_SESSION['dbHours'] as $time){
                                 // Retire le 0 des dizaine si présent
                                 $heure = $time->departureTime[0] == '0' ? substr($time->departureTime, 1) : $time->departureTime;
                                 // Si l'heure corrspond à celui présent dans l'enregistrement parcouru
                                 // ainsi que la date, on assigne l'attribut css
                                 if($val == $heure && $date_database == $time->date_transport) 
-                                    $att = "disabled";
+                                    $disabled = "disabled";
                             }
-                            echo  "<a href='/public/estimate' class='hours shape hide '" . $att ."' >" . $val . "</a>";
+                            echo  "<a href='/public/estimate' class='hours shape hide " . $disabled ."' >" . $val . "</a>";
                         } 
                     ?>
 

@@ -33,10 +33,6 @@
   z-index: 9999;
 }
 
-.admin-reservation th:first-child:not(th:last-child) {
-      background-color: transparent !important;
-  }
-
 .loader {
   width: 48px;
   height: 48px;
@@ -528,6 +524,11 @@ a:hover:not(.error404 a) {
 }
 .reservation .btn .mr {
   margin-right: 5%;
+}
+.reservation a.disabled {
+  pointer-events: none;
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .reservation_devis {

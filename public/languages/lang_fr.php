@@ -80,7 +80,7 @@ return [
     'wait'                      => 'Attente estimée:',
     'estimate'                  => 'Veuillez renseigner un itinéraire afin d\'obtenir un devis.',
     'btnEstimate'               => 'Je valide mon devis',
-    'conditions'                => '* Sous réserve des conditions tarifaires prévues par les arrétés préfectoraux en vigueur, de l\'évolution des tarifs des péages et des conditions de circulations.',
+    'conditions'                => '* Sous réserve des conditions tarifaires prévues par les arrétés préfectoraux en vigueur, de l\'évolution des tarifs des péages et des conditions de circulation.',
 
 
      /************

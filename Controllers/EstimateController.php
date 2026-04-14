@@ -68,11 +68,14 @@ class EstimateController extends Controller
      * @var int [$price] stocke le tarif
      * @var array [$data] stocke le retour de la méthode getData
      * @var string [$tps] stocke la durée de trajet converti en integer
-     * @var int [distance] Stocke la distance du trajet
+     * @var float [distance] Stocke la distance du trajet
      * @var string [$choice] Stocke le booléen de la checkbox
      * @var string [$wait] Stocke le temps d'attente indiqué par l'utilisateur
-     * @var int [$priceDay] Tarif de jour
-     * @var int [$priceNight] Tarif de nuit
+     * @var float [$priceDay] Tarif de jour
+     * @var float [$priceNight] Tarif de nuit
+     * @var float [$minDistanceDay] Distance minimum en tarif jour
+     * @var float [$minDistanceNight] Distance minimum en tarif nuit
+     * @var float [$pickupPrice] Tarif de prise en charge
      * @var array [dataTrip] Stocke les tarifs dans un tableau associatif
      * 
      * @return [$data] retour json du temps de trajet formaté et du prix
@@ -97,20 +100,22 @@ class EstimateController extends Controller
         // On récupère en session le tps d'attente afin d'alimenter la table plus tard
         $_SESSION['wait'] = $wait;
         $_SESSION['test'] = 9;
+
         // Effectue une lecture de table afin de récupérer les tarifs en vigeurs
         $modelPrice = new PriceModel();
         $priceModel = $modelPrice->findAll();
+        $pickupPrice = $priceModel->pickupPrice;
         
         // Si true, on stocke les données relatif à un transport aller-retour
         // Sinon on stocke les données de transport simple
         $_SESSION['roundTrip'] = "Non";
         if ($choice === true) {
-            $priceDay = $priceModel->returnJourneyDay;      // tarif jour
-            $priceNight =  $priceModel->returnJourneyNight;      // tarif nuit
-            $minDistanceDay =   $priceModel->minDistanceDayReturn;  // Distance minimum en tarif jour A/R
-            $minDistanceNight =  $priceModel->minDistanceNightReturn;  // Distance minimum en tarif nuit A/R
-            $distance = $distance*2; // Distance récupèrer * 2
-            $price = intval($wait) * $priceModel->waitingRate;    // Tps d'attente multiplié par le tarif appliqué à la minute
+            $priceDay = $priceModel->returnJourneyDay;                       // tarif jour
+            $priceNight =  $priceModel->returnJourneyNight;                  // tarif nuit
+            $minDistanceDay =   $priceModel->minDistanceDayReturn;           // Distance minimum en tarif jour A/R
+            $minDistanceNight =  $priceModel->minDistanceNightReturn;        // Distance minimum en tarif nuit A/R
+            $distance = $distance*2;                                         // Distance récupèrer * 2
+            $price = intval($wait) * $priceModel->waitingRate;                // Tps d'attente multiplié par le tarif appliqué à la minute
             $_SESSION['roundTrip'] = "Oui";
         } else {
             $priceDay = $priceModel->oneWayDay;
@@ -132,6 +137,9 @@ class EstimateController extends Controller
         // Si la Session retourne true, c'est à dire, si l'on est sur un jour férié OU un dimanche OU les deux
         // Alors le  forfait adequat est appliqué.
         // Sinon on teste la Session processTime afin d'appliquer le bon forfait kilométrique
+
+        // Si les distances traités sont inférieures aux distances kilométrique forfaitaires, alors un minimum de perception, uniquement, est automatiquement appliqué
+        // quelque soit l'heure du transport.
         if (isset($_SESSION['restlessDay']) && !$_SESSION['restlessDay']) {
             
             // Calcule le delay entre 19h et l'heure de rdv selectionné
@@ -139,26 +147,24 @@ class EstimateController extends Controller
             // Si l'heure de rdv est supérieure ou égale à 19h
             if ($_SESSION['processTime'] >= 68500) {
                 // Tarif de nuit appliqué
-               $dataTrip['distance'] < $minDistanceNight ? $price = $priceModel->minPerception :  $price = $this->tarif( $dataTrip);
+               $dataTrip['distance'] < $minDistanceNight ? $price = $priceModel->minPerception :  $price = $this->tarif($pickupPrice, $dataTrip);
                 // $price = $this->tarif( $dataTrip);
             // Si rdv inférieur à 19h ET que le temps de trajet est supérieur à $delay ( Donc passage en tarif nuit)
             } elseif ($_SESSION['processTime'] < 68500 && $tps > $delay) {
                 // on recupère le delai en minute et on l'envoi au calcul
                 $min = floor($delay / 60) - 1;
-                $dataTrip['distance'] < $minDistanceNight ? $price = $priceModel->minPerception :  $price = $this->tarif( $dataTrip, $min);
+                $dataTrip['distance'] < $minDistanceNight ? $price = $priceModel->minPerception :  $price = $this->tarif( $pickupPrice, $dataTrip, $min);
                 // $price = $this->tarif($dataTrip, $min);
                 // Sinon on applique le tarif de journée
             } else {
-                $price = $dataTrip['priceDay'] * $dataTrip['distance'] + 2.30;
+                $price = $dataTrip['priceDay'] * $dataTrip['distance'] + $pickupPrice;
                 $price += $dataTrip['price'];
                 $dataTrip['distance'] < $minDistanceDay ? $price = $priceModel->minPerception : $price = number_format($price, 2, ",", " ");
-
-            //   $price = number_format($price, 2, ",", " ");
             }
 
         } else {
             // Sinon le tarif forfaitaire jour fériés/nuit est appliqué (Corrspondant au tarifs nuit h24)
-              $dataTrip['distance'] < $minDistanceNight ? $price = $priceModel->minPerception :  $price = $this->tarif( $dataTrip);
+              $dataTrip['distance'] < $minDistanceNight ? $price = $priceModel->minPerception :  $price = $this->tarif( $pickupPrice, $dataTrip);
             // $price = $this->tarif($dataTrip);
         }
         // Recupère le temps de trajet (en sec) défini par directionService
@@ -191,10 +197,10 @@ class EstimateController extends Controller
      * 
      * @param int [$min] (facultatif) delai entre l'heure de de depart et l'heure du traif nuit
      * @param array [$dataTrip] tableau de données de transports selon que ce soit un trajet simple ou transport aller-retour
-     * 
+     * @var float [$pickupPrice] Tarif de prise en charge
      * @return int [$tarif] retourne le tarif à appliquer
      */
-    private function tarif($dataTrip = [], $min = null)
+    private function tarif($pickupPrice, $dataTrip = [], $min = null)
     {
         // Si $min n'est pas null, 
         if ($min != null) {
@@ -202,7 +208,7 @@ class EstimateController extends Controller
             // Enleve le delai au total kilométrique
             // Calcule les kilomètre traif nuit
             $distance = $dataTrip['distance'] - $min;
-            $price1 = $dataTrip['priceNight'] * $distance + 2.30;
+            $price1 = $dataTrip['priceNight'] * $distance + $pickupPrice;
     
             // Kilomètre restant en tarif jour
             $distance = $min;
@@ -212,7 +218,7 @@ class EstimateController extends Controller
             $price += $dataTrip['price'];
        } else {
             // Sinon le traif nuit est appliqué
-            $price = $dataTrip['priceNight'] * $dataTrip['distance'] + 2.30;
+            $price = $dataTrip['priceNight'] * $dataTrip['distance'] + $pickupPrice;
             $price += $dataTrip['price'];
         }      
         // Formatte le tarif à 2 chiffres après la virgule

@@ -49,7 +49,7 @@ class AdminPriceController extends Controller
         $lang = isset($_SESSION['lang']) ? $_SESSION['lang'] : 'fr';
         $language = new Language($lang);
         // Si les les données POST sont valides
-        if (Form::validatePost($_POST, ['oneWayDay', 'returnDay', 'oneWayNight', 'returnNight', 'waitingRate', 'minDistanceDay', 'minDistanceNight', 'minDistanceDayReturn', 'minDistanceNightReturn', 'minPerception'])) {
+        if (Form::validatePost($_POST, ['oneWayDay', 'returnDay', 'oneWayNight', 'returnNight', 'waitingRate', 'minDistanceDay', 'minDistanceNight', 'minDistanceDayReturn', 'minDistanceNightReturn', 'minPerception', 'pickupPrice'])) {
             // Si le token de sécurité correspondent
             if (isset($_POST['token']) && $_POST['token'] == $_SESSION['token']) {
                 // Instance de Price puis on l'hydrate
@@ -65,6 +65,7 @@ class AdminPriceController extends Controller
                 $price->setMinDistanceDayReturn(htmlspecialchars(trim($_POST['minDistanceDayReturn']), ENT_QUOTES));
                 $price->setMinDistanceNightReturn(htmlspecialchars(trim($_POST['minDistanceNightReturn']), ENT_QUOTES));
                 $price->setMinPerception(htmlspecialchars(trim($_POST['minPerception']), ENT_QUOTES));
+                $price->setPickupPrice(htmlspecialchars(trim($_POST['pickupPrice']), ENT_QUOTES));
                 
                 // Effectue la mise à jour
                 $priceModel = new PriceModel();
@@ -132,7 +133,7 @@ class AdminPriceController extends Controller
             $form->endFieldSet();
 
             $form->endDiv();
-            $form->startFieldSet('', 'd-flex flex-lg-row flex-column gap-md-5 w-75 mx-auto'); 
+            $form->startFieldSet('', 'd-flex flex-lg-row flex-column w-75 mx-auto'); 
             $form->startDiv('form-group mb-3 col-12 col-md-4 mx-auto p-2');
             $form->legend('Attente', 'mb-2  fs-5 fst-italic text-danger col-4 col-md-4 col-lg-4 w-100');
             $form->addInput('number', 'waitingRate', ['id' => 'waitingRate', 'class' => ' form-control  bg-transparent text-secondary border border-secondary ', 'value' => $priceModel->waitingRate, 'step' => 0.01, 'min' => 0, 'required' => '']);
@@ -141,6 +142,11 @@ class AdminPriceController extends Controller
             $form->startDiv('form-group mb-3 col-12 col-md-4 mx-auto p-2');
             $form->legend('Min de perception', 'mb-2  fs-5 fst-italic text-danger col-4 col-md-4 col-lg-4 w-100');
             $form->addInput('number', 'minPerception', ['id' => 'minPerception', 'class' => ' form-control  bg-transparent text-secondary border border-secondary ', 'value' => $priceModel->minPerception, 'step' => 0.01, 'min' => 0, 'required' => '']);
+            $form->endDiv();
+
+              $form->startDiv('form-group mb-3 col-12 col-md-4 mx-auto p-2');
+            $form->legend('Prise en charge', 'mb-2  fs-5 fst-italic text-danger col-4 col-md-4 col-lg-4 w-100');
+            $form->addInput('number', 'pickupPrice', ['id' => 'pickupPrice', 'class' => ' form-control  bg-transparent text-secondary border border-secondary ', 'value' => $priceModel->pickupPrice, 'step' => 0.01, 'min' => 0, 'required' => '']);
             $form->endDiv();
             $form->endFieldSet(); 
 
