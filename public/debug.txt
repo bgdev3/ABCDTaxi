@@ -1,0 +1,9 @@
+stdClass Object
+(
+    [idPrice] => 7
+    [oneWayDay] => 2.4
+    [returnJourneyDay] => 1.2
+    [oneWayNight] => 3.6
+    [returnJourneyNight] => 1.8
+    [waitingRate] => 0.5
+)

@@ -46,6 +46,7 @@
   animation: rotation 1s linear infinite;
   transition: opacity 1s ease-in-out, visbility;
 }
+
 @media only screen and (min-width: 576px) {
   .loader {
     left: 48.5%;

@@ -1,5 +1,8 @@
                                     <!-- Affiche la vue de la page du devis -->
 <?php
+
+use App\Models\PriceModel;
+
 // Fichier de langues
 include 'init_lang.php';
 $title = $language->get('titlePageReservation');
@@ -76,5 +79,22 @@ if (!isset($_SESSION['token'])) {
         </div>
         <a href="/public/registration" class="btnDevis btnMap none"> <?php echo $language->get('btnEstimate');?></a>
     </div>
-    <small class="smallDevis"><?php echo $language->get('conditions');?></small>
+
+
+    <small class="smallDevis"> 
+    
+      
+
+        <?php  echo $language->get('minPerception');
+                    $modelPrice = new App\Models\PriceModel();
+                    $priceModel = $modelPrice->findAll();
+// file_put_contents('C:\wamp64\www\abcdTaxi\debug.txt', print_r($priceModel, true));
+                    $minPerception = $priceModel->minPerception;
+                    echo $minPerception;
+            ?> 
+            euros.<br>
+
+        <?php echo $language->get('conditions');?>
+    </small>
+
 </section>

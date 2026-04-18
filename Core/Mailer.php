@@ -1,13 +1,14 @@
 <?php 
 namespace App\Core;
 
+use App\Core\Language;
+use App\Entities\Transport;
+use App\Models\ClientModel;
+use DateTime;
+use DateTimeZone;
+use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
-use PHPMailer\PHPMailer\Exception;
-use App\Models\ClientModel;
-use App\Entities\Transport;
-use App\Core\Language;
-use DateTime;
 
 /**
  * Classe qui gère l'envoi des différents infomrations
@@ -33,11 +34,11 @@ class Mailer
         // $debug = true ;
         try {
             
-            $mail->SMTPDebug = SMTP::DEBUG_SERVER;                                   //Enable verbose debug output
+            // $mail->SMTPDebug = SMTP::DEBUG_SERVER;                                   //Enable verbose debug output
             $mail->isSMTP();                                                            //Envoi en SMTP
             $mail->Host       = 'smtp.gmail.com';                                       //Adresse serveur SMTP
             $mail->SMTPAuth   = true;                                                   //Active l'authentification
-            $mail->Username   = $_ENV['MAIL_USERNAME'];                               //Identifiant SMTP
+            $mail->Username   = $_ENV['MAIL_USERNAME_ID'];                               //Identifiant SMTP
             // $mail->Password   = 'hekfmufaowzithcv';
             $mail->Password   = $_ENV['MAIL_PASSWORD'];                                  //password de l'application
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;                            //Active l'encriptage de l'envoi
@@ -155,7 +156,7 @@ class Mailer
         $subject = $data[0];
         $body = $data[1];
         // Email client
-        $email = $_ENV['MAIL_USERNAME']; /* 'boukehaili.g@gmail.com'*/
+        $email = $_ENV['MAIL_USERNAME_ID']; /* 'boukehaili.g@gmail.com'*/
  
         $content = [];
         array_push($content, $email, $subject, $body);
@@ -177,7 +178,7 @@ class Mailer
     {
 
          // Instanciation de DateTime pour la date de réservation
-        $dateReservation = new DateTime('now');
+        $dateReservation = new DateTime('now', new DateTimeZone('Europe/Paris'));
         
         $content = [];
         global $subject, $body;
@@ -306,7 +307,7 @@ class Mailer
     {
 
           // Instanciation de DateTime pour la date de réservation
-        $dateReservation = new DateTime('now');
+        $dateReservation = new DateTime('now', new DateTimeZone('Europe/Paris'));
         
         $content = [];
         global $subject, $body;
@@ -422,7 +423,7 @@ class Mailer
             $language = new Language($lang);
             
             $subject = $_post['object'];
-            $email =  $_ENV['MAIL_USERNAME'];
+            $email =   $_ENV['MAIL_USERNAME_ID'];
             $body = '
                         <!DOCTYPE html>
                         <html>
@@ -464,7 +465,7 @@ class Mailer
     public function confirmAdminRegister(): string
     {
         $subject = "Renouvellement de vos identifiants";
-        $email =  $_ENV['MAIL_USERNAME'];
+        $email =   $_ENV['MAIL_USERNAME_ID'];
         $body = '
                     <!DOCTYPE html>
                     <html>

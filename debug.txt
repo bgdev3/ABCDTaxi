@@ -1,0 +1,15 @@
+stdClass Object
+(
+    [idPrice] => 7
+    [oneWayDay] => 2.4
+    [returnJourneyDay] => 1.2
+    [oneWayNight] => 3.6
+    [returnJourneyNight] => 1.8
+    [waitingRate] => 0.5
+    [minDistanceDay] => 2.35
+    [minDistanceNight] => 1.56
+    [minDistanceDayReturn] => 4.7
+    [minDistanceNightReturn] => 3.13
+    [minPerception] => 8
+    [pickupPrice] => 2.35
+)

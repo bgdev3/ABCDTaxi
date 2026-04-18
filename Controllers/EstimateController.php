@@ -1,17 +1,24 @@
 <?php
 namespace App\Controllers;
 
-use IntlDateFormatter;
+use App\Core\CheckDays;
 use App\Core\Form;
 use App\Core\Language;
-use App\Core\CheckDays;
 use App\Models\PriceModel;
+use App\Services\TarifService;
+use IntlDateFormatter;
 
 session_start();
 
 class EstimateController extends Controller 
 {
 
+private TarifService $tarifService;
+
+public function __construct()
+    {
+        $this->tarifService = new TarifService();
+    }
     /**
      * Méthode qui crée le formulaire par défault
      * 
@@ -147,13 +154,13 @@ class EstimateController extends Controller
             // Si l'heure de rdv est supérieure ou égale à 19h
             if ($_SESSION['processTime'] >= 68500) {
                 // Tarif de nuit appliqué
-               $dataTrip['distance'] < $minDistanceNight ? $price = $priceModel->minPerception :  $price = $this->tarif($pickupPrice, $dataTrip);
+               $dataTrip['distance'] < $minDistanceNight ? $price = $priceModel->minPerception :  $price = $this->tarifService->calculate($pickupPrice, $dataTrip);
                 // $price = $this->tarif( $dataTrip);
             // Si rdv inférieur à 19h ET que le temps de trajet est supérieur à $delay ( Donc passage en tarif nuit)
             } elseif ($_SESSION['processTime'] < 68500 && $tps > $delay) {
                 // on recupère le delai en minute et on l'envoi au calcul
                 $min = floor($delay / 60) - 1;
-                $dataTrip['distance'] < $minDistanceNight ? $price = $priceModel->minPerception :  $price = $this->tarif( $pickupPrice, $dataTrip, $min);
+                $dataTrip['distance'] < $minDistanceNight ? $price = $priceModel->minPerception :  $price = $this->tarifService->calculate($pickupPrice, $dataTrip, $min);
                 // $price = $this->tarif($dataTrip, $min);
                 // Sinon on applique le tarif de journée
             } else {
@@ -164,7 +171,7 @@ class EstimateController extends Controller
 
         } else {
             // Sinon le tarif forfaitaire jour fériés/nuit est appliqué (Corrspondant au tarifs nuit h24)
-              $dataTrip['distance'] < $minDistanceNight ? $price = $priceModel->minPerception :  $price = $this->tarif( $pickupPrice, $dataTrip);
+              $dataTrip['distance'] < $minDistanceNight ? $price = $priceModel->minPerception :  $price = $this->tarifService->calculate($pickupPrice, $dataTrip);
             // $price = $this->tarif($dataTrip);
         }
         // Recupère le temps de trajet (en sec) défini par directionService
@@ -191,41 +198,6 @@ class EstimateController extends Controller
     
     }
 
-
-    /**
-     * Calcul du tarif selon les horaires séléctionné 
-     * 
-     * @param int [$min] (facultatif) delai entre l'heure de de depart et l'heure du traif nuit
-     * @param array [$dataTrip] tableau de données de transports selon que ce soit un trajet simple ou transport aller-retour
-     * @var float [$pickupPrice] Tarif de prise en charge
-     * @return int [$tarif] retourne le tarif à appliquer
-     */
-    private function tarif($pickupPrice, $dataTrip = [], $min = null)
-    {
-        // Si $min n'est pas null, 
-        if ($min != null) {
-            // 1min = 1km
-            // Enleve le delai au total kilométrique
-            // Calcule les kilomètre traif nuit
-            $distance = $dataTrip['distance'] - $min;
-            $price1 = $dataTrip['priceNight'] * $distance + $pickupPrice;
-    
-            // Kilomètre restant en tarif jour
-            $distance = $min;
-            $price2 = $dataTrip['priceDay'] * $distance;
-            $price = $price1 + $price2;
-            // Applique le temps d'attente 
-            $price += $dataTrip['price'];
-       } else {
-            // Sinon le traif nuit est appliqué
-            $price = $dataTrip['priceNight'] * $dataTrip['distance'] + $pickupPrice;
-            $price += $dataTrip['price'];
-        }      
-        // Formatte le tarif à 2 chiffres après la virgule
-        $price = number_format($price, 2, ",", " ");
-
-        return $price;
-    }
 
 
     /**

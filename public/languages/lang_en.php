@@ -254,6 +254,8 @@ return [
      * CM2C**
      * **********/
     'cm2c'                =>'Consumer Mediator',
-    'titleCm2c'           => 'Consumer Mediator'
+    'titleCm2c'           => 'Consumer Mediator',
+
+    'minPerception'       => 'The minimum fare, including supplements, that may be charged for a taxi ride is: ',
 
 ];
