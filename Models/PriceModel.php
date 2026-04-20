@@ -19,7 +19,7 @@ class PriceModel extends DbConnect
         $this->request->execute();
         $price = $this->request->fetch();
 
-       return $price;
+        return $price;
     }
 
     /**

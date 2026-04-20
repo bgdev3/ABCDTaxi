@@ -39,7 +39,8 @@ class RegistrationController extends Controller
     public function index(): void
     {
         // Variables globales
-        global $error, $message, $passUser, $idUser;
+        global $message, $passUser, $idUser;
+        $error ='';
         // Récupère la la langue sélectionné
         $lang = isset($_SESSION['lang']) ? $_SESSION['lang'] : 'fr';
         $language = new Language($lang);
@@ -116,7 +117,7 @@ class RegistrationController extends Controller
                         // Instance de l'entité Transport
                         // et l'hydrate avec les donnbées de réservations stockées en sessions
                         $transport = new Transport();
-                        $transport->setNbPassengers(htmlspecialchars(trim($_POST['nbPerson']), ENT_QUOTES));
+                        $transport->setNbPassengers(htmlspecialchars(trim($_POST['nbPerson'])), ENT_QUOTES);
                         $transport->setDateTransport(trim($date));
                         $transport->setDeparture_time(trim($_SESSION['time']));
                         $transport->setDeparture_place(trim($_SESSION['departurePlace']));

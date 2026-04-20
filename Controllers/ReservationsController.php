@@ -75,7 +75,8 @@ class ReservationsController extends Controller
     public function updateTransport($token, $id): void
     {
         // Variables globales
-        global $error, $message;
+        global $message;
+        $error = '';
         $lang = isset($_SESSION['lang']) ? $_SESSION['lang'] : 'fr';
         $language = new Language($lang);
         // Si les champs du formulaire de mise à jour sont valide
@@ -205,7 +206,7 @@ class ReservationsController extends Controller
      */
     public function deleteTransport($token, $id, $post = null): void
     {
-        global $error;
+        $error = '';
         
         $lang = isset($_SESSION['lang']) ? $_SESSION['lang'] : 'fr';
         $language = new Language($lang);

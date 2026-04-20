@@ -34,10 +34,15 @@ class DbConnect
         //     die('Erreur:' . $e->getMessage());
         // }
         
+                // $serveur  = $_ENV['DB_SERVEUR'];
+                // $user     = $_ENV['DB_USER'];
+                // $password = $_ENV['DB_PASSWORD'];
+                // $base     = $_ENV['DB_BASE'];    
+
                 $serveur  = getenv('DB_SERVEUR') ?: 'localhost';
-                $user     = getenv('DB_USER') ?:'root'   ;
-                $password = getenv('DB_PASSWORD') ?:'test';
-                $base     = getenv('DB_BASE') ?:'abcdtaxi';    
+                $user     = getenv('DB_USER') ?: 'root';
+                $password = getenv('DB_PASSWORD') ?: 'test';
+                $base     = getenv('DB_BASE') ?: 'abcdtaxi';   
 
         try {
             $dsn = 'mysql:host=' . $serveur . ';dbname=' . $base . ';charset=utf8mb4';

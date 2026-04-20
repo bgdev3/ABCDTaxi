@@ -8,21 +8,10 @@ use App\Core\Form;
 use App\Core\Captcha;
 use App\Core\Language;
 
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
+session_start();
 
 class AuthAdminController extends Controller
 {
-
-private AdminUserModel $adminModel;
-private Captcha $captcha;
-
-public function __construct( ?AdminUserModel $adminModel = null, ?Captcha $captcha = null)
-{
-    $this->adminModel = $adminModel ?? new AdminUserModel();
-    $this->captcha = $captcha ?? new Captcha();
-}
     
     /**
      * Affiche le formulaire d'authentification administrateur
@@ -36,36 +25,31 @@ public function __construct( ?AdminUserModel $adminModel = null, ?Captcha $captc
 
         // Si les champs sont valides
         if (Form::validatePost($_POST, ['email', 'password'])) {
-            
             // Stocke les données email et password en évitant la faille XSS
             $email = isset($_POST['email']) ? htmlspecialchars($_POST['email']) : null;
             $password = isset($_POST['password']) ? htmlspecialchars($_POST['password']) : null;
 
             // Si le token de sécurité correspond
             if (isset($_SESSION['token']) && $_POST['token'] == $_SESSION['token']) {
-               
                 // Instance de la classe Captcha
                 // $captcha = new Captcha();
                 // Si la clé du cpatcha est bien récupéré en POST
                  // Teste la rapidité d'execution afin de s'assurer d'un humain
-                if (isset($_POST['recaptcha_response']))  
-                   
-                //    $isCaptchaValid = $captcha->verify($_POST['recaptcha_response']);
-                $isCaptchaValid = $this->captcha->verify($_POST['recaptcha_response']);
+                // if (isset($_POST['recaptcha_response']))  
+                //    $captcha = $captcha->verify($_POST['recaptcha_response']);
                 // Si le captcha est valide
-                if ($isCaptchaValid == true) {
+                // if ($captcha == true) {
                     // Instance de AdminModel
-                    // $admin = new AdminUserModel();
+                    $admin = new AdminUserModel();
                     // Récupère l'enregistrement correspondant
-                    // $admin = $admin->find($email);
-                    $admin = $this->adminModel->find($email);
-                    
+                    $admin = $admin->find($email);
+                    $_SESSION['test'] = $admin;
                     // Teste le bon mot de passe renseigné par l'administrateur
                     $error = $this->validateAuth($email, $password, $admin);
-                    //  Si okay redirection vers le contenu
-                } else {
-                    $error =  $language->get('errorCaptcha');
-                }
+                //     //  Si okay redirection vers le contenu
+                // } else {
+                //     $error =  $language->get('errorCaptcha');
+                // }
             // Sinon l'erreur du Token est renvoyé
             } else {
                 $error = $language->get('unknownUser');
@@ -220,7 +204,6 @@ public function __construct( ?AdminUserModel $adminModel = null, ?Captcha $captc
     */
     private function validateAuth($email, $password, $admin): string
     {
-        $error='';
         $lang = isset($_SESSION['lang']) ? $_SESSION['lang'] : 'fr';
         $language = new Language($lang);
         // Si la session n'existe pas
@@ -234,12 +217,12 @@ public function __construct( ?AdminUserModel $adminModel = null, ?Captcha $captc
                     if ($_SESSION['token_time'] >= $timestamp) {
                         // Si l'utilisateur existe et si le nbUser correspond
                         if ($admin) {
-                            if (password_verify($password, $admin->getPassword())) {
+                            if (password_verify($password, $admin->password)) {
                                 // Génère un nouvel PHPSESSID afin d'eviter un détournement de session
                                 // et on stocke le nom d'utilisateur et l-ID puis on redirige vers la liste des réservations
                                 session_regenerate_id();
-                                $_SESSION['username_admin'] = $admin->getUsername();
-                                $_SESSION['id_admin'] = $admin->getIdAdmin();
+                                $_SESSION['username_admin'] = $admin->username;
+                                $_SESSION['id_admin'] = $admin->idAdmin;
                     
                                 header("location:/public/panelAdmin");
                             } else {

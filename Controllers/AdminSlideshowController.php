@@ -20,7 +20,7 @@ class AdminSlideshowController extends Controller
      */
     public function index($token): void
     {
-        global $error;
+        $error = '';
         $lang = isset($_SESSION['lang']) ? $_SESSION['lang'] : 'fr';
         $language = new Language($lang);
         

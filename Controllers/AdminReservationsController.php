@@ -66,7 +66,7 @@ class AdminReservationsController extends Controller
     public function addReservationsAdmin($token, $id = null): void 
     {
 
-        global $error;
+        $error = '';
         $lang = isset($_SESSION['lang']) ? $_SESSION['lang'] : 'fr';
         $language = new Language($lang);
 
@@ -89,9 +89,9 @@ class AdminReservationsController extends Controller
                     // si la clé en post de vérifiaction du captcha est déclarée
                     // récupère le retour booléen de la méthode verify
                     if (isset($_POST['recaptcha_response']))
-                        $captcha = $captcha->verify($_POST['recaptcha_response']);
+                        $isCaptchaValid = $captcha->verify($_POST['recaptcha_response']);
                     // Si le re-captcha renvoi true
-                    if ( $captcha == true ) {
+                    if ( $isCaptchaValid == true ) {
                         // On instancie userModel afin de vérifier que l'utilisateur n'est pas déja dans la base
                         $modelUser = new ClientModel();
                         $testingUser = $modelUser->find(htmlspecialchars($_POST['email'], ENT_QUOTES));
@@ -292,7 +292,8 @@ class AdminReservationsController extends Controller
      */
     public function updateReservationAdmin($token, $id): void
     {
-        global $error, $email;
+        global $email;
+        $error='';
         // Récupère la valeur de la langue sélectionnées
         $lang = isset($_SESSION['lang']) ? $_SESSION['lang'] : 'fr';
         $language = new Language($lang);

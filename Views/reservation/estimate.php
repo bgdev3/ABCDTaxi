@@ -2,7 +2,6 @@
 <?php
 
 use App\Models\PriceModel;
-
 // Fichier de langues
 include 'init_lang.php';
 $title = $language->get('titlePageReservation');
@@ -86,9 +85,8 @@ if (!isset($_SESSION['token'])) {
       
 
         <?php  echo $language->get('minPerception');
-                    $modelPrice = new App\Models\PriceModel();
+                    $modelPrice = new PriceModel();
                     $priceModel = $modelPrice->findAll();
-// file_put_contents('C:\wamp64\www\abcdTaxi\debug.txt', print_r($priceModel, true));
                     $minPerception = $priceModel->minPerception;
                     echo $minPerception;
             ?> 

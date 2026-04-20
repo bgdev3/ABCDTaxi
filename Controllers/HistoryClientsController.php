@@ -43,7 +43,7 @@ class HistoryClientsController extends Controller
      */
     function updateClient($id, $token): void
     {
-        $error = '';
+        $error  ='';
         // Rédcupère la valeur de la langue sélectionné
         $lang = isset($_SESSION['lang']) ? $_SESSION['lang'] : 'fr';
         $language = new Language($lang);
@@ -79,7 +79,7 @@ class HistoryClientsController extends Controller
                 // si la clé en post de vérifiaction du captcha est déclarée
                 // récupère le retour booléen de la méthode verify
                 if (isset($_POST['recaptcha_response']))
-                   $isCaptchaValid = $captcha->verify($_POST['recaptcha_response']);
+                    $isCaptchaValid = $captcha->verify($_POST['recaptcha_response']);
                 // Si le re-captcha renvoi true
                 if ( $isCaptchaValid == true ) {
                     // Instance du modèle et mise à jour des données
@@ -166,7 +166,7 @@ class HistoryClientsController extends Controller
      */
     function deleteClient($id, $token): void
     {
-        global $error;
+        $error = '';
         $lang = isset($_SESSION['lang']) ? $_SESSION['lang'] : 'fr';
         $language = new Language($lang);
         // Si 'Oui' est déclaré en post et les token GET et SESSION correspondent

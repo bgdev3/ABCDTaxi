@@ -42,7 +42,7 @@ class UserController extends Controller
                 $captcha = new Captcha();
                 // si la clé en post de vérifiaction du captcha est déclaré
                 if (isset($_POST['recaptcha_response']))
-                $isCaptchaValid = $captcha->verify($_POST['recaptcha_response']);
+                    $isCaptchaValid = $captcha->verify($_POST['recaptcha_response']);
                 // Si le re-captcha renvoi true
                 if ($isCaptchaValid == true) {
 
@@ -110,7 +110,6 @@ class UserController extends Controller
     */
     private function validateAuth($email, $nbUser, $user): string
     {
-        $error='';
         $lang = isset($_SESSION['lang']) ? $_SESSION['lang'] : 'fr';
         $language = new Language($lang);
         // Si la session n'existe pas

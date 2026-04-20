@@ -252,5 +252,5 @@ return [
     'cm2c'                =>'Médiateur Conso',
     'titleCm2c'           => 'Mediateur de la consommation',
 
-    'minPerception'       => 'Le tarif minimum, suppléments inclus, succeptible d\'être perçu pour une course de taxi est de : ',      
+    'minPerception'       => 'Le tarif minimum, supplément inclus, succeptible d\'être perçu pour une course de taxi est de : ',      
 ];

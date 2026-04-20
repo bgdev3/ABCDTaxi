@@ -3,7 +3,6 @@ namespace App\Models;
 
 use App\Core\DbConnect;
 use App\Entities\AdminUser;
-use Exception;
 
 class AdminUserModel extends DbConnect
 {
