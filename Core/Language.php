@@ -24,17 +24,17 @@ class Language
      * 
      * @param string [$lang] valeur de la langue sélectionnée
      */
-    private function loadLanguage($lang): void 
-    {
-        // Chemin de fichier par default
-        $file = "languages/lang_{$lang}.php";
-        // Si file existe, stocke le chemin de fichier correspondant
-        if (file_exists($file)) {
-            $this->translations = include($file);
-        } else {
-            $this->translations = include("languages/lang_fr.php"); // Fallback to English
-        }
+ private function loadLanguage($lang): void 
+{
+    $basePath = dirname(__DIR__) . '/public/languages/';
+    $file = $basePath . "lang_{$lang}.php";
+
+    if (file_exists($file)) {
+        $this->translations = include($file);
+    } else {
+        $this->translations = include($basePath . "lang_fr.php");
     }
+}
 
 
     /**

@@ -8,10 +8,21 @@ use App\Core\Form;
 use App\Core\Captcha;
 use App\Core\Language;
 
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
 class AuthAdminController extends Controller
 {
+
+private AdminUserModel $adminModel;
+private Captcha $captcha;
+
+public function __construct( ?AdminUserModel $adminModel = null, ?Captcha $captcha = null)
+{
+    $this->adminModel = $adminModel ?? new AdminUserModel();
+    $this->captcha = $captcha ?? new Captcha();
+}
     
     /**
      * Affiche le formulaire d'authentification administrateur
@@ -25,25 +36,30 @@ class AuthAdminController extends Controller
 
         // Si les champs sont valides
         if (Form::validatePost($_POST, ['email', 'password'])) {
+            
             // Stocke les données email et password en évitant la faille XSS
             $email = isset($_POST['email']) ? htmlspecialchars($_POST['email']) : null;
             $password = isset($_POST['password']) ? htmlspecialchars($_POST['password']) : null;
 
             // Si le token de sécurité correspond
             if (isset($_SESSION['token']) && $_POST['token'] == $_SESSION['token']) {
+               
                 // Instance de la classe Captcha
-                $captcha = new Captcha();
+                // $captcha = new Captcha();
                 // Si la clé du cpatcha est bien récupéré en POST
                  // Teste la rapidité d'execution afin de s'assurer d'un humain
                 if (isset($_POST['recaptcha_response']))  
-                   $isCaptchaValid = $captcha->verify($_POST['recaptcha_response']);
+                   
+                //    $isCaptchaValid = $captcha->verify($_POST['recaptcha_response']);
+                $isCaptchaValid = $this->captcha->verify($_POST['recaptcha_response']);
                 // Si le captcha est valide
                 if ($isCaptchaValid == true) {
                     // Instance de AdminModel
-                    $admin = new AdminUserModel();
+                    // $admin = new AdminUserModel();
                     // Récupère l'enregistrement correspondant
-                    $admin = $admin->find($email);
-                    $_SESSION['test'] = $admin;
+                    // $admin = $admin->find($email);
+                    $admin = $this->adminModel->find($email);
+                    
                     // Teste le bon mot de passe renseigné par l'administrateur
                     $error = $this->validateAuth($email, $password, $admin);
                     //  Si okay redirection vers le contenu
@@ -218,12 +234,12 @@ class AuthAdminController extends Controller
                     if ($_SESSION['token_time'] >= $timestamp) {
                         // Si l'utilisateur existe et si le nbUser correspond
                         if ($admin) {
-                            if (password_verify($password, $admin->password)) {
+                            if (password_verify($password, $admin->getPassword())) {
                                 // Génère un nouvel PHPSESSID afin d'eviter un détournement de session
                                 // et on stocke le nom d'utilisateur et l-ID puis on redirige vers la liste des réservations
                                 session_regenerate_id();
-                                $_SESSION['username_admin'] = $admin->username;
-                                $_SESSION['id_admin'] = $admin->idAdmin;
+                                $_SESSION['username_admin'] = $admin->getUsername();
+                                $_SESSION['id_admin'] = $admin->getIdAdmin();
                     
                                 header("location:/public/panelAdmin");
                             } else {
