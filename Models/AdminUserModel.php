@@ -3,22 +3,33 @@ namespace App\Models;
 
 use App\Core\DbConnect;
 use App\Entities\AdminUser;
+use Exception;
 
 class AdminUserModel extends DbConnect
 {
 
     /**
-     * Effectue la lecture d'un enregistretment
+     * Effectue la lecture d'un enregistretment de type AdminUser
      * @param string [$email] Email de l'enregistrement à récupérer
      * @return object [$admin]
      */
-    public function find(string $email): object
+    public function find(string $email): ?AdminUser
     {
         $this->request = $this->connexion->prepare("SELECT * FROM adminuser WHERE email = :email");
         $this->request -> bindParam(':email', $email);
         $this-> request -> execute();
-        $admin = $this->request->fetch();
-  
+        $data = $this->request->fetch();
+
+        if(!$data) {
+            return null;
+        }   
+        //  Hydrate l'objet AdminUser avec les données récupérées de la base de données afin d 'eviter une std::class en retour de la méthode find
+        $admin = new AdminUser();
+        $admin->setIdAdmin($data->idAdmin);
+        $admin->setUsername($data->username);
+        $admin->setEmail($data->email);
+        $admin->setPassword($data->password);
+
         return $admin;
     }
 

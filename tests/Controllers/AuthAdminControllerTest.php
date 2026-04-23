@@ -56,7 +56,7 @@ class AuthAdminControllerTest extends TestCase
             ->getMock();
 $controller->method('render')->willReturnCallback(function () {});
 
-var_dump($_SESSION);
+
         $controller->index();
 
         $this->assertArrayHasKey('username_admin', $_SESSION);

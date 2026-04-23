@@ -3,6 +3,7 @@ namespace App\Entities;
 
 class Client
 {
+    public $num_client; // Propriété publique pour stocker le mot de passe hashé pour les test
     private $idClient;
     private $nb_client;
     private $name;

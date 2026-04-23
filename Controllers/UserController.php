@@ -6,10 +6,21 @@ use App\Core\Language;
 use App\Models\ClientModel;
 use App\Core\Captcha;
 
-session_start();
+ if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
 
 class UserController extends Controller
 {
+
+ private ClientModel $clientModel;
+    private Captcha $captcha;
+
+    public function __construct(?ClientModel $model = null, ?Captcha $captcha = null)
+    {
+        $this->clientModel = $model ?? new ClientModel();
+        $this->captcha = $captcha ?? new Captcha();
+    }
 
     /**
      * Affiche le formulaire de connexion et gère les donnés en POST
@@ -39,23 +50,25 @@ class UserController extends Controller
             if (isset($_POST['token']) && isset($_SESSION['token']) && $_POST['token'] == $_SESSION['token']) {
                 
                 // Instance de Re-captcha pour la vérification de spams
-                $captcha = new Captcha();
+                // $captcha = new Captcha();
                 // si la clé en post de vérifiaction du captcha est déclaré
-                if (isset($_POST['recaptcha_response']))
-                    $isCaptchaValid = $captcha->verify($_POST['recaptcha_response']);
+                // if (isset($_POST['recaptcha_response']))
+                    // $isCaptchaValid = $captcha->verify($_POST['recaptcha_response']);
+                    // $isCaptchaValid = $this->captcha->verify($_POST['recaptcha_response']);
                 // Si le re-captcha renvoi true
-                if ($isCaptchaValid == true) {
+                // if ($isCaptchaValid == true) {
 
-                    // On instancie UserModel
-                    $model = new ClientModel();
+                    // // On instancie UserModel
+                    // $model = new ClientModel();
                     // Récupère l'enregistrement en testant l'email utilisateur
-                    $user = $model->find($email); 
+                    // $user = $model->find($email); 
+                      $user = $this->clientModel->find($email);
                     // Appelle la méthode privé validateAuth afin de vérifier le numClient hashé en base
                     // Si un erreur est retourné, on l'affiche
                     $error = $this->validateAuth($email, $nbUser, $user);
-                } else {
-                    $error = "La vérification re-captcha a échoué !";
-                }
+                // } else {
+                //     $error = "La vérification re-captcha a échoué !";
+                // }
             } else {
                 // Sinon on affiche l'erreur
                 $error = $language->get('unknownUser');
@@ -127,10 +140,11 @@ class UserController extends Controller
                                 // Génère un nouvel PHPSESSID afin d'eviter un détournement de session
                                 // et on stocke le nom d'utilisateur et l-ID puis on redirige vers la liste des réservations
                                 session_regenerate_id();
-                                $_SESSION['username'] = $user->surname;
-                                $_SESSION['id_user'] = $user->idClient;
-                    
+                                $_SESSION['username'] = $user->getSurname();
+                                $_SESSION['id_user'] = $user->getIdClient();
+
                                 header("location:/public/reservations");
+                              return '';
                             } else {
                                 $error =  $language->get('errorAuth1');
                             }

@@ -20,6 +20,16 @@ session_start();
 class RegistrationController extends Controller 
 {
 
+    public function __construct(
+        private ClientModel    $clientModel    = new ClientModel(),
+        private Captcha        $captcha        = new Captcha(),
+        private GenerateId     $generateId     = new GenerateId(),
+        private Client         $client         = new Client(),
+        private Transport      $transport      = new Transport(),
+        private TransportModel $transportModel = new TransportModel(),
+        private Mailer         $mailer         = new Mailer()
+    ) {}
+    
     /** 
      * Teste et sécurise les données entrées en POST, hydrate les entitées correspondane
      * et crée le formualire de contact par défault afin d'enregistrer la réservation
@@ -39,8 +49,7 @@ class RegistrationController extends Controller
     public function index(): void
     {
         // Variables globales
-        global $message, $passUser, $idUser;
-        $error ='';
+        global $error, $message, $passUser, $idUser;
         // Récupère la la langue sélectionné
         $lang = isset($_SESSION['lang']) ? $_SESSION['lang'] : 'fr';
         $language = new Language($lang);
@@ -66,39 +75,40 @@ class RegistrationController extends Controller
                 if ($this->validateSession()) {
 
                      // Instance de Re-captcha pour la vérification de spams
-                    $captcha = new Captcha();
+                    // $captcha = new Captcha();
+                   
                     // si la clé en post de vérifiaction du captcha est déclarée
                     // récupère le retour booléen de la méthode verify
-                    if (isset($_POST['recaptcha_response']))
-                        $isCaptchaValid = $captcha->verify($_POST['recaptcha_response']);
+                    // if (isset($_POST['recaptcha_response']))
+                    //     $isCaptchaValid = $this->captcha->verify($_POST['recaptcha_response']);
                     // Si le re-captcha renvoi true
-                    if ( $isCaptchaValid == true ) {
+                    // if ( $isCaptchaValid == true ) {
                         // On instancie userModel afin de vérifier que l'utilisateur n'est pas déja dans la base
-                        $modelUser = new ClientModel();
-                        $testingUser = $modelUser->find(htmlspecialchars($_POST['email'], ENT_QUOTES));
+                        // $modelUser = new ClientModel();
+                        $testingUser = $this->clientModel->find(htmlspecialchars($_POST['email'], ENT_QUOTES));
                         
                         // Si l'utilisateur n'existe pas dans la base
                         if ($testingUser == null) {
                              // Insatnce de GenerateId afin de créer un numéroClient unique
-                             $passUser = new generateId();
-                             $passUser = $passUser->generate();       
+                            //  $passUser = new generateId();
+                             $passUser = $this->generateId->generate();       
                             // Le hash
                             $passUser_hash = password_hash($passUser, PASSWORD_DEFAULT);
                             // Instanciation l'entité user
-                            $user = new Client();
+                            // $user = new Client();
                             // On hydrate l'entité user en appliquant htmlspecilchars
                             // afin d'éviter la faille XSS
-                            $user->setNb_client($passUser_hash);
-                            $user->setName(htmlspecialchars(trim($_POST['name']), ENT_QUOTES));
-                            $user->setSurname(htmlspecialchars(trim($_POST['surname']), ENT_QUOTES));
-                            $user->setEmail(htmlspecialchars(trim($_POST['email']), ENT_QUOTES));
-                            $user->setPhone(htmlspecialchars(trim($_POST['tel']), ENT_QUOTES));
+                            $this->client->setNb_client($passUser_hash);
+                            $this->client->setName(htmlspecialchars(trim($_POST['name']), ENT_QUOTES));
+                            $this->client->setSurname(htmlspecialchars(trim($_POST['surname']), ENT_QUOTES));
+                            $this->client>setEmail(htmlspecialchars(trim($_POST['email']), ENT_QUOTES));
+                            $this->client->setPhone(htmlspecialchars(trim($_POST['tel']), ENT_QUOTES));
                             // On alimente la table
-                            $modelUser->create($user);
+                            $this->clientModel->create($user);
                         } 
                         // Récupère l'id de l'enregistrement nouvellement créé
                         // que l'on stocke dans une session afin de le tester pour l'affichage de confirmation dans la vue correspondante
-                        $userData = $modelUser->find(htmlspecialchars($_POST['email'], ENT_QUOTES));
+                        $userData = $this->clientModel->find(htmlspecialchars($_POST['email'], ENT_QUOTES));
                         $idUser = $userData->idClient;
                         // Génère un nouvel PHPSSID afin de sécuriser les données utilisateur
                         session_regenerate_id();
@@ -116,19 +126,19 @@ class RegistrationController extends Controller
                        
                         // Instance de l'entité Transport
                         // et l'hydrate avec les donnbées de réservations stockées en sessions
-                        $transport = new Transport();
-                        $transport->setNbPassengers(htmlspecialchars(trim($_POST['nbPerson'])), ENT_QUOTES);
-                        $transport->setDateTransport(trim($date));
-                        $transport->setDeparture_time(trim($_SESSION['time']));
-                        $transport->setDeparture_place(trim($_SESSION['departurePlace']));
-                        $transport->setDestination(trim($_SESSION['destination']));
-                        $transport->setRoundTrip($_SESSION['roundTrip']);
-                        $transport->setEstimated_wait(trim($_SESSION['wait']));
-                        $transport->setPrice($_SESSION['price']); 
-                        $transport->setId_user($idUser);
+                        // $transport = new Transport();
+                        $this->transport->setNbPassengers(htmlspecialchars(trim($_POST['nbPerson']), ENT_QUOTES));
+                        $this->transport->setDateTransport(trim($date));
+                        $this->transport->setDeparture_time(trim($_SESSION['time']));
+                        $this->transport->setDeparture_place(trim($_SESSION['departurePlace']));
+                        $this->transport->setDestination(trim($_SESSION['destination']));
+                        $this->transport->setRoundTrip($_SESSION['roundTrip']);
+                        $this->transport->setEstimated_wait(trim($_SESSION['wait']));
+                        $this->transport->setPrice($_SESSION['price']); 
+                        $this->transport->setId_user($idUser);
 
                         // Instanciation de Mailer pour l'envoi des mail de confirmation
-                        $mailer = new Mailer();
+                        // $mailer = new Mailer();
                         // récupère le mail utilisateur
                         $emailUser = htmlspecialchars($_POST['email'], ENT_QUOTES);
                         // Créer une variable de test pour l'action utilisateur
@@ -136,27 +146,27 @@ class RegistrationController extends Controller
                         $action = 'confirm';
                         // S'il l'utilisateur n'existe pas, passe en argument le numéro client
                         // Sinon on applique la méthode sans $passUser en argument
-                        $message = $testingUser == null ? $mailer->sendUserMail($emailUser, $action, $transport, $passUser) : $mailer->sendUserMail($emailUser, $action, $transport);
+                        // $message = $testingUser == null ? $this->mailer->sendUserMail($emailUser, $action, $this->transport, $passUser) : $this->mailer->sendUserMail($emailUser, $action, $this->transport);
                         // Instance de TransportModel
-                        $transportModel = new TransportModel();
+                        // $transportModel = new TransportModel();
                         // Si le message est vide et donc que l'envoi de mail s'est bien déroulé
                         if (empty($message)) {
                             // On alimente la table transport
-                            $transportModel->create($transport);
+                            $this->transportModel->create($this->transport);
 
                         // Sinon si un problème d'envoi de mail survient 
                         } else {
                             // Verifie si des transports relatif à l'utilisateur enregistré existent
-                            $list = $transportModel->join($_SESSION['idUser']);
+                            $list = $this->transportModel->join($_SESSION['idUser']);
                             // Si la jointure retourne un resultat nul
                             if (empty($list)) {
                                 // On supprime l'utilisateur de la table User
-                                $modelUser->delete($_SESSION['idUser']);
+                                $this->clientModel->delete($_SESSION['idUser']);
                             }
                         }
-                    } else {
-                        $error = $language->get('errorCaptcha');
-                    }
+                    // } else {
+                    //     $error = $language->get('errorCaptcha');
+                    // }
                 // S'il y a un problème de sessions de réservations non déclarées ou vide, on affiche l'erreur
                 } else {
                     $error = $language->get('errorRegistration');

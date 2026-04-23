@@ -32,7 +32,7 @@ class Language
         if (file_exists($file)) {
             $this->translations = include($file);
         } else {
-            $this->translations = include("languages/lang_fr.php"); // Fallback to English
+            $this->translations = include __DIR__ . '/../public/languages/lang_fr.php';// Fallback to English
         }
     }
 

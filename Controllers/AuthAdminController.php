@@ -8,10 +8,22 @@ use App\Core\Form;
 use App\Core\Captcha;
 use App\Core\Language;
 
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
 class AuthAdminController extends Controller
 {
+    private AdminUserModel $adminModel;
+    private Captcha $captcha;
+
+    public function __construct(
+        ?AdminUserModel $adminModel = null,
+        ?Captcha $captcha = null
+    ) {
+        $this->adminModel = $adminModel ?? new AdminUserModel();
+        $this->captcha = $captcha ?? new Captcha();
+    }
     
     /**
      * Affiche le formulaire d'authentification administrateur
@@ -19,7 +31,7 @@ class AuthAdminController extends Controller
      */
     public function index(): void
     {
-        global $error;
+        $error = '';
         $lang = isset($_SESSION['lang']) ? $_SESSION['lang'] : 'fr';
         $language = new Language($lang);
 
@@ -40,10 +52,11 @@ class AuthAdminController extends Controller
                 // Si le captcha est valide
                 // if ($captcha == true) {
                     // Instance de AdminModel
-                    $admin = new AdminUserModel();
-                    // Récupère l'enregistrement correspondant
-                    $admin = $admin->find($email);
-                    $_SESSION['test'] = $admin;
+                    // $admin = new AdminUserModel();
+                    // // Récupère l'enregistrement correspondant
+                    // $admin = $admin->find($email);
+                    $admin = $this->adminModel->find($email);
+                    // $_SESSION['test'] = $admin;
                     // Teste le bon mot de passe renseigné par l'administrateur
                     $error = $this->validateAuth($email, $password, $admin);
                 //     //  Si okay redirection vers le contenu
@@ -91,7 +104,7 @@ class AuthAdminController extends Controller
      */
     public function register($token): void
     {
-        global $error;
+        $error = '';
         $lang = isset($_SESSION['lang']) ? $_SESSION['lang'] : 'fr';
         $language = new Language($lang);
         // Si les champs de formulaires sont valides
@@ -202,8 +215,9 @@ class AuthAdminController extends Controller
     * 
     * @return string $error Le message d'erreur
     */
-    private function validateAuth($email, $password, $admin): string
+    private function validateAuth($email, $password, $admin): ?string
     {
+        $error = '';
         $lang = isset($_SESSION['lang']) ? $_SESSION['lang'] : 'fr';
         $language = new Language($lang);
         // Si la session n'existe pas
@@ -217,12 +231,12 @@ class AuthAdminController extends Controller
                     if ($_SESSION['token_time'] >= $timestamp) {
                         // Si l'utilisateur existe et si le nbUser correspond
                         if ($admin) {
-                            if (password_verify($password, $admin->password)) {
+                            if (password_verify($password, $admin->getPassword())) {
                                 // Génère un nouvel PHPSESSID afin d'eviter un détournement de session
                                 // et on stocke le nom d'utilisateur et l-ID puis on redirige vers la liste des réservations
                                 session_regenerate_id();
-                                $_SESSION['username_admin'] = $admin->username;
-                                $_SESSION['id_admin'] = $admin->idAdmin;
+                                $_SESSION['username_admin'] = $admin->getUsername();
+                                $_SESSION['id_admin'] = $admin->getIdAdmin();
                     
                                 header("location:/public/panelAdmin");
                             } else {

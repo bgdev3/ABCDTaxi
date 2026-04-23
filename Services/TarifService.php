@@ -1,6 +1,11 @@
 <?php
 namespace App\Services;
 
+
+/**
+ * 
+ * configurer le composer.json et ne pas oublier de faire un dump-autoload pour que le service soit reconnu dans les controllers
+ */
 class TarifService
 {
     public function calculate(float $pickupPrice, array $dataTrip, ?int $min = null): string
