@@ -12,6 +12,7 @@
             "App\\Core\\": "Core/",
             "App\\Entities\\": "Entities/",
             "App\\Models\\": "Models/", 
+            "App\\DependencyInjection\\": "DependencyInjection/",
             "App\\Services\\": "Services/"
         }
     },

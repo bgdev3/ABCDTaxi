@@ -20,14 +20,14 @@ session_start();
 class RegistrationController extends Controller 
 {
 
-    public function __construct(
-        private ClientModel    $clientModel    = new ClientModel(),
-        private Captcha        $captcha        = new Captcha(),
-        private GenerateId     $generateId     = new GenerateId(),
-        private Client         $client         = new Client(),
-        private Transport      $transport      = new Transport(),
-        private TransportModel $transportModel = new TransportModel(),
-        private Mailer         $mailer         = new Mailer()
+    public function __construct (
+        private ClientModel    $clientModel,
+        private Captcha        $captcha  ,
+        private GenerateId     $generateId  ,
+        private Client         $client         ,
+        private Transport      $transport     ,
+        private TransportModel $transportModel ,
+        private Mailer         $mailer        
     ) {}
     
     /** 
