@@ -101,10 +101,10 @@ class RegistrationController extends Controller
                             $this->client->setNb_client($passUser_hash);
                             $this->client->setName(htmlspecialchars(trim($_POST['name']), ENT_QUOTES));
                             $this->client->setSurname(htmlspecialchars(trim($_POST['surname']), ENT_QUOTES));
-                            $this->client>setEmail(htmlspecialchars(trim($_POST['email']), ENT_QUOTES));
+                            $this->client->setEmail(htmlspecialchars(trim($_POST['email']), ENT_QUOTES));
                             $this->client->setPhone(htmlspecialchars(trim($_POST['tel']), ENT_QUOTES));
                             // On alimente la table
-                            $this->clientModel->create($user);
+                            $this->clientModel->create($this->client);
                         } 
                         // Récupère l'id de l'enregistrement nouvellement créé
                         // que l'on stocke dans une session afin de le tester pour l'affichage de confirmation dans la vue correspondante
