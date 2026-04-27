@@ -1,14 +1,14 @@
 <?php 
-namespace App\Core;
+namespace App\Services;
 
-use App\Core\Language;
+use App\Services\Language;
 use App\Entities\Transport;
 use App\Models\ClientModel;
 use DateTime;
 use DateTimeZone;
 use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\SMTP;
+// use PHPMailer\PHPMailer\SMTP;
 
 /**
  * Classe qui gère l'envoi des différents infomrations

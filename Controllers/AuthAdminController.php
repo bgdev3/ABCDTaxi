@@ -3,10 +3,10 @@ namespace App\Controllers;
 
 use App\Entities\AdminUser;
 use App\Models\AdminUserModel;
-use App\Core\Mailer;
-use App\Core\Form;
-use App\Core\Captcha;
-use App\Core\Language;
+use App\Services\Mailer;
+use App\Services\Form;
+use App\Services\Captcha;
+use App\Services\Language;
 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
@@ -14,16 +14,14 @@ if (session_status() === PHP_SESSION_NONE) {
 
 class AuthAdminController extends Controller
 {
-    private AdminUserModel $adminModel;
-    private Captcha $captcha;
 
-    public function __construct(
-        ?AdminUserModel $adminModel = null,
-        ?Captcha $captcha = null
-    ) {
-        $this->adminModel = $adminModel ?? new AdminUserModel();
-        $this->captcha = $captcha ?? new Captcha();
-    }
+    public function __construct (
+        private AdminUserModel $adminModel,
+        private AdminUser $admin,
+        private Mailer $mailer,
+        private Captcha $captcha,
+        private Form $form
+    ) {}
     
     /**
      * Affiche le formulaire d'authentification administrateur
@@ -36,7 +34,7 @@ class AuthAdminController extends Controller
         $language = new Language($lang);
 
         // Si les champs sont valides
-        if (Form::validatePost($_POST, ['email', 'password'])) {
+        if ($this->form->validatePost($_POST, ['email', 'password'])) {
             // Stocke les données email et password en évitant la faille XSS
             $email = isset($_POST['email']) ? htmlspecialchars($_POST['email']) : null;
             $password = isset($_POST['password']) ? htmlspecialchars($_POST['password']) : null;
@@ -74,25 +72,24 @@ class AuthAdminController extends Controller
         // Permet de charger la librairies bootstrap uniquement lors de la connexion au Back-Office
         $_SESSION['admin'] = 'start';
         // Instance du formulaire
-        $form = new Form();
 
-        $form->startForm('#', 'POST', ['id'=>'myForm', 'class' => ' mb-3 p-2 rounded', 'novalidate' =>'']);
-        $form->startFieldset('LOGIN', '');
-        $form->startDiv('form-floating');
-        $form->addInput('email', 'email', ['id' => 'email', 'class'=> 'form-control mb-3 mt-3 bg-dark border border-secondary text-light ', 'placeholder' => 'Email', 'required' => '']);
-        $form->addLabel('email', 'Email', ['class' => 'bg-dark bg-opacity-10']);
-        $form->endDiv();
-        $form->startDiv('form-floating');
-        $form->addInput('text', 'password', ['id' => 'password', 'class'=> 'form-control mb-3 bg-dark border border-secondary text-light',  'placeholder' => 'Password', 'required' => '']);
-        $form->addLabel('password', 'Password', ['class' => 'bg-dark bg-opacity-10']);
-        $form->endDiv();
-        $form->addInput('hidden', 'token',['id'=>'hidden',' value' => isset($_SESSION['token']) ? trim($_SESSION['token']) : null]);
-        $form->addInput('hidden', 'recaptcha_response', ['id' => 'recaptchaResponse']);
-        $form->addInput('submit', 'btnAuth',['id' => 'btnAuth', 'class'=>'btn btn-dark border border-danger', 'value' => 'Se connecter']);
-        $form->endFieldset();
-        $form->endForm();
+        $this->form->startForm('#', 'POST', ['id'=>'myForm', 'class' => ' mb-3 p-2 rounded', 'novalidate' =>'']);
+        $this->form->startFieldset('LOGIN', '');
+        $this->form->startDiv('form-floating');
+        $this->form->addInput('email', 'email', ['id' => 'email', 'class'=> 'form-control mb-3 mt-3 bg-dark border border-secondary text-light ', 'placeholder' => 'Email', 'required' => '']);
+        $this->form->addLabel('email', 'Email', ['class' => 'bg-dark bg-opacity-10']);
+        $this->form->endDiv();
+        $this->form->startDiv('form-floating');
+        $this->form->addInput('text', 'password', ['id' => 'password', 'class'=> 'form-control mb-3 bg-dark border border-secondary text-light',  'placeholder' => 'Password', 'required' => '']);
+        $this->form->addLabel('password', 'Password', ['class' => 'bg-dark bg-opacity-10']);
+        $this->form->endDiv();
+        $this->form->addInput('hidden', 'token',['id'=>'hidden',' value' => isset($_SESSION['token']) ? trim($_SESSION['token']) : null]);
+        $this->form->addInput('hidden', 'recaptcha_response', ['id' => 'recaptchaResponse']);
+        $this->form->addInput('submit', 'btnAuth',['id' => 'btnAuth', 'class'=>'btn btn-dark border border-danger', 'value' => 'Se connecter']);
+        $this->form->endFieldset();
+        $this->form->endForm();
 
-        $this->render('admin/auth', ['addSignUpForm' => $form->getFormElements(), 'error' => $error]);
+        $this->render('admin/auth', ['addSignUpForm' => $this->form->getFormElements(), 'error' => $error]);
     }
 
 
@@ -108,16 +105,13 @@ class AuthAdminController extends Controller
         $lang = isset($_SESSION['lang']) ? $_SESSION['lang'] : 'fr';
         $language = new Language($lang);
         // Si les champs de formulaires sont valides
-        if (Form::validatePost($_POST, ['username', 'email', 'password', 'confirmPassword'])) {
+        if ($this->form->validatePost($_POST, ['username', 'email', 'password', 'confirmPassword'])) {
 
             // récupère les données en post en applisaunt htmlspecialchars afin d'eviter une faille XSS
             $email = isset($_POST['email']) ? htmlspecialchars($_POST['email']) : null;
             $password = isset($_POST['password']) ? htmlspecialchars($_POST['password']) : null;
             $confirmPassword = isset($_POST['confirmPassword']) ? htmlspecialchars($_POST['confirmPassword']) : null;
 
-            // Insatnce de la classe Captcha
-            $captcha = new Captcha();
-           
             // Si le mot de passe est supérieur ou égal à 8 ET inférieur ou égal à 12
             // ET que les deux pot de passe concordent
             if(strlen($password) >= 12 && $password == $confirmPassword) {
@@ -126,28 +120,25 @@ class AuthAdminController extends Controller
                     // Si le recpatcha est bien déclaré en POST
                     if (isset($_POST['recaptcha_response']))
                     // Vérifie le recaptcha
-                        $captcha->verify($_POST['recaptcha_response']);
+                        $this->captcha->verify($_POST['recaptcha_response']);
                         // Si true et donc si le score est valide
-                        if ($captcha == true) {
+                        if ($this->captcha == true) {
                             
-                            $admin = new AdminUser();
                             // Hash le mot de passe administrateur et hydrate l'entité AdminUser
                             $password = password_hash($password, PASSWORD_DEFAULT);
-                            $admin->setUsername(htmlspecialchars(trim($_POST['username']), ENT_QUOTES));
-                            $admin->setEmail(trim($email));
-                            $admin->setPassword(trim($password));
+                            $this->admin->setUsername(htmlspecialchars(trim($_POST['username']), ENT_QUOTES));
+                            $this->admin->setEmail(trim($email));
+                            $this->admin->setPassword(trim($password));
                             
                             // Si le token post et le token session matchent
                             if (isset($_SESSION['token']) && $_POST['token'] == $_SESSION['token']) {
-                                // Instance de Mailer
-                                $mailer = new Mailer();
+        
                                 // Appel de la méthode correspondant au mail à envoyé
-                                $message =  $mailer->confirmAdminRegister();
+                                $message =  $this->mailer->confirmAdminRegister();
                                 // S'il n'y a pas de problème d'envoi
                                 if(empty($message)) {
                                     // Mise à jour des données en BDD
-                                    $adminModel = new AdminUserModel();
-                                    $adminModel->update($_SESSION['id_admin'], $admin);
+                                    $this->adminModel->update($_SESSION['id_admin'], $this->admin);
                                     // On détruit la séssion username_admin afin de rediriger vers une nouvelle connexion administrateur
                                     // avec les nouveaux identifiant 
                                     unset($_SESSION['username_admin']);
@@ -173,33 +164,32 @@ class AuthAdminController extends Controller
         }
 
         if (isset($_GET['token']) && $_GET['token'] == $_SESSION['token']) {
-            $form = new Form();
 
-            $form->startForm('#', 'POST', ['id'=>'myForm', 'class' => ' mb-3 p-2 rounded', 'novalidate' =>'']);
-            $form->startFieldset('Nouvel identifiant ', '');
-            $form->startDiv('form-floating');
-            $form->addInput('text', 'username', ['id' => 'username', 'class'=> 'form-control mb-3 mt-3 bg-dark border border-secondary text-light', 'placeholder' => 'username', 'required' => '']);
-            $form->addLabel('username', 'Username', ['class' => 'bg-dark bg-opacity-10']);
-            $form->endDiv();
-            $form->startDiv('form-floating');
-            $form->addInput('text', 'email', ['id' => 'email', 'class'=> 'form-control mb-3 mt-3 bg-dark border border-secondary text-light', 'placeholder' => 'Email', 'required' => '']);
-            $form->addLabel('email', 'Email', ['class' => 'bg-dark bg-opacity-10']);
-            $form->endDiv();
-            $form->startDiv('form-floating');
-            $form->addInput('text', 'password', ['id' => 'password', 'class'=> 'form-control mb-3 mt-3 bg-dark border border-secondary text-light',  'placeholder' => ' Nouveau mot de passe', 'required' => '']);
-            $form->addLabel('password', 'Mot de passe', ['class' => 'bg-dark bg-opacity-10']);
-            $form->endDiv();
-            $form->startDiv('form-floating');
-            $form->addInput('text', 'confirmPassword', ['id' => 'confirmPassword', 'class'=> 'form-control mb-3 mt-3 bg-dark border border-secondary text-light',  'placeholder' => 'Confirmation de mot de passe', 'min-length' => '12', 'required' => '']);
-            $form->addLabel('confirmPassword', 'Confirmation de mot de passe', ['class' => 'bg-dark bg-opacity-10']);
-            $form->endDiv();
-            $form->addInput('hidden', 'token',['id'=>'hidden',' value' => isset($_SESSION['token']) ? trim($_SESSION['token']) : null]);
-            $form->addInput('hidden', 'recaptcha_response', ['id' => 'recaptchaResponse']);
-            $form->addInput('submit', 'btnAuth',['id' => 'btnAuth', 'class'=>'btn btn-dark border border-danger', 'value' => 'Mettre à jour']);
-            $form->endFieldset();
-            $form->endForm();
+            $this->form->startForm('#', 'POST', ['id'=>'myForm', 'class' => ' mb-3 p-2 rounded', 'novalidate' =>'']);
+            $this->form->startFieldset('Nouvel identifiant ', '');
+            $this->form->startDiv('form-floating');
+            $this->form->addInput('text', 'username', ['id' => 'username', 'class'=> 'form-control mb-3 mt-3 bg-dark border border-secondary text-light', 'placeholder' => 'username', 'required' => '']);
+            $this->form->addLabel('username', 'Username', ['class' => 'bg-dark bg-opacity-10']);
+            $this->form->endDiv();
+            $this->form->startDiv('form-floating');
+            $this->form->addInput('text', 'email', ['id' => 'email', 'class'=> 'form-control mb-3 mt-3 bg-dark border border-secondary text-light', 'placeholder' => 'Email', 'required' => '']);
+            $this->form->addLabel('email', 'Email', ['class' => 'bg-dark bg-opacity-10']);
+            $this->form->endDiv();
+            $this->form->startDiv('form-floating');
+            $this->form->addInput('text', 'password', ['id' => 'password', 'class'=> 'form-control mb-3 mt-3 bg-dark border border-secondary text-light',  'placeholder' => ' Nouveau mot de passe', 'required' => '']);
+            $this->form->addLabel('password', 'Mot de passe', ['class' => 'bg-dark bg-opacity-10']);
+            $this->form->endDiv();
+            $this->form->startDiv('form-floating');
+            $this->form->addInput('text', 'confirmPassword', ['id' => 'confirmPassword', 'class'=> 'form-control mb-3 mt-3 bg-dark border border-secondary text-light',  'placeholder' => 'Confirmation de mot de passe', 'min-length' => '12', 'required' => '']);
+            $this->form->addLabel('confirmPassword', 'Confirmation de mot de passe', ['class' => 'bg-dark bg-opacity-10']);
+            $this->form->endDiv();
+            $this->form->addInput('hidden', 'token',['id'=>'hidden',' value' => isset($_SESSION['token']) ? trim($_SESSION['token']) : null]);
+            $this->form->addInput('hidden', 'recaptcha_response', ['id' => 'recaptchaResponse']);
+            $this->form->addInput('submit', 'btnAuth',['id' => 'btnAuth', 'class'=>'btn btn-dark border border-danger', 'value' => 'Mettre à jour']);
+            $this->form->endFieldset();
+            $this->form->endForm();
     
-            $this->render('admin/register', ['addLogForm' => $form->getFormElements(), 'error' => $error]);
+            $this->render('admin/register', ['addLogForm' => $this->form->getFormElements(), 'error' => $error]);
         } else {
             header('location:/public/panelAdmin');
         }

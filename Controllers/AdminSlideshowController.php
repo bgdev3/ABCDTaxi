@@ -1,8 +1,8 @@
 <?php
 namespace App\Controllers;
 
-use App\Core\Form;
-use App\Core\Language;
+use App\Services\Form;
+use App\Services\Language;
 use App\Entities\SlideshowAdmin;
 use App\Models\SlideshowAdminModel;
 
@@ -11,6 +11,11 @@ session_start();
 class AdminSlideshowController extends Controller
 {
 
+    public function __construct ( 
+        private Form $form,
+        private SlideshowAdmin $slideshowAdmin, 
+        private SlideshowAdminModel $slideshowModel
+        ) {}
     /**
      * Affiche les diapos et le formulaired d'upload
      * Sauvegarde les différentes diapos sélectionné par l'admin
@@ -26,12 +31,12 @@ class AdminSlideshowController extends Controller
         
         $typeFile = array('jpg'=>'image/jpg', 'jpeg'=>'image/jpeg', 'webp'=>'image/webp');
             // Si le fichier est déclaré et non vide
-            if (Form::validateFiles($_FILES, ['picture'])) {
+            if ($this->form->validateFiles($_FILES, ['picture'])) {
                 //  Si l'erreur est vide on récupère l'erreur éventuelle retourné
                 // par errorUpload qui teste le fichier
-                $error = empty($erreur) ? Form::errorUpload($_FILES, ['picture'], $typeFile) : "" ;
+                $error = empty($erreur) ? $this->form->errorUpload($_FILES, ['picture'], $typeFile) : "" ;
                 // Renomme le fichier
-                $file = Form::formateFile($_FILES, ['picture']);
+                $file = $this->form->formateFile($_FILES, ['picture']);
 
                 // Array associatif de données permettant d'afficher les bonnes photos RWD
                 $dataTest = array('normal'=> array('w' => 1350,'h' => 495, 'normal/'),
@@ -57,18 +62,19 @@ class AdminSlideshowController extends Controller
                         $picture = $this->imageSize( $path, $size[0],  $size[1]);
 
                         // Hydrate l'entité
-                        $slide = new SlideshowAdmin();
-                        $slide->setPicture_path($picture);
-                        $slide->setSize_slide($key);
+                        // $slide = new SlideshowAdmin();
+                        $this->slideshowAdmin->setPicture_path($picture);
+                        $this->slideshowAdmin->setSize_slide($key);
                         // Si le token en post correspond afin d'eviter une faille CSRF
                         // On crée un nouvel enregistrement 
                         if (isset($_POST['token']) && $_POST['token'] == $_SESSION['token']) {
 
-                            $model = new SlideshowAdminModel();
-                            $model->create($slide);
+                            // $model = new SlideshowAdminModel();
+                            $this->slideshowModel->create($this->slideshowAdmin);
                             // Redirige vers la page afin d'éviter un envoi automatique 
                             // du formulaire en cas de rechargement de page.
                             header('location:/public/adminSlideshow/index/'. trim($_SESSION['token']));
+                            exit();
                         // Sinon on affiche une erreur
                         } else {
                             $error = $language->get('unknownUser');
@@ -85,27 +91,29 @@ class AdminSlideshowController extends Controller
         // Si les tokens GET et SESSION correspondent
         if (isset($_GET['token']) && $_GET['token'] && $_SESSION['token']) {
 
-            $form = new Form();
+            // $form = new Form();
             // Création du formulaire
-            $form->startForm('', 'POST', ['id' => 'myForm', 'class' => 'bg-transparent border border-secondary text-center mx-auto mb-3 p-2 ','enctype' => 'multipart/form-data']);
-            $form->addLabel('picture', 'Ajouter une photo');
-            $form->addInput('file', 'picture', ['id' => 'picture', 'class' => 'form-control mt-3 mb-3']);
-            $form->addInput('hidden', 'token',['id'=>'hidden',' value' => isset($_SESSION['token']) ? trim($_SESSION['token']) : null]);
-            $form->addInput('submit', 'btnFile',['id' => 'btnFile', 'class'=>'btnAdmin btn btn-dark text-danger', 'value' => 'Envoyer']);
-            $form->endForm();
+            $this->form->startForm('', 'POST', ['id' => 'myForm', 'class' => 'bg-transparent border border-secondary text-center mx-auto mb-3 p-2 ','enctype' => 'multipart/form-data']);
+            $this->form->addLabel('picture', 'Ajouter une photo');
+            $this->form->addInput('file', 'picture', ['id' => 'picture', 'class' => 'form-control mt-3 mb-3']);
+            $this->form->addInput('hidden', 'token',['id'=>'hidden',' value' => isset($_SESSION['token']) ? trim($_SESSION['token']) : null]);
+            $this->form->addInput('submit', 'btnFile',['id' => 'btnFile', 'class'=>'btnAdmin btn btn-dark text-danger', 'value' => 'Envoyer']);
+            $this->form->endForm();
     
             // Si l'admin n'est pas connecté on ridirige vers l'accueil
             if (!isset($_SESSION['username_admin'])) {
                 header('location:index.php');
+                exit();
             } else {
                 // Récupère les slides correspondant au format d'image testé
                 // puis affiche les données récupérées
-                $model = new SlideshowAdminModel();
-                $slides = $model->findAll($_SESSION['size']);
-                $this->render('admin/slideshow', ['fileForm' => $form->getFormElements(), 'slides' => $slides, 'error' => $error]);
+                // $model = new SlideshowAdminModel();
+                $slides = $this->slideshowModel->findAll($_SESSION['size']);
+                $this->render('admin/slideshow', ['fileForm' => $this->form->getFormElements(), 'slides' => $slides, 'error' => $error]);
             }
         } else {
             header('location:/public/panelAdmin');
+            exit();
         }    
     }
 
@@ -164,7 +172,7 @@ class AdminSlideshowController extends Controller
         $handler['new'][$ext]($new_image, $destination, 100);
        
         // Détruit l'image source de la mémoire
-        imagedestroy($new_image);
+        // imagedestroy($new_image);
 
         return  $destination;
     }
@@ -200,8 +208,8 @@ class AdminSlideshowController extends Controller
             }
         // Instancie le modèle et effectrue une lecture de la table
         // des enregistrements correspondants à la valeur donnée
-        $model = new SlideshowAdminModel();
-        $slides = $model->findAll($_SESSION['size']);
+        // $model = new SlideshowAdminModel();
+        $slides = $this->slideshowModel->findAll($_SESSION['size']);
         
         $slide = array('slides'=> $slides, 'size' => $size);
 
@@ -221,8 +229,8 @@ class AdminSlideshowController extends Controller
         // Si l'id et le token sont déclarés et si les tokens matches
         if (isset($_GET['id']) && isset($_GET['token']) && $_GET['token'] == $_SESSION['token']) {
             // Récupère l'enregistrement correspondant
-            $model = new SlideshowAdminModel();
-            $path_slide = $model->findPath($id);
+            // $model = new SlideshowAdminModel();
+            $path_slide = $this->slideshowModel->findPath($id);
             // Extrait le nom du fichier
             $path = explode('/', $path_slide->picture_path);
             $nameSlide= $path[2];            
@@ -233,9 +241,10 @@ class AdminSlideshowController extends Controller
             unlink('image/' . $el . '/' . $path[2]);
            };
         //    Supprime les diiférents format du slide stcokés en BDD
-            $model->delete($id, $nameSlide);
+            $this->slideshowModel->delete($id, $nameSlide);
             // Redirige sur la page des diapos
             header('location:/public/adminSlideshow/index/' . trim($_SESSION['token']));
+            exit();
         }
     }
 }

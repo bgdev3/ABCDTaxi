@@ -1,5 +1,6 @@
 <?php
-namespace App\Core;
+namespace App\Services
+;
 
 class Language
 {

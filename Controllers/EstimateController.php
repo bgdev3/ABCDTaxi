@@ -1,24 +1,26 @@
 <?php
 namespace App\Controllers;
 
-use App\Core\CheckDays;
-use App\Core\Form;
-use App\Core\Language;
+use App\Services\CheckDays;
+use App\Services\Form;
+use App\Services\Language;
 use App\Models\PriceModel;
 use App\Services\TarifService;
 use IntlDateFormatter;
 
-session_start();
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 
 class EstimateController extends Controller 
 {
-
-    private TarifService $tarifService;
-
-    public function __construct()
-    {
-        $this->tarifService = new TarifService();
-    }
+    public function __construct( 
+        private TarifService $tarifService,
+        private Form $form,
+        private CheckDays $checkDays, 
+        private PriceModel $priceModel
+        )
+    {}
     /**
      * Méthode qui crée le formulaire par défault
      * 
@@ -30,18 +32,18 @@ class EstimateController extends Controller
         $_SESSION['lang'] = !isset($_SESSION['lang']) ? 'fr' : $_SESSION['lang'];
         $language = new Language($_SESSION['lang']);
         // Instance de la class Form;
-        $form = new Form();
+        // $form = new Form();
         // Creation du formulaire
-        $form->startForm();
-        $form->addLabel('check', $language->get('roundTrip'), ['id' => 'checkLabel']);
-        $form->addInput('checkbox', 'check', ['id' => 'check', 'value' => 'false']);
-        $form->addInput('text', 'destination', ['id' => 'start', 'placeholder'=> $language->get('departurePlace')]);
-        $form->addInput('text', 'destination', ['id' => 'end', 'placeholder'=> $language->get('destination')]);
-        $form->addLabel('wait', $language->get('wait'), ['class'=>'noneWait', 'name' => 'wait']);
-        $form->addInput('number', 'wait', ['class'=>'noneWait', 'id' => 'wait', 'value' => '0', 'step' => '15', 'min' => '0']);
-        $form->endForm();
+        $this->form->startForm();
+        $this->form->addLabel('check', $language->get('roundTrip'), ['id' => 'checkLabel']);
+        $this->form->addInput('checkbox', 'check', ['id' => 'check', 'value' => 'false']);
+        $this->form->addInput('text', 'destination', ['id' => 'start', 'placeholder'=> $language->get('departurePlace')]);
+        $this->form->addInput('text', 'destination', ['id' => 'end', 'placeholder'=> $language->get('destination')]);
+        $this->form->addLabel('wait', $language->get('wait'), ['class'=>'noneWait', 'name' => 'wait']);
+        $this->form->addInput('number', 'wait', ['class'=>'noneWait', 'id' => 'wait', 'value' => '0', 'step' => '15', 'min' => '0']);
+        $this->form->endForm();
         // Envoie à la vue le formulaire 
-        $this->render('reservation/estimate', ['addLabel' => $form -> getFormElements()]);
+        $this->render('reservation/estimate', ['addLabel' => $this->form -> getFormElements()]);
     }
 
 
@@ -109,8 +111,8 @@ class EstimateController extends Controller
         $_SESSION['test'] = 9;
 
         // Effectue une lecture de table afin de récupérer les tarifs en vigeurs
-        $modelPrice = new PriceModel();
-        $priceModel = $modelPrice->findAll();
+        // $modelPrice = new PriceModel();
+        $priceModel = $this->priceModel->findAll();
         $pickupPrice = $priceModel->pickupPrice;
         
         // Si true, on stocke les données relatif à un transport aller-retour
@@ -224,8 +226,8 @@ class EstimateController extends Controller
 
         // teste le timestamp du jours séléctionné afin de déterminé si c'est un jour férié.
         // Le stocke dans une session afin de la tester dans le calcul du devis
-        $checkDays = new CheckDays();
-        $_SESSION['restlessDay'] = $checkDays->easterDays($day, $_SESSION['day']);
+        // $checkDays = new CheckDays();
+        $_SESSION['restlessDay'] = $this->checkDays->easterDays($day, $_SESSION['day']);
     }  
 
 

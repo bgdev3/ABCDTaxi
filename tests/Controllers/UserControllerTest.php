@@ -3,9 +3,10 @@
 namespace Tests\Controllers;
 
 use App\Controllers\UserController;
-use App\Core\Captcha;
+use App\Services\Captcha;
 use App\Entities\Client;
 use App\Models\ClientModel;
+use App\Services\Form;
 use PHPUnit\Framework\TestCase;
 
 class UserControllerTest extends TestCase
@@ -29,49 +30,49 @@ class UserControllerTest extends TestCase
         $_POST = [];
     }
 
-    #[\PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations]
     public function testConnexionReussie(): void
     {
-        // 🔹 User simulé (IMPORTANT : doit matcher ton controller)
+        // 🔥 Client fictif
         $user = new Client();
         $user->setSurname('admin');
         $user->setIdClient(1);
 
-        // Simule ce que retourne l'attribut en BDD (IMPORTANT : doit matcher ton controller)
-        // Ici l'attribut n'a pas le meme nom que la propriété privée, c'est pour ça que je l'ai mis en public et
-     
-        $user = new Client();
-        $user->setSurname('admin');
-        $user->setIdClient(1);
-        $user->num_client = password_hash('Password123!', PASSWORD_DEFAULT); // propriété publique mappée depuis la BDD
-        // 🔹 Mock model
+        // ⚠️ Attention: propriété publique (ok si ton modèle le fait)
+        $user->num_client = password_hash('Password123!', PASSWORD_DEFAULT);
+
+        // 🔥 Mock Model
         $clientModelMock = $this->createStub(ClientModel::class);
         $clientModelMock->method('find')->willReturn($user);
 
-        // 🔹 Mock captcha
+        // 🔥 Mock Captcha
         $captchaMock = $this->createStub(Captcha::class);
         $captchaMock->method('verify')->willReturn(true);
 
-        // 🔹 POST simulé (IMPORTANT: idUser = ton controller)
+        // 🔥 Mock Form (IMPORTANT -> manquant dans ton test)
+        $formMock = $this->createStub(Form::class);
+
+        // 🔥 POST simulé
         $_POST = [
             'email' => 'admin@test.com',
-            'idUser' => 'Password123!',
+            'password' => 'Password123!',
             'token' => 'test_token',
             'recaptcha_response' => 'fake'
         ];
 
-        // 🔹 Controller mock
+        // 🔥 Controller avec dépendances CORRECTES
         $controller = $this->getMockBuilder(UserController::class)
-            ->setConstructorArgs([$clientModelMock, $captchaMock])
+            ->setConstructorArgs([$formMock, $clientModelMock, $captchaMock])
             ->onlyMethods(['render'])
             ->getMock();
 
-        $controller->method('render')->willReturnCallback(function () {});
+        $controller->method('render')->willReturnCallback(function () {
+            // pas de rendu pendant test
+        });
 
-        // 🔹 Action
+        // 🔥 Action
         $controller->index();
 
-        // 🔥 ASSERTIONS ALIGNÉES AVEC TON CODE
+        // 🔥 Assertions session
         $this->assertArrayHasKey('username', $_SESSION);
         $this->assertEquals('admin', $_SESSION['username']);
 

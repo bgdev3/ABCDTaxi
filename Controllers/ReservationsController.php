@@ -2,10 +2,10 @@
 namespace App\Controllers;
 
 use DateTime;
-use App\Core\Form;
-use App\Core\Mailer;
-use App\Core\Language;
-use App\Core\CheckDays;
+use App\Services\Form;
+use App\Services\Mailer;
+use App\Services\Language;
+use App\Services\CheckDays;
 use App\Models\ClientModel;
 use App\Models\TransportModel;
 use App\Entities\Transport;
@@ -15,6 +15,15 @@ session_start();
 
 class ReservationsController extends Controller
 {
+
+    public function __construct (
+        private Form $form,
+        private ClientModel $clientModel,
+        private TransportModel $transportModel,
+        private Mailer $mailer,
+        private CheckDays $checkDays, 
+        private Transport $transport
+    ){}    
 
     /**
      * Permet l'affichage de la liste des réservations utilisateur
@@ -33,17 +42,17 @@ class ReservationsController extends Controller
         // Si username est déclaré
         if (isset($_SESSION['username'])) {
             // Instance de TransportModel, on assigne l'id utilisateur
-            $transport = new TransportModel;
+            // $transport = new TransportModel;
             $id = $_SESSION['id_user'];
-            $list = $transport->join($id);
+            $list = $this->transportModel->join($id);
             // Si l'enregistrement de la table transport est nulle
             if (empty($list)) {
                 // On stocke un message
                 $info = $language->get('NoReservations');
                 // Instance de UserModel
-                $model = new ClientModel();
+                // $model = new ClientModel();
                 // On supprime l'utilisateur de la table client et on vide et détruit les sessions
-                $model->delete($id);
+                $this->clientModel->delete($id);
                 session_unset();
                 session_destroy();
             } 
@@ -80,7 +89,7 @@ class ReservationsController extends Controller
         $lang = isset($_SESSION['lang']) ? $_SESSION['lang'] : 'fr';
         $language = new Language($lang);
         // Si les champs du formulaire de mise à jour sont valide
-        if (Form::validatePost($_POST, ['date', 'time', 'nbPerson'])) {
+        if ($this->form->validatePost($_POST, ['date', 'time', 'nbPerson'])) {
 
             // On teste ici le token afin d'éviter une faille CSRF
             // ici on teste le token à l'arrivee sur la page en GET et lors de la soumission du formulaire
@@ -102,26 +111,27 @@ class ReservationsController extends Controller
                     // On récupère la date du jour dans le format de la bdd
                     $now = date('Y/m/d');
                     // Insatnce de Transport
-                    $transport = new Transport();
+                    // $transport = new Transport();
                     // Hydrate l'entité avec htmlspecialchars afin d'éviter la faille XSS
-                    $transport->setDateReservation($now);
-                    $transport->setDateTransport(htmlspecialchars($_POST['date'], ENT_QUOTES));
-                    $transport->setDeparture_time($time);
-                    $transport->setNbPassengers(htmlspecialchars($_POST['nbPerson']), ENT_QUOTES);
+                    $this->transport->setDateReservation($now);
+                    $this->transport->setDateTransport(htmlspecialchars($_POST['date'], ENT_QUOTES));
+                    $this->transport->setDeparture_time($time);
+                    $this->transport->setNbPassengers(htmlspecialchars($_POST['nbPerson']), ENT_QUOTES);
         
-                    $sendMail = new Mailer;
+                    // $sendMail = new Mailer;
                     // Créer une variable de test pour l'action utilisateur
                     // afin de connaitre quel content envoyer
                     $action = 'update';
-                    $message = $sendMail->sendUserMail($_SESSION['email'], $action, $transport);
+                    $message = $this->mailer->sendUserMail($_SESSION['email'], $action, $this->transport);
                 
                     if (empty($message)) {
                         // On instancie le modèle et appelle la méthode update
                         // afin de mettre à jour l'enregistrement correspodant avec en argument l'id de transport et l'entité transport
-                        $model = new TransportModel();
-                        $model->update($id, $transport);
+                        // $model = new TransportModel();
+                        $this->transportModel->update($id, $this->transport);
                         // Si tout se passe bien, on redirige vers la liste des réservations
                     header('location:/public/reservations');
+                    exit();
                     } else {
                         // Sinon assigne le retour d'errreur d'envoi afin d'afficher l'erreur
                         $error = $message;                
@@ -151,37 +161,37 @@ class ReservationsController extends Controller
         }
 
         // Instance de TransportModel
-        $model = new TransportModel;
+        // $model = new TransportModel;
        
         // Si l'Id est bien déclaré
         if(isset($id))
             // Récupère le retour de l'enregistrement correspodant grâce à sa méthode find
-            $transport = $model->find($id);
+            $transport = $this->transportModel->find($id);
         else
         // SInon on redirige vers laliste des réservations
             header('location:/public/reservations');
 
         // On instancie Form afin de crée le formulaire de mise à jour
-        $formUpdate = new Form();
+        // $formUpdate = new Form();
         // Ici on va remplir les champs avec les données utilsateur de l'enregistrement récupéré
-        $formUpdate->startForm('#', 'POST', ['id'=> 'myForm']);
-        $formUpdate->addLabel('date', $language->get('dateTransport') . ': ');
-        $formUpdate->addInput('date', 'date', ['id' => 'date', 'class'=> 'formInput', 'value' => $transport->date_transport, 'required' => '']);
-        $formUpdate->addLabel('time',  $language->get('hourUpdate') . ': ');
-        $formUpdate->addInput('time', 'time', ['id' => 'heure', 'class'=> 'formInput', 'value' => $transport->departureTime, 'min'=>'08:00', 'max'=>'20:00', 'required' => '']);
-        $formUpdate->addLabel('nbPerson',  $language->get('numberPerson') .' : *');
-        $formUpdate->addInput('number', 'nbPerson', ['id' => 'nbPerson', 'class'=> 'formInput','min' => '1', 'max' => '4', 'value' => $transport->nbPassengers, 'required' => '']);
-        $formUpdate->addLabel('depart',  $language->get('departurePlaceUpdate') . ': ');
-        $formUpdate->addInput('text', 'destination', ['id' => 'depart', 'class'=> 'formInput', 'value' => $transport->departurePlace, 'readonly' => 'readonly']);
-        $formUpdate->addLabel('destination',  $language->get('destinationUpdate') . ':');
-        $formUpdate->addInput('text', 'destination', ['id' => 'destination', 'class'=> 'formInput', 'value' =>$transport->destination, 'readonly' => 'readonly']);
-        $formUpdate->addLabel('roundTrip',  $language->get('roundTripUpdate') . ':');
-        $formUpdate->addInput('text', 'roundTrip', ['id' => 'aller_retour', 'class'=> 'formInput', 'value' =>$transport->roundTrip, 'readonly' => 'readonly']);   
-        $formUpdate->addLabel('price',  $language->get('priceUpdate') . ':');
-        $formUpdate->addInput('text', 'price', ['id' => 'aller_retour', 'class'=> 'formInput', 'value' =>$transport->price . '&euro;', 'readonly' => 'readonly']);
-        $formUpdate->addInput('hidden', 'token',['id'=>'hidden',' value' => isset($_SESSION['token']) ? trim($_SESSION['token']): null]);
-        $formUpdate->addInput('submit', 'update',['class'=>'btnForm',' value' =>  $language->get('btnUpdate1')]);
-        $formUpdate->endForm();
+        $this->form->startForm('#', 'POST', ['id'=> 'myForm']);
+        $this->form->addLabel('date', $language->get('dateTransport') . ': ');
+        $this->form->addInput('date', 'date', ['id' => 'date', 'class'=> 'formInput', 'value' => $transport->date_transport, 'required' => '']);
+        $this->form->addLabel('time',  $language->get('hourUpdate') . ': ');
+        $this->form->addInput('time', 'time', ['id' => 'heure', 'class'=> 'formInput', 'value' => $transport->departureTime, 'min'=>'08:00', 'max'=>'20:00', 'required' => '']);
+        $this->form->addLabel('nbPerson',  $language->get('numberPerson') .' : *');
+        $this->form->addInput('number', 'nbPerson', ['id' => 'nbPerson', 'class'=> 'formInput','min' => '1', 'max' => '4', 'value' => $transport->nbPassengers, 'required' => '']);
+        $this->form->addLabel('depart',  $language->get('departurePlaceUpdate') . ': ');
+        $this->form->addInput('text', 'destination', ['id' => 'depart', 'class'=> 'formInput', 'value' => $transport->departurePlace, 'readonly' => 'readonly']);
+        $this->form->addLabel('destination',  $language->get('destinationUpdate') . ':');
+        $this->form->addInput('text', 'destination', ['id' => 'destination', 'class'=> 'formInput', 'value' =>$transport->destination, 'readonly' => 'readonly']);
+        $this->form->addLabel('roundTrip',  $language->get('roundTripUpdate') . ':');
+        $this->form->addInput('text', 'roundTrip', ['id' => 'aller_retour', 'class'=> 'formInput', 'value' =>$transport->roundTrip, 'readonly' => 'readonly']);   
+        $this->form->addLabel('price',  $language->get('priceUpdate') . ':');
+        $this->form->addInput('text', 'price', ['id' => 'aller_retour', 'class'=> 'formInput', 'value' =>$transport->price . '&euro;', 'readonly' => 'readonly']);
+        $this->form->addInput('hidden', 'token',['id'=>'hidden',' value' => isset($_SESSION['token']) ? trim($_SESSION['token']): null]);
+        $this->form->addInput('submit', 'update',['class'=>'btnForm',' value' =>  $language->get('btnUpdate1')]);
+        $this->form->endForm();
 
         // Instance d'un deuxième formulaire afin de passer un post pour valider la nouvelle réservation
         $formNewReservation = new Form();
@@ -190,7 +200,7 @@ class ReservationsController extends Controller
         $formNewReservation->addInput('submit', 'new',['class'=>'btnFormNew',' value' =>  $language->get('btnUpdate2')]);
         $formNewReservation->endForm();
         // On redirige vers la vue correspondante
-        $this->render('user/updateTransport', ['transport' => $transport, 'updateForm' =>  $formUpdate->getFormElements(),
+        $this->render('user/updateTransport', ['transport' => $transport, 'updateForm' =>  $this->form->getFormElements(),
                         'newReservation' => $formNewReservation -> getformElements(), 'error' => $error]);
     }
 
@@ -214,51 +224,54 @@ class ReservationsController extends Controller
         if (isset($_POST['true']) && isset($_GET['id']) && isset($_GET['token']) && $_GET['token'] == $_SESSION['token']) {
             
             // Instance de TransportModel et de Mailer
-            $transportModel = new TransportModel;
-            $sendMail = new Mailer;
+            // $transportModel = new TransportModel;
+            // $sendMail = new Mailer;
             // Créer une variable de test pour l'action utilisateur
             // afin de connaitre quel content envoyer
             $action = 'delete';
-            $message = $sendMail->sendUserMail($_SESSION['email'], $action);
+            $message = $this->mailer->sendUserMail($_SESSION['email'], $action);
             // Suppression par sa méthode delete prenant l'id de transport
             // correspondant en argument
-            $transportModel->delete($id);
+            $this->transportModel->delete($id);
             // redirige vers la liste des réservations
             header('location:/public/reservations');
+            exit();
 
         // Sinon si c'est False qui est déclaré en POST et que les tokens de sécurité correspondent
         } elseif (isset($_POST['false']) && isset($_GET['id']) && isset($_GET['token']) && $_GET['token'] == $_SESSION['token']) {
 
             // On revient vers la liste des réservations sans suppression
             header('location:/public/reservations');
+            exit();
 
         // Sinon si new est déclaré on supprime le transport correspondant 
         // on vide et détruit les sessions utilisateur 
         // et on redirige vers le parcours de réservation
         }  elseif (isset($_POST['new'])) {
             // Instance de TransportModel
-            $transportModel = new TransportModel;
+            // $transportModel = new TransportModel;
             // Appel de la méthode delete
-            $transportModel->delete($id);
+            $this->transportModel->delete($id);
             // On vide et detruits les sessions utilisateurs
             unset($_SESSION['username']);
             unset($_SESSION['idClient']);
             // session_destroy();
             // Redirige vers les réservations
             header('location:/public/date/index/' . $_SESSION['token']);
+            exit();
         // Sinon on affiche un message d'erreur
         } else {
             $error = !empty($_POST) ? $language->get('unknownUser') : "";
         }
        
         //   Instance de Form afin de créer le formulaire
-        $form = new Form();
-        $form->startForm('', 'POST', ['id'=>'', 'class'=>'confirmDelete']);
-        $form->addInput('submit','true',['class'=>' btnConfirm btnFormDelete', 'value' =>  $language->get('confirmYes')]);
-        $form->addInput('submit','false',['class'=>'btnConfirm btnFormDelete', 'value' =>  $language->get('confirmNo')]);
-        $form->endForm();
+        // $form = new Form();
+        $this->form->startForm('', 'POST', ['id'=>'', 'class'=>'confirmDelete']);
+        $this->form->addInput('submit','true',['class'=>' btnConfirm btnFormDelete', 'value' =>  $language->get('confirmYes')]);
+        $this->form->addInput('submit','false',['class'=>'btnConfirm btnFormDelete', 'value' =>  $language->get('confirmNo')]);
+        $this->form->endForm();
         // Redirige vers la vue correspodante
-        $this->render('user/deleteTransport',['form'=>$form->getFormElements(),'error' => $error]);
+        $this->render('user/deleteTransport',['form'=>$this->form->getFormElements(),'error' => $error]);
     }
 
 
@@ -311,9 +324,7 @@ class ReservationsController extends Controller
         $now = new DateTime($day);
         $day = ucfirst($formatter->format($now));
 
-        // Instance
-        $checkDays = new CheckDays();
-        
-        return  $checkDays->easterDays($timestamp, $day);
+        // Instance de CheckDays afin d'appeler la méthode easterDays pour vérifier si la date correspond à un jour férié ou un dimanche
+        return  $this->checkDays->easterDays($timestamp, $day);
     }
 }

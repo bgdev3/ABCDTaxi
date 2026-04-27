@@ -1,26 +1,23 @@
 <?php 
 namespace App\Controllers;
 
-use App\Core\Form;
-use App\Core\Language;
+use App\Services\Form;
+use App\Services\Language;
 use App\Models\ClientModel;
-use App\Core\Captcha;
+use App\Services\Captcha;
 
  if (session_status() === PHP_SESSION_NONE) {
-            session_start();
+        session_start();
         }
 
 class UserController extends Controller
 {
 
- private ClientModel $clientModel;
-    private Captcha $captcha;
-
-    public function __construct(?ClientModel $model = null, ?Captcha $captcha = null)
-    {
-        $this->clientModel = $model ?? new ClientModel();
-        $this->captcha = $captcha ?? new Captcha();
-    }
+    public function __construct (
+        private Form $form,
+        private ClientModel $clientModel, 
+        private Captcha $captcha
+        ){}
 
     /**
      * Affiche le formulaire de connexion et gère les donnés en POST
@@ -39,7 +36,7 @@ class UserController extends Controller
         $lang = isset($_SESSION['lang']) ? $_SESSION['lang'] : 'fr';
         $language = new Language($lang);
         // Si les champs sont valides
-        if (Form::validatePost($_POST, ['email', 'idUser'])) {
+        if ($this->form->validatePost($_POST, ['email', 'idUser'])) {
 
             // On récupère l'email et et le numéro client afin d'éviter la faille XSS
             // en utilisant htmlspecialchars
@@ -87,28 +84,28 @@ class UserController extends Controller
         }
 
         // Instancie Form et crée le formulaire
-        $form = new Form();
+        // $form = new Form();
         // Si aucun utilisateur est déclaré on créer le formulaire de connexion
         if (!isset($_SESSION['username'])) {
-            $form->startForm('#', 'POST', ['id'=>'myForm', 'novalidate' => '']);
-            $form->addLabel('email',  $language->get('email') . ': ');
-            $form->addInput('email', 'email', ['id' => 'email', 'placeholder' =>  $language->get('email'), 'class'=> 'formInput','required' => '']);
-            $form->addLabel('idUser',  $language->get('password') . ': ');
-            $form->addInput('text', 'idUser', ['id' => 'idUser','placeholder' => 'xxxxxxxxxx', 'class'=> 'formInput','required' => '']);
-            $form->addInput('hidden', 'token', ['id' => 'hidden', 'class'=> 'formInput', 'value' => isset($_SESSION['token']) ? trim($_SESSION['token']) : null]);
-            $form->addInput("submit", "btnConnect", ['id'=>'btnConnect', 'class'=>'btnForm', "value"=> $language->get('btnLog')]);
-            $form->addInput('hidden', 'recaptcha_response', ['id' => 'recaptchaResponse']);
-            $form->endForm();
+            $this->form->startForm('#', 'POST', ['id'=>'myForm', 'novalidate' => '']);
+            $this->form->addLabel('email',  $language->get('email') . ': ');
+            $this->form->addInput('email', 'email', ['id' => 'email', 'placeholder' =>  $language->get('email'), 'class'=> 'formInput','required' => '']);
+            $this->form->addLabel('idUser',  $language->get('password') . ': ');
+            $this->form->addInput('text', 'idUser', ['id' => 'idUser','placeholder' => 'xxxxxxxxxx', 'class'=> 'formInput','required' => '']);
+            $this->form->addInput('hidden', 'token', ['id' => 'hidden', 'class'=> 'formInput', 'value' => isset($_SESSION['token']) ? trim($_SESSION['token']) : null]);
+            $this->form->addInput("submit", "btnConnect", ['id'=>'btnConnect', 'class'=>'btnForm', "value"=> $language->get('btnLog')]);
+            $this->form->addInput('hidden', 'recaptcha_response', ['id' => 'recaptchaResponse']);
+            $this->form->endForm();
         // Sinon on crée le formulaire de confirmation 
         } else {
-            $form->startForm('#', 'POST', ['id'=>'myForm', 'class' => 'confirmLogout', 'novalidate' => '']);
-            $form->addInput('hidden', 'token',['id'=>'hidden',' value' => isset($_SESSION['token']) ? trim($_SESSION['token']): null]);
-            $form->addInput("submit", "true", ['class'=>'btnConfirmLogOut', "value"=> $language->get('leave')]);
-            $form->addInput("submit", "false", ['class'=>'btnConfirmLogOut', "value"=> $language->get('stay')]);
-            $form->endForm();
+            $this->form->startForm('#', 'POST', ['id'=>'myForm', 'class' => 'confirmLogout', 'novalidate' => '']);
+            $this->form->addInput('hidden', 'token',['id'=>'hidden',' value' => isset($_SESSION['token']) ? trim($_SESSION['token']): null]);
+            $this->form->addInput("submit", "true", ['class'=>'btnConfirmLogOut', "value"=> $language->get('leave')]);
+            $this->form->addInput("submit", "false", ['class'=>'btnConfirmLogOut', "value"=> $language->get('stay')]);
+            $this->form->endForm();
         }
        // Envoit vers la vue correspondante
-        $this->render("user/index", ['addAuth' => $form->getFormElements(), 'error'=> $error]);
+        $this->render("user/index", ['addAuth' => $this->form->getFormElements(), 'error'=> $error]);
     }
 
 
@@ -185,6 +182,7 @@ class UserController extends Controller
         // Sinon redirige vers la liste des réservations
         } else {
            header('location:/public/reservations');
+           exit();
         }
     }  
 }

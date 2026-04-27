@@ -2,11 +2,11 @@
 namespace App\Controllers;
 
 use IntlDateFormatter;
-use App\Core\Form;
-use App\Core\Mailer;
-use App\Core\Captcha;
-use App\Core\GenerateId;
-use App\Core\Language;
+use App\Services\Form;
+use App\Services\Mailer;
+use App\Services\Captcha;
+use App\Services\GenerateId;
+use App\Services\Language;
 use App\Entities\Client;
 use App\Entities\Transport;
 use App\Models\ClientModel;

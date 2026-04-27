@@ -4,7 +4,7 @@ namespace App\Tests\Controllers;
 
 use App\Controllers\AuthAdminController;
 use App\Models\AdminUserModel;
-use App\Core\Captcha;
+use App\Services\Captcha;
 use App\Entities\AdminUser;
 use PHPUnit\Framework\TestCase;
 

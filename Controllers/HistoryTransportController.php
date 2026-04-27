@@ -1,14 +1,23 @@
 <?php
 namespace App\Controllers;
 
-use App\Core\Form;
+use App\Services\Form;
 use App\Models\ClientHistoryModel;
 use App\Models\TransportHistoryModel;
 
-session_start();
+if(session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 
 class HistoryTransportController extends Controller
 {
+
+    public function __construct (
+         private Form $form,
+         private ClientHistoryModel $clientHistoryModel,
+         private TransportHistoryModel $transportHistoryModel
+         ){}
+
     public function index($token): void
     {
         // Si l'admin est connecté et que les tokens GET et SESSION correspondent
@@ -16,42 +25,42 @@ class HistoryTransportController extends Controller
 
             // Récupère tous les enregistrements ClientHistory
             $transportHistory = [];
-            $modelClient = new ClientHistoryModel();
-            $listClient = $modelClient->findAll();
+            // $modelClient = new ClientHistoryModel();
+            $listClient = $this->clientHistoryModel->findAll();
     
             // Instance du modèle transportHistory afin d'effectuer des jointures
             // sur chaque enregistrement clientHistory
-            $modelTransport = new TransportHistoryModel();
             // Récupère sur chaque enregistrement l'idClient afin d'effectuer une jointure dans la boucle
             foreach($listClient as $client) {
     
                 $idClient =  $client->idClient_histo;
-                array_push($transportHistory,  $modelTransport->join($idClient));
+                array_push($transportHistory,  $this->transportHistoryModel->join($idClient));
             }
-            $form = new Form();
-
-            $form->startForm('#', 'POST', ['id' => 'mForm', 'class' => 'd-flex flex-column flex-md-row flex-lg-row align-items-md-end gap-2 mb-3']);
-            $form->startDiv('col-12 col-md-6');
-            $form->addLabel('sort', 'Recherche par :');
-            $form->addSelect('sort', ['all'=>'Tous les transports', 'name' => 'Nom', 'date' => 'Date', 'cancel' => 'Transports annulés', 'done'=>'Transport effectués'], ['class' => 'form-select form-select-sm bg-transparent text-danger border border-secondary', 'id'=>'sort']);
-            $form->endDiv();
-            $form->startDiv('text-center d-flex  align-items-center gap-2');
-            $form->addLabel('search', 'Nom: ', ['id' => 'searchLabel', 'class' => 'd-none']);
-            $form->addInput('text', 'search', ['id'=>'search', 'class' => 'bg-transparent text-light border border-secondary  d-none']);
-            $form->addLabel('searchDate', 'Date: ', ['id' => 'searchDateLabel', 'class' => 'd-none']);
-            $form->addInput('date', 'searchDate', ['id' =>'searchDate', 'class' => 'bg-transparent text-light border border-secondary d-none']);
-            $form->addInput('button', 'sortTransport', ['id' =>'sortTransport', 'class' => 'btn btn-sm btn-dark text-danger', 'value'=>'Rechercher']);
-            $form->endDiv();
-            $form->endForm();
+            
+            $this->form->startForm('#', 'POST', ['id' => 'mForm', 'class' => 'd-flex flex-column flex-md-row flex-lg-row align-items-md-end gap-2 mb-3']);
+            $this->form->startDiv('col-12 col-md-6');
+            $this->form->addLabel('sort', 'Recherche par :');
+            $this->form->addSelect('sort', ['all'=>'Tous les transports', 'name' => 'Nom', 'date' => 'Date', 'cancel' => 'Transports annulés', 'done'=>'Transport effectués'], ['class' => 'form-select form-select-sm bg-transparent text-danger border border-secondary', 'id'=>'sort']);
+            $this->form->endDiv();
+            $this->form->startDiv('text-center d-flex  align-items-center gap-2');
+            $this->form->addLabel('search', 'Nom: ', ['id' => 'searchLabel', 'class' => 'd-none']);
+            $this->form->addInput('text', 'search', ['id'=>'search', 'class' => 'bg-transparent text-light border border-secondary  d-none']);
+            $this->form->addLabel('searchDate', 'Date: ', ['id' => 'searchDateLabel', 'class' => 'd-none']);
+            $this->form->addInput('date', 'searchDate', ['id' =>'searchDate', 'class' => 'bg-transparent text-light border border-secondary d-none']);
+            $this->form->addInput('button', 'sortTransport', ['id' =>'sortTransport', 'class' => 'btn btn-sm btn-dark text-danger', 'value'=>'Rechercher']);
+            $this->form->endDiv();
+            $this->form->endForm();
         
             // Si l'admin n'est pas connecté, redirige vers l'accueil
-            if (!isset($_SESSION['username_admin']))
+            if (!isset($_SESSION['username_admin'])) {
                 header('location:/public/');
-            else
-            $this->render('history/transport', ['list' =>  $transportHistory, 'searchForm' => $form->getFormElements()]);
+                exit();
+            } else
+                $this->render('history/transport', ['list' =>  $transportHistory, 'searchForm' => $this->form->getFormElements()]);
             
         } else {
             header('location:/public/');
+            exit();
         }        
     }
 
@@ -66,8 +75,8 @@ class HistoryTransportController extends Controller
         $content = trim(file_get_contents("php://input"));
         $data = json_decode($content, true);
 
-        $modelTransport = new TransportHistoryModel();
-        $modelClient = new ClientHistoryModel();
+        // $modelTransport = new TransportHistoryModel();
+        // $modelClient = new ClientHistoryModel();
         global $history;
 
         // Teste la valeur du sélect
@@ -76,26 +85,26 @@ class HistoryTransportController extends Controller
             // Tous les transports confondus
             case 'all':   
             //   Effectue une lecture de la table client
-                $listClient = $modelClient->findAll();
+                $listClient = $this->clientHistoryModel->findAll();
                 $history = $this->displayData($listClient, "join");
             break;
             // Transport par dates
             case 'date':
                 // Récupère les enregistrements correspondants
-                $listClient  = $modelClient->findAll();
+                $listClient  = $this->clientHistoryModel->findAll();
                 $history = $this->displayData($listClient, "joinByDate", $data[1]);
                 
             break;
             // Transports par annulation
             case 'cancel':
                // Récupère les enregistrements correspondants
-                $listClient = $modelClient->findAll();
+                $listClient = $this->clientHistoryModel->findAll();
                 $history = $this->displayData($listClient, "joinByCancelation", true);
                
             break;
             // Transports effectués
             case 'done':
-                $listClient = $modelClient->findAll();
+                $listClient = $this->clientHistoryModel->findAll();
                 $history = $this->displayData($listClient, "joinByDone", false);
                 $_SESSION['date'] = $history;
             break;
@@ -103,10 +112,10 @@ class HistoryTransportController extends Controller
             default :
                if (!empty($data[1]) ) {
                 // Récupère les enregistrements correspondants
-                $listClient = $modelClient->findByName($data[1]);
+                $listClient = $this->clientHistoryModel->findByName($data[1]);
                 // Récupère l'id correspondant puis effectue une jointure des tables
                 $idClient =  $listClient->idClient_histo;
-                $history = $modelTransport->join($idClient);
+                $history = $this->transportHistoryModel->join($idClient);
                 }
             break;
         }

@@ -1,6 +1,5 @@
 <?php
 namespace App\Controllers;
-use App\Core\Language;
 
 /**
  * envois vers la vue la page à afficher par défault
