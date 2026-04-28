@@ -1,8 +1,6 @@
 # ABCDTaxi
 
 ![PHP](https://img.shields.io/badge/PHP-8.4-777BB4?logo=php)
-![CI](https://github.com/TON-USER/ABCDTaxi/actions/workflows/ci.yml/badge.svg)
-![License](https://img.shields.io/badge/license-MIT-blue)
 
 Application web de réservation de taxi en ligne. Sélectionnez un horaire et une destination, obtenez un devis instantané avec toutes les informations relatives à votre trajet.
 
