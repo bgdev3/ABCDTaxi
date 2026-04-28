@@ -83,8 +83,6 @@ class UserController extends Controller
             $error = !empty($_POST) ? $language->get('unknownUser') : "";
         }
 
-        // Instancie Form et crée le formulaire
-        // $form = new Form();
         // Si aucun utilisateur est déclaré on créer le formulaire de connexion
         if (!isset($_SESSION['username'])) {
             $this->form->startForm('#', 'POST', ['id'=>'myForm', 'novalidate' => '']);
