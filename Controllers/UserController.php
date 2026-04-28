@@ -112,9 +112,9 @@ class UserController extends Controller
     /**
     * Valide l'authentification de l'utilisateur à la connexion
     * 
-    * @param string [email] récupère l'email de l'utilisateur
-    * @param string [nbUser] récupère le mdp hashé afin de le tester
-    * @param object [user] récupère l'objet l'instance creation UserModel;
+    * @param string $email récupère l'email de l'utilisateur
+    * @param string $nbUser récupère le mdp hashé afin de le tester
+    * @param object $user récupère l'objet l'instance creation UserModel;
     * 
     * @return string $error Le message d'erreur
     */
@@ -166,8 +166,8 @@ class UserController extends Controller
 
     /**
      * Permet la déconnexion de l'utilisateur en vidant les sessions utilisateur
-     * @param int [token] Variable stockant le token de sécurité
-     * @param array [post] contient la valeur de la confirmation
+     * @param int $token Variable stockant le token de sécurité
+     * @param array $post contient la valeur de la confirmation
      * 
      * Selon les paramètres, vide le ssession et redirige vers la page adequate
      */

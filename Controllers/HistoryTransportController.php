@@ -127,12 +127,12 @@ class HistoryTransportController extends Controller
     /**
      * Applique sur les enregistremets récupérés les requêtes SQL correspondante
      * 
-     * @param array [$state] Enregistrements des transports complets, nom, date, annulation ou effectuées
-     * @param string [$func] Nom de la methode à executer
-     * @param bool [$bool] Booléen qui permet l'utilisation de la bonne jointure SQL
-     * @param object [$model] Model instancié avec un model assigné par défault
+     * @param array $state Enregistrements des transports complets, nom, date, annulation ou effectuées
+     * @param string $func Nom de la methode à executer
+     * @param bool $bool Booléen qui permet l'utilisation de la bonne jointure SQL
+     * @param object $model Model instancié avec un model assigné par défault
      * 
-     * @return array [$history] Retourne l'historique 
+     * @return array $history Retourne l'historique 
      */
     private function displayData( $state, $func, $bool = null, $model = new TransportHistoryModel()): array
     {

@@ -29,7 +29,7 @@ class HistoryClientsController extends Controller
 
     /**
      * Affiche l'historique clients
-     * @param string [$token] Clé de sécurité
+     * @param string $token Clé de sécurité
      */
     public function index($token): void
     {
@@ -51,12 +51,13 @@ class HistoryClientsController extends Controller
     /**
      * Mets à jour un enregistrement client
      * 
-     * @param int [$id] d el'enregistrement sélectionné à modifier
-     * @param string [$token] Token de sécurité
+     * @param int $id d el'enregistrement sélectionné à modifier
+     * @param string $token Token de sécurité
      */
     public function updateClient($id, $token): void
     {
         $error  ='';
+        $isCaptchaValid = false;
         // Rédcupère la valeur de la langue sélectionné
         $lang = isset($_SESSION['lang']) ? $_SESSION['lang'] : 'fr';
         $language = new Language($lang);
@@ -176,8 +177,8 @@ class HistoryClientsController extends Controller
      * Supprime les données toutes les données utilisateurs de l'enregistrements sélectionné dans l'historique
      * Assure la suppression dans toutes les tables de la présence de l'utilisateur
      * 
-     * @param int [$id] Id de l'enregistrement sélectionné
-     * @param string [token] Token de sécurité
+     * @param int $id Id de l'enregistrement sélectionné
+     * @param string $token Token de sécurité
      */
     public function deleteClient($id, $token): void
     {

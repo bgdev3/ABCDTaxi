@@ -24,7 +24,7 @@ class EstimateController extends Controller
     /**
      * Méthode qui crée le formulaire par défault
      * 
-     * @var [$form] Stocke le formulaire de destination
+     * @var $form Stocke le formulaire de destination
      */
     public function index(): void 
     {
@@ -86,8 +86,6 @@ class EstimateController extends Controller
      * @var float [$minDistanceNight] Distance minimum en tarif nuit
      * @var float [$pickupPrice] Tarif de prise en charge
      * @var array [dataTrip] Stocke les tarifs dans un tableau associatif
-     * 
-     * @return [$data] retour json du temps de trajet formaté et du prix
      */
 
     public function quoteCalculation(): void
@@ -206,10 +204,9 @@ class EstimateController extends Controller
      * Recupère la date séléctionné en front, la formate en timestamp et la comparela methode privé checkDays
      * si la sélection est un jour férié ou un dimanche.
      * 
-     * @param string [$day] argument récupérer lors du click du jour séléctionné
-     * @var [formatter] Instance de IntlDateFormatter paramétré en timestamp 
-     * @var [$day] Récupère la date formater en timestamp
-     * @var [S_SESSION['restlessDay] Stocke le booléen retourner par la méthode de restLessDay
+     * @var $formatter Instance de IntlDateFormatter paramétré en timestamp 
+     * @var $day Récupère la date formater en timestamp
+     * @var $_SESSION['restlessDay'] Stocke le booléen retourner par la méthode de restLessDay
      */
     public function getDayOfWeek(): void
     {

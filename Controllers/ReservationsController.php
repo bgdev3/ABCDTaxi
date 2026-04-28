@@ -73,13 +73,13 @@ class ReservationsController extends Controller
      * et appelle le modèle corrspondant afin d'effectuer la mise à jour
      * Sinon, affiche simplement le formulaire de mise à jour
      * 
-     * @param int [$id] récupère l'id du transport correspodant
-     * @var string [$error] Récupère le message d'erreur
-     * @var string [$now] récupère la date du jour
-     * @var object [$formUpdate] Stoke le formulaire de mise à jour
-     * @var object [$formNewReservation] Stocke le formulaire d'une nouvelle réservation
-     * @var object [$transport] Récupère l'insatnce de l'entité
-     * @var object [$model] Modèle de l'entité
+     * @param int $id récupère l'id du transport correspodant
+     * @var string $error Récupère le message d'erreur
+     * @var string $now]récupère la date du jour
+     * @var object $formUpdate Stoke le formulaire de mise à jour
+     * @var object $formNewReservation Stocke le formulaire d'une nouvelle réservation
+     * @var object $transport Récupère l'insatnce de l'entité
+     * @var object $model Modèle de l'entité
      */
     public function updateTransport($token, $id): void
     {
@@ -116,7 +116,7 @@ class ReservationsController extends Controller
                     $this->transport->setDateReservation($now);
                     $this->transport->setDateTransport(htmlspecialchars($_POST['date'], ENT_QUOTES));
                     $this->transport->setDeparture_time($time);
-                    $this->transport->setNbPassengers(htmlspecialchars($_POST['nbPerson']), ENT_QUOTES);
+                    $this->transport->setNbPassengers(htmlspecialchars($_POST['nbPerson'], ENT_QUOTES));
         
                     // $sendMail = new Mailer;
                     // Créer une variable de test pour l'action utilisateur
@@ -167,7 +167,11 @@ class ReservationsController extends Controller
         if(isset($id))
             // Récupère le retour de l'enregistrement correspodant grâce à sa méthode find
             $transport = $this->transportModel->find($id);
-        else
+        else {
+            // Sinon on redirige vers la liste des réservations
+            header('location:/public/reservations');
+            exit();
+        } 
         // SInon on redirige vers laliste des réservations
             header('location:/public/reservations');
 
@@ -209,10 +213,10 @@ class ReservationsController extends Controller
      *Permet la suppression d'un transport
      *selon les différentes valeur des données recu en post
      
-     *@param int [$id] Récupère l'id de transport correspondant
-     *@param array [$post] Param facultatif 
-     *@var string [$error] Récupère le message d'erreur
-     *@var object [$transport] Récupère l'insatnce de l'entité
+     *@param int $id Récupère l'id de transport correspondant
+     *@param array $post Param facultatif 
+     *@var string $error Récupère le message d'erreur
+     *@var object $transport Récupère l'insatnce de l'entité
      */
     public function deleteTransport($token, $id, $post = null): void
     {
@@ -280,8 +284,8 @@ class ReservationsController extends Controller
      * et l'arrondis au quart d'heure supérieur en cas d'horaire non valide
      * Les horaires stockées sont par tranches de 15 min
      * 
-     * @param string [$time] Heure de rendez-vous modifié
-     * @return string [$time] Retourne l'heure fomraté
+     * @param string $time Heure de rendez-vous modifié
+     * @return string $time Retourne l'heure fomraté
      */
     private function roundTime($time): string
     {
@@ -309,7 +313,7 @@ class ReservationsController extends Controller
      * la formatte en timestamp et chaine de caractère afin de la passé
      * à la méthode de l'objet CheckDays pour vérifer si c'est un jours férié ou un dimanche
      * 
-     * @param string [$day] Date à formater 
+     * @param string $day Date à formater 
      */
     private function checkUpdateDays($day)
     {

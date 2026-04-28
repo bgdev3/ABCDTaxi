@@ -15,12 +15,12 @@ class DateController extends Controller
      * Instancie un objet DateTime, appel des méthodes privés 
      * puis renvois à la Vue afin d'afficher
      * 
-     * @var [$now] Instance de DateTime
-     * @var [$date] Stocke le retour de initDate
-     * @var [$time] Stocke le retour de initTime
+     * @var $now Instance de DateTime
+     * @var $date Stocke le retour de initDate
+     * @var $time Stocke le retour de initTime
      */
     
-    public function index($token): void
+    public function index(int $token): void
     {  
         // Crée une instance de DateTime
         $now = new DateTime();
@@ -37,13 +37,13 @@ class DateController extends Controller
     /**
      * Méthode qui initie l'affichage des dates journalières
      * 
-     * @var [$date] Stocke un tableau
-     * @var [formatter] Instance de IntlDateFormatter paramétré en local et stocke le pattern de la date à afficher
-     * @var [$locale] Stoche la localisation par défault
-     * @var [$pattern] Stocke le fomrat par défault
+     * @var $date Stocke un tableau
+     * @var $formatter Instance de IntlDateFormatter paramétré en local et stocke le pattern de la date à afficher
+     * @var $locale Stoche la localisation par défault
+     * @var $pattern Stocke le fomrat par défault
      * 
-     * @param int [$nb] stocke le nombre recupérer en argument
-     * @param object [$now] stocke l'objet DateTime 
+     * @param int $nb stocke le nombre recupérer en argument
+     * @param object $now stocke l'objet DateTime 
      * 
      * @return array [$date] retourne le tableau de date
      */
@@ -74,11 +74,11 @@ class DateController extends Controller
     /**
      * Méthode qui retourne un array d'heure au 1/4h prés
      * 
-     * @var [$timeDate] Stocke les heures
+     * @var $timeDate Stocke les heures
      * 
-     * @param object [$now] Instanciation de DateTime 
-     * @param int [$hours] Heure par défault à afficher
-     * @param int [$nb] Nb d'itération à effectuer
+     * @param object $now Instanciation de DateTime 
+     * @param int $hours Heure par défault à afficher
+     * @param int $nb Nb d'itération à effectuer
      * 
      * @return array [$timeDate] retourne un array des heures
      */
@@ -110,9 +110,9 @@ class DateController extends Controller
      * Méthode qui initialise l'affichage à +$nb jours
      * et mets à jour le front via fetch
      * 
-     * @var [$now] Instance de DateTime
-     * @var [$nb] Récupère le nombre de jours jours à afficher jusqu'à 28 défini en js
-     * @var [$date] Tableau associatif qui sstockes les données d'heures et de jours renvoyés en json
+     * @var $now Instance de DateTime
+     * @var $nb Récupère le nombre de jours jours à afficher jusqu'à 28 défini en js
+     * @var $date Tableau associatif qui sstockes les données d'heures et de jours renvoyés en json
      */
 
     public function addDays(): void
@@ -138,7 +138,7 @@ class DateController extends Controller
     /**
      * Permet l'ajout des heures renvoyé en ajax
      * 
-     * @var [$hours] Renvoi un encodage json au js afin de mettre à jour le front
+     * @var $hours Renvoi un encodage json au js afin de mettre à jour le front
      */
     
     public function addHours(): void
@@ -154,7 +154,7 @@ class DateController extends Controller
      * Récupère les différents enregistrements des reservations 
      * afin de tester les disponibilités restantes pour les réservations
      * 
-     * @param array [$token] token de sécurité  permettant de s'assurer du bon utilisateur
+     * @param array $token token de sécurité  permettant de s'assurer du bon utilisateur
      */
     public function dbCheckHours($token)
     {

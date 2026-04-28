@@ -20,7 +20,7 @@ class AdminPriceController extends Controller
         ){}
     /**
      * Récupère et affiche les données relatives 
-     * @param string [$token] clé de sécurité
+     * @param string $token clé de sécurité
      */
     public function index($token): void 
     {
@@ -45,8 +45,8 @@ class AdminPriceController extends Controller
     /**
      * Afiiche le formulaire de mise à jour des tarifs et traites les données envoyés en POST
      * 
-     * @param int [$id] Id de l'enregistrement 
-     * @param string [Token] de sécurité
+     * @param int $id Id de l'enregistrement 
+     * @param string $token de sécurité
      */
     public function updateAdminPrice($id, $token): void 
     {

@@ -59,7 +59,8 @@ if (isset($_SESSION['idUser'])) { ?>
                     <span class="msgError"> <?php echo $error; ?></span>
 
                 <?php }; 
-                    echo $addForm; 
+                if(isset($addForm))
+                        echo $addForm; 
                 ?>
 
             </div>

@@ -21,7 +21,7 @@ class AdminSlideshowController extends Controller
      * Sauvegarde les différentes diapos sélectionné par l'admin
      * Récupère en post l'image, la redimensionne et la fomrate en .webp avant de l'uploadé
      * 
-     * @param string [$token] Clé de sécurité
+     * @param string $token Clé de sécurité
      */
     public function index($token): void
     {
@@ -123,9 +123,9 @@ class AdminSlideshowController extends Controller
      * Permet le redimensionnement des images dans 3 formats
      * afin de l'adapter pour le RWD
      * 
-     * @param string [$path] Chemin du fichier
-     * @param int [$w] Largeur de redimensionnement de l'image voulu
-     * @param int [$h] Hauteur de redimensionnement de l'image voulu
+     * @param string $path Chemin du fichier
+     * @param int $w Largeur de redimensionnement de l'image voulu
+     * @param int $h Hauteur de redimensionnement de l'image voulu
      * 
      * @return string [$destination] Retourrne le chemin de l'image redimensionnée
      */
@@ -221,8 +221,8 @@ class AdminSlideshowController extends Controller
     /**
      * Permet la suppression d'un slide et de ses différents formats stocké en BDD et dans le dossier cible
      * 
-     * @param int [$id] Identifiant du slide sélectionné
-     * @param int [$token] Token de sécurité passé en get
+     * @param int $id Identifiant de l'enregistrement à supprimer
+     * @param int $token Token de sécurité passé en get
      */
     public function deleteSlide($id, $token): void
     {

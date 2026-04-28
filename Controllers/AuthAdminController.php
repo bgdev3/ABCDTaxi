@@ -97,7 +97,7 @@ class AuthAdminController extends Controller
      * Affiche le formulaire de renouvellement de mot de passe 
      * et effectue les vérifications de connexion
      * 
-     * @param string [$token] Clé de sécurité
+     * @param string $token Clé de sécurité
      */
     public function register($token): void
     {
@@ -199,9 +199,9 @@ class AuthAdminController extends Controller
     /**
     * Valide l'authentification de l'administrateur 
     * 
-    * @param string [email] récupère l'email de l'admin
-    * @param string [password] récupère le mdp hashé afin de le tester
-    * @param object [admin] récupère l'objet creation AdminUserModel;
+    * @param string $email récupère l'email de l'admin
+    * @param string $password récupère le mdp hashé afin de le tester
+    * @param object $admin récupère l'objet creation AdminUserModel;
     * 
     * @return string $error Le message d'erreur
     */

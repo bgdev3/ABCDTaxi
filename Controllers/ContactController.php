@@ -18,10 +18,10 @@ class ContactController extends Controller
     /**
      * Teste les entrées en post, la vérification re-captcha et créer le formulaire par défault
      * 
-     * @var [$erreur] Stocke le message d'erreur
-     * @var [$captcha] Instance de Captcha
-     * @var [sendMail] Instance de Mailer
-     * @var [$form] Stocke le formulaire par défault
+     * @var $erreur Stocke le message d'erreur
+     * @var $captcha Instance de Captcha
+     * @var $sendMail Instance de Mailer
+     * @var $form Stocke le formulaire par défault
      */
 
     public function index(): void

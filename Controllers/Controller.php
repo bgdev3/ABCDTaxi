@@ -4,13 +4,7 @@ namespace App\Controllers;
 
 abstract class Controller
 {
-    /**
-     * Redirige vers les vues demandées
-     * 
-     * @param string Récupère le chemin dans les controllers
-     * @param array Récupère un tableau de données
-     */
-
+    
     public function render(string $path, array $data = []): void
     {
         // Permet d'extraire les données sous forme de variable

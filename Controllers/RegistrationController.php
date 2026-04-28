@@ -34,16 +34,16 @@ class RegistrationController extends Controller
      * Teste et sécurise les données entrées en POST, hydrate les entitées correspondane
      * et crée le formualire de contact par défault afin d'enregistrer la réservation
      * 
-     * @var [$error] Récupère les message d'erreur
-     * @var [$modelUser] Instance de UserModel
-     * @var [$dataUser] Enregistrement de la BDD récupèrer
-     * @var [$passUser] numero client générer aléatoirement
-     * @var [$passUser_hash] Numéro client hashé
-     * @var [$captcha] Instance de la class Captcha
-     * @var [$mailer] Instance de Mailer
-     * @var [$emailUser] récupère l'email en post de l'utilisateur
-     * @var [$message] récupère le message d'erreur du mail
-     * @var [$form] stocke le formulaire
+     * @var $error Récupère les message d'erreur
+     * @var $modelUser Instance de UserModel
+     * @var $dataUser Enregistrement de la BDD récupèrer
+     * @var $passUser numero client générer aléatoirement
+     * @var $passUser_hash Numéro client hashé
+     * @var $captcha Instance de la class Captcha
+     * @var $mailer Instance de Mailer
+     * @var $emailUser récupère l'email en post de l'utilisateur
+     * @var $message récupère le message d'erreur du mail
+     * @var $form stocke le formulaire
      */
 
     public function index(): void

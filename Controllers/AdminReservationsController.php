@@ -36,9 +36,9 @@ class AdminReservationsController extends Controller
      * 
      * Teste la concordance des token, récupère tout les enregistrements
      * Puis Boucle sur chaque occurence afin de récupèrer l'idClient et d'effectuer une jointure
-     * qui est assignée dans un array
+     * which is assigned in an array
      * 
-     * @param string [$token] Clé de sécurité
+     * @param string $token Clé de sécurité
      */
     public function index($token): void
     {
@@ -74,12 +74,13 @@ class AdminReservationsController extends Controller
      * Teste les entrées en POST, vérifie la bonne validité du captcha,
      * puis hydrate les entitées correspondante et alimente les tables.
      * 
-     * @param string [$token] Jeton de sécurité en GET
+     * @param string $token Jeton de sécurité en GET
      */
-    public function addReservationsAdmin($token, $id = null): void 
+    public function addReservationsAdmin($token, ?int $id = null): void 
     {
 
         $error = '';
+        $passUser = '';
         $lang = isset($_SESSION['lang']) ? $_SESSION['lang'] : 'fr';
         $language = new Language($lang);
 
@@ -108,7 +109,7 @@ class AdminReservationsController extends Controller
                         // On instancie userModel afin de vérifier que l'utilisateur n'est pas déja dans la base
                         // $modelUser = new ClientModel();
                         $testingUser = $this->clientModel->find(htmlspecialchars($_POST['email'], ENT_QUOTES));
-                        
+                      
                         // Si l'utilisateur n'existe pas dans la base
                         if ($testingUser == null) {
                             // Instance de GenerateId afin de créer un numéroClient unique
@@ -159,6 +160,7 @@ class AdminReservationsController extends Controller
                         // S'il l'utilisateur n'existe pas, passe en argument le numéro client
                         // Sinon on applique la méthode sans $passUser en argument
                         $message = $testingUser == null ? $this->mailer->sendUserMail( $emailUser, $action, $this->transport, $passUser) : $this->mailer->sendUserMail($emailUser, $action, $this->transport);
+                        
                         // Instance de TransportModel
                         // $transportModel = new TransportModel();
                         // Si le message est vide et donc que l'envoi de mail s'est bien déroulé
@@ -300,8 +302,8 @@ class AdminReservationsController extends Controller
     /**
      * Permet la mise à jour d'un enregistrement administrateur
      * 
-     * @param string [$token] Jeton de sécurité
-     * @param int [$d] Identifiant de l'enregistrement
+     * @param string $token Jeton de sécurité
+     * @param int $id Identifiant de l'enregistrement
      */
     public function updateReservationAdmin($token, $id): void
     {
@@ -430,8 +432,8 @@ class AdminReservationsController extends Controller
     /**
      * Permet la suppression d'une réservation administrateur
      * 
-     * @param string [$token] Jeton de sécurité
-     * @param int [$d] Identifiant de l'enregistrement
+     * @param string $token Jeton de sécurité
+     * @param int $id Identifiant de l'enregistrement
      */
     public function deleteReservationAdmin($token, $id): void
     {
@@ -491,8 +493,8 @@ class AdminReservationsController extends Controller
      * et l'arrondis au quart d'heure supérieur en cas d'horaire non valide
      * Les horaires stockées sont par tranches de 15 min
      * 
-     * @param string [$time] Heure de rendez-vous modifié
-     * @return string [$time] Retourne l'heure fomraté
+     * @param string $time Heure de rendez-vous modifié
+     * @return string $time Retourne l'heure fomraté
      */
     private function roundTime($time): string
     {

@@ -1,5 +1,5 @@
 <?php
-use App\Core\Language;
+use App\Services\Language;
 
 $lang ='fr';
  if (isset($_GET['lang'])) {
