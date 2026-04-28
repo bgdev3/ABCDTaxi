@@ -1,6 +1,7 @@
 # ABCDTaxi
 
 ![PHP](https://img.shields.io/badge/PHP-8.4-777BB4?logo=php)
+![CI](https://github.com/bgdev3/ABCDTaxi/actions/workflows/ci.yml/badge.svg)
 
 Application web de réservation de taxi en ligne. Sélectionnez un horaire et une destination, obtenez un devis instantané avec toutes les informations relatives à votre trajet.
 
@@ -21,11 +22,10 @@ Application web de réservation de taxi en ligne. Sélectionnez un horaire et un
 ## Installation
 
 ```bash
-git clone https://github.com/votre-user/ABCDTaxi.git
+git clone https://github.com/bgdev3/ABCDTaxi.git
 cd ABCDTaxi
 composer install
 cp .env.example .env   # puis renseigner les variables
-mysql -u root -p abcdtaxi < database/schema.sql
 php -S localhost:8000 -t public/
 ```
 
