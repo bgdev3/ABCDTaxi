@@ -129,7 +129,7 @@ class Form
     }
 
     // Methode permettant de tester les champs, les paramètres repésentant les valeurs en POST et le nom des champs
-    public static function validatePost(array $post, array $fields): bool 
+    public function validatePost(array $post, array $fields): bool 
     {
         // Chaque champs est parcouru
         foreach( $fields as $field){
