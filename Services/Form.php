@@ -5,7 +5,7 @@ class Form
 {
 
     // Attribut contenant le code du formulaire
-    private $formElements;
+    private mixed $formElements;
 
     public function getFormElements()
     {
@@ -189,6 +189,7 @@ class Form
     // Méthode qui formate le fichier avant stockage
     public static function formateFile(array $files, array $fields): string 
     {
+        $file='';
         // Parcours chaque champs
         foreach ($fields as $field) {
             // Formate le fichier
